@@ -1,47 +1,120 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
-    // Uncomment the following lines to enable eslint-config-prettier
-    // Is not enabled right now to avoid issues with the Next.js repo
-    // "prettier",
-  ],
   "env": {
-    "es6": true,
     "browser": true,
-    "jest": true,
-    "node": true
+    "es6": true,
+    "node": true,
+    "jest": true
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:tailwind/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
   },
+  "plugins": ["react", "@typescript-eslint", "react-hooks" ],
   "rules": {
-    "react/react-in-jsx-scope": 0,
-    "react/display-name": 0,
-    "react/prop-types": 0,
-    "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/explicit-member-accessibility": 0,
-    "@typescript-eslint/indent": 0,
-    "@typescript-eslint/member-delimiter-style": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-var-requires": 0,
-    "@typescript-eslint/no-use-before-define": 0,
-    "@typescript-eslint/no-unused-vars": [
-      2,
-      {
-        "argsIgnorePattern": "^_"
+    // Max length should be set to on all the time, but we can switch it off for certain files like mocks if needed
+    "max-len": ["error", {
+        "code": 120,
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true
+    }],
+    "import/extensions": ["error", "never"],
+    // Allow only JSX in files with approrpiate extensions
+    "react/jsx-filename-extension": ["error", {
+      "extensions": [".jsx", ".tsx"]
+    }],
+    "jsx-a11y/anchor-is-valid": "off",
+    // We don't want explicit anys, but sometimes they're pretty useful in transitioning to better code and sometimes
+    // we're dealing with data structoures that are parsed JSON which can't be interpretted as anything else.
+    "@typescript-eslint/no-explicit-any": "off",
+    // Form elements by default in jsx-a11y need both nesting and a _for_ attr. IRL only one of the two is needed.
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "assert": "either"
+    }],
+    // Sometimes you just want to format your trailing comments so they align with each other
+    "no-multi-spaces": "off",
+    // Whether we do this should be up to us and it's super-annoying being screamed at through refactoring
+    "arrow-body-style": "off",
+    // Another one that should be up to us, especially as it gets problematic with hooks and member interfaces, which may end up being static
+    "class-methods-use-this": "off",
+    // This one confuses me, yes we don't want empty constructors,
+    // but it also complains about empty constructors with automatically set class members and that's a language feature.
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+    // Why?
+    "lines-between-class-members": "off",
+    // Who wants this?!?
+    "react/require-default-props": "off",
+    "import/prefer-default-export": "off",
+    // Switch off destructuring for arrays as it can create some odd syntax
+    "prefer-destructuring": ["error", {"object": true, "array": false}],
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "off", // Checks effect dependencies
+    "no-use-before-define": "off", // Picks up React usage in multiple places where it probably shouldn't
+    "no-multiple-empty-lines": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-typescript",
+        "airbnb/hooks",
+        // Prettier config turns off eslint formatting rules
+        "prettier/@typescript-eslint",
+        "prettier/react",
+        "prettier"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+      },
+      "rules":{
+        "camelcase": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        // We use a lot of this due to Typescript not adequately detecting that values
+        // cannot be null if they are in components that are children of the components that initialise them
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off" // ALlows 'any' to be used more
+      },
+      "plugins": ["react", "@typescript-eslint"],
+      "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
+          }
+        }
       }
-    ],
-    "no-console": [
-      2,
-      {
-        "allow": ["warn", "error"]
+    },
+    {
+      "files": ["**/styles/**/*.js", "**/tests/**/*"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/first": "off",
+        "func-names": "off",
+        "@typescript-eslint/no-explicit-any": "off"
       }
-    ]
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

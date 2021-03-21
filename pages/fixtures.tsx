@@ -5,7 +5,7 @@ import FixtureCard from '../domain/fixture/components/fixtureCard';
 import { getFixtures } from '../domain/fixture/api/indexFrontEnd';
 
 const Fixtures: React.VFC = () => {
-  const { data } = useQuery('', getFixtures);
+  const { data } = useQuery('getFixtures', getFixtures);
   return (
     <div>
       <Head>

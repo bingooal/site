@@ -11,7 +11,7 @@ const FixturePage: React.VFC = () => {
   const router = useRouter();
 
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const { data, isLoading } = useQuery('', () => getFixture(router.query.id as string));
+  const { data, isLoading } = useQuery(`getFixture(${router.query.id})`, () => getFixture(router.query.id as string));
 
   if (isLoading) {
     return (

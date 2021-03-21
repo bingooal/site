@@ -1,29 +1,87 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 
-import axios, { AxiosRequestConfig } from 'axios';
+// import axios, { AxiosRequestConfig } from 'axios';
 import { GetFixtures } from '../indexBackEnd';
 
 export const getFixturesFromApiFootball: GetFixtures = async () => {
-  const options: AxiosRequestConfig = {
-    method: 'GET',
-    url: 'https://v3.football.api-sports.io/fixtures',
-    params: {
-      date: '2021-03-20',
-      league: '40',
-      season: 2020,
-      timezone: 'Europe/London',
-    },
-    headers: {
-      'x-rapidapi-key': process.env.FOOTBALL_API_KEY,
-      'x-rapidapi-host': 'v3.football.api-sports.io',
-    },
-  };
-  const res = await axios.request(options);
+  // const options: AxiosRequestConfig = {
+  //   method: 'GET',
+  //   url: 'https://v3.football.api-sports.io/fixtures',
+  //   params: {
+  //     date: '2021-03-20',
+  //     league: '40',
+  //     season: 2020,
+  //     timezone: 'Europe/London',
+  //   },
+  //   headers: {
+  //     'x-rapidapi-key': process.env.FOOTBALL_API_KEY,
+  //     'x-rapidapi-host': 'v3.football.api-sports.io',
+  //   },
+  // };
+  // const res = await axios.request(options);
 
-  return res.data.response.map(({ fixture, teams }) => ({
-    id: `${fixture.id}`,
-    homeTeamName: teams.home.name,
-    awayTeamName: teams.away.name,
-  }));
+  // return res.data.response.map(({ fixture, teams }) => ({
+  //   id: `${fixture.id}`,
+  //   homeTeamName: teams.home.name,
+  //   awayTeamName: teams.away.name,
+  // }));
+  console.log('asdf');
+  return [
+    {
+      id: '593321',
+      homeTeamName: 'Brentford',
+      awayTeamName: 'Nottingham Forest',
+    },
+    {
+      id: '593320',
+      homeTeamName: 'Barnsley',
+      awayTeamName: 'Sheffield Wednesday',
+    },
+    {
+      id: '593322',
+      homeTeamName: 'Bristol City',
+      awayTeamName: 'Rotherham',
+    },
+    {
+      id: '593323',
+      homeTeamName: 'Coventry',
+      awayTeamName: 'Wycombe',
+    },
+    {
+      id: '593325',
+      homeTeamName: 'Millwall',
+      awayTeamName: 'Middlesbrough',
+    },
+    {
+      id: '593326',
+      homeTeamName: 'Norwich',
+      awayTeamName: 'Blackburn',
+    },
+    {
+      id: '593327',
+      homeTeamName: 'Preston',
+      awayTeamName: 'Luton',
+    },
+    {
+      id: '593328',
+      homeTeamName: 'Reading',
+      awayTeamName: 'QPR',
+    },
+    {
+      id: '593329',
+      homeTeamName: 'Stoke City',
+      awayTeamName: 'Derby',
+    },
+    {
+      id: '593331',
+      homeTeamName: 'Watford',
+      awayTeamName: 'Birmingham',
+    },
+    {
+      id: '593330',
+      homeTeamName: 'Swansea',
+      awayTeamName: 'Cardiff',
+    },
+  ];
 };

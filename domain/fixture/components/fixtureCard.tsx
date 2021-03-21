@@ -10,7 +10,7 @@ const FixtureCard: React.VFC<Props> = ({
   awayTeamName,
   id,
 }: Props) => (
-  <Link href={`/fixtures/${id}`}>
+  <Link href={`fixtures/${id}`}>
     <div>
       FixtureCard
       <span>{homeTeamName}</span>

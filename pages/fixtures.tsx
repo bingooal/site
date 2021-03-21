@@ -1,8 +1,8 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import React from 'react'
+import Head from 'next/head';
+import Link from 'next/link';
+import React from 'react';
 
-const Fixtures = () => (
+const Fixtures: React.VFC = () => (
   <div>
     <Head>
       <title>Fixtures</title>
@@ -16,6 +16,6 @@ const Fixtures = () => (
       </div>
     </Link>
   </div>
-)
+);
 
-export default Fixtures
+export default Fixtures;

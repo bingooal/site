@@ -8,15 +8,22 @@ type LinkProps = {
   as?: Url;
 };
 
-const MockNextLink = ({ children, href, as: asHref }: PropsWithChildren<LinkProps>): ReactElement => {
+const MockNextLink = ({
+  children,
+  href,
+  as: asHref,
+}: PropsWithChildren<LinkProps>): ReactElement => {
   const router = useRouter();
-  
+
   const onClick = (e): void => {
     e.preventDefault();
     router.push(href, asHref ?? href);
   };
-  
-  return cloneElement(children as ReactElement, { href: asHref ?? href, onClick });
+
+  return cloneElement(children as ReactElement, {
+    href: asHref ?? href,
+    onClick,
+  });
 };
 
 jest.mock('next/link', () => MockNextLink);

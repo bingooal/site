@@ -2,8 +2,8 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import { render, screen } from '../testUtils';
-import Fixtures from '../../pages/fixtures';
-import * as fixtureApi from '../../domain/fixture/api/indexFrontEnd';
+import Fixtures from '../../src/pages/fixtures';
+import * as fixtureApi from '../../src/domain/fixture/api/indexFrontEnd';
 
 const mockFixtureData = {
   homeTeamName: 'Manchester United',

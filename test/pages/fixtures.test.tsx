@@ -3,12 +3,18 @@ import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import { render, screen } from '../testUtils';
 import Fixtures from '../../pages/fixtures';
+import * as fixtureApi from '../../domain/fixture/api/indexBackEnd';
 
 const mockPush = jest.fn();
 const mockNextRouter: Partial<nextRouter.NextRouter> = { push: mockPush };
 jest
   .spyOn(nextRouter, 'useRouter')
   .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
+jest
+  .spyOn(fixtureApi, 'getFixtures')
+  .mockResolvedValue([
+    { homeTeamName: 'Manchester United', awayTeamName: 'Chelsea', id: '234' },
+  ]);
 
 describe('Fixtures page', () => {
   beforeEach(() => {
@@ -30,6 +36,6 @@ describe('Fixtures page', () => {
     userEvent.click(muFixture);
 
     expect(mockPush).toBeCalledTimes(1);
-    expect(mockPush).toBeCalledWith('fixtures/id', 'fixtures/id');
+    expect(mockPush).toBeCalledWith('fixtures/234', 'fixtures/234');
   });
 });

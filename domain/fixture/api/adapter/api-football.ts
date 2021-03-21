@@ -1,8 +1,8 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 
-import axios, { AxiosRequestConfig } from "axios";
-import { GetFixtures } from "..";
+import axios, { AxiosRequestConfig } from 'axios';
+import { GetFixtures } from '../indexBackEnd';
 
 export const getFixturesFromApiFootball: GetFixtures = async () => {
   const options: AxiosRequestConfig = {
@@ -25,5 +25,5 @@ export const getFixturesFromApiFootball: GetFixtures = async () => {
     id: `${fixture.id}`,
     homeTeamName: teams.home.name,
     awayTeamName: teams.away.name,
-  }))
-}
+  }));
+};

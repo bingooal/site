@@ -1,5 +1,5 @@
 module.exports = {
   site: {
-    component: "@sls-next/serverless-component@1.17",
+    component: '@sls-next/serverless-component@1.17',
   },
 };

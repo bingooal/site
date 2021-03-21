@@ -5,58 +5,42 @@
     "node": true,
     "jest": true
   },
-  "extends": [
-    "plugin:react/recommended",
-    "plugin:tailwind/recommended"
-  ],
+  "extends": ["plugin:react/recommended", "plugin:tailwind/recommended"],
   "globals": {
     "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "React": "writable"
   },
-  "plugins": ["react", "@typescript-eslint", "react-hooks" ],
+  "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
-    // Max length should be set to on all the time, but we can switch it off for certain files like mocks if needed
-    "max-len": ["error", {
+    "max-len": [
+      "error",
+      {
         "code": 120,
-        "ignoreUrls": true,
-        "ignoreTemplateLiterals": true
-    }],
+        "ignoreUrls": true
+      }
+    ],
     "import/extensions": ["error", "never"],
-    // Allow only JSX in files with approrpiate extensions
-    "react/jsx-filename-extension": ["error", {
-      "extensions": [".jsx", ".tsx"]
-    }],
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".jsx", ".tsx"]
+      }
+    ],
     "jsx-a11y/anchor-is-valid": "off",
-    // We don't want explicit anys, but sometimes they're pretty useful in transitioning to better code and sometimes
-    // we're dealing with data structoures that are parsed JSON which can't be interpretted as anything else.
-    "@typescript-eslint/no-explicit-any": "off",
     // Form elements by default in jsx-a11y need both nesting and a _for_ attr. IRL only one of the two is needed.
-    "jsx-a11y/label-has-associated-control": ["error", {
-      "assert": "either"
-    }],
-    // Sometimes you just want to format your trailing comments so they align with each other
-    "no-multi-spaces": "off",
-    // Whether we do this should be up to us and it's super-annoying being screamed at through refactoring
-    "arrow-body-style": "off",
-    // Another one that should be up to us, especially as it gets problematic with hooks and member interfaces, which may end up being static
-    "class-methods-use-this": "off",
-    // This one confuses me, yes we don't want empty constructors,
-    // but it also complains about empty constructors with automatically set class members and that's a language feature.
-    "no-useless-constructor": "off",
-    "no-empty-function": "off",
-    // Why?
-    "lines-between-class-members": "off",
-    // Who wants this?!?
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either"
+      }
+    ],
     "react/require-default-props": "off",
-    "import/prefer-default-export": "off",
-    // Switch off destructuring for arrays as it can create some odd syntax
-    "prefer-destructuring": ["error", {"object": true, "array": false}],
-    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "off", // Checks effect dependencies
     "no-use-before-define": "off", // Picks up React usage in multiple places where it probably shouldn't
-    "no-multiple-empty-lines": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "warn"
+    "@typescript-eslint/no-shadow": "warn",
+    "react/react-in-jsx-scope": "off"
   },
   "overrides": [
     {
@@ -66,6 +50,7 @@
         "plugin:@typescript-eslint/recommended",
         "airbnb-typescript",
         "airbnb/hooks",
+        "plugin:jsx-a11y/recommended",
         // Prettier config turns off eslint formatting rules
         "prettier/@typescript-eslint",
         "prettier/react",
@@ -80,14 +65,9 @@
         "sourceType": "module",
         "project": "./tsconfig.json"
       },
-      "rules":{
+      "rules": {
         "camelcase": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-empty-function": "off",
-        // We use a lot of this due to Typescript not adequately detecting that values
-        // cannot be null if they are in components that are children of the components that initialise them
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off" // ALlows 'any' to be used more
       },
       "plugins": ["react", "@typescript-eslint"],
@@ -98,16 +78,6 @@
           }
         }
       }
-    },
-    {
-      "files": ["**/styles/**/*.js", "**/tests/**/*"],
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off",
-        "import/no-extraneous-dependencies": "off",
-        "import/first": "off",
-        "func-names": "off",
-        "@typescript-eslint/no-explicit-any": "off"
-      }
     }
   ],
   "settings": {
@@ -115,6 +85,9 @@
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
+    },
+    "react": {
+      "version": "detect"
     }
   }
 }

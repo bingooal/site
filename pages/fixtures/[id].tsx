@@ -1,48 +1,30 @@
 import Head from 'next/head';
-// import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
+
 import { useState } from 'react';
 import EventCard from '../../domain/event/components/eventCard';
-// import { useQuery } from 'react-query';
-// import { getFixtures } from '../domain/fixture/api/indexFrontEnd';
-import Fixture from '../../domain/fixture/data/Fixture';
+import { getFixture } from '../../domain/fixture/api/indexFrontEnd';
+
 
 const FixturePage: React.VFC = () => {
-  // const router = useRouter();
+  const router = useRouter();
 
-  const events = [
-    {
-      imageUrl: 'asdf',
-      name: 'Bruno Fernandes gets an assist',
-      points: 7,
-    },
-    {
-      imageUrl: 'asdf',
-      name: 'Jamie Vardy bangs a goal in',
-      points: 8,
-    },
-    {
-      imageUrl: 'asdf',
-      name: 'Harry Maguire gets a yellow card',
-      points: 5,
-    },
-    {
-      imageUrl: 'asdf',
-      name: 'Schmeichel makes 3 saves',
-      points: 2,
-    },
-  ];
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const { data, isLoading } = useQuery('', () => getFixture(router.query.id as string));
 
-  const fixture: Fixture = {
-    homeTeamName: 'Leceister City',
-    awayTeamName: 'Manchester United',
-    id: '',
-  };
+  if (isLoading) {
+    return (
+      <div>
+        is loading
+      </div>
+    )
+  }
 
-  const { homeTeamName, awayTeamName } = fixture;
+  const { homeTeamName, awayTeamName, events } = data;
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
-  const [selectedEvents, setSelectedEvents] = useState([]);
   const numberOfSelectedEvents = selectedEvents.length;
 
   const isSelected = (name) => selectedEvents.includes(name);

@@ -2,7 +2,40 @@
 /* eslint-disable import/prefer-default-export */
 
 // import axios, { AxiosRequestConfig } from 'axios';
-import { GetFixtures } from '../indexBackEnd';
+import { GetFixture, GetFixtures } from '../indexBackEnd';
+
+export const getFixtureFromApiFootball: GetFixture = async () => {
+
+  const events = [
+    {
+      imageUrl: 'asdf',
+      name: 'Bruno Fernandes gets an assist',
+      points: 7,
+    },
+    {
+      imageUrl: 'asdf',
+      name: 'Jamie Vardy bangs a goal in',
+      points: 8,
+    },
+    {
+      imageUrl: 'asdf',
+      name: 'Harry Maguire gets a yellow card',
+      points: 5,
+    },
+    {
+      imageUrl: 'asdf',
+      name: 'Schmeichel makes 3 saves',
+      points: 2,
+    },
+  ];
+
+  return {
+    homeTeamName: 'Leceister City',
+    awayTeamName: 'Manchester United',
+    id: '',
+    events,
+  }
+}
 
 export const getFixturesFromApiFootball: GetFixtures = async () => {
   // const options: AxiosRequestConfig = {
@@ -26,7 +59,6 @@ export const getFixturesFromApiFootball: GetFixtures = async () => {
   //   homeTeamName: teams.home.name,
   //   awayTeamName: teams.away.name,
   // }));
-  console.log('asdf');
   return [
     {
       id: '593321',

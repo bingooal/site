@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
+import FixtureCard from '../domain/fixture/components/fixtureCard';
 
 const Fixtures: React.VFC = () => (
   <div>
@@ -9,12 +9,11 @@ const Fixtures: React.VFC = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <div>Fixtures</div>
-    <Link href={`fixtures/${'id'}`}>
-      <div>
-        <div>Manchester United</div>
-        <div>Chelsea</div>
-      </div>
-    </Link>
+    <FixtureCard
+      homeTeamName="Manchester United "
+      awayTeamName="Chelsea "
+      id="id"
+    />
   </div>
 );
 

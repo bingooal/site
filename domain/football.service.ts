@@ -1,9 +1,9 @@
 // TODO move this file somewhere more appropriate
 
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export const getFixtures = async (): Promise<any> => {
-  const options = {
+  const options: AxiosRequestConfig = {
     method: 'GET',
     url: 'https://v3.football.api-sports.io/fixtures',
     params: {
@@ -22,7 +22,7 @@ export const getFixtures = async (): Promise<any> => {
 };
 
 export const getLineUps = async (): Promise<any> => {
-  const options = {
+  const options: AxiosRequestConfig = {
     method: 'GET',
     url: 'https://v3.football.api-sports.io/fixtures/lineups',
     // wales
@@ -37,7 +37,7 @@ export const getLineUps = async (): Promise<any> => {
 };
 
 export const getPlayersStats = async (): Promise<any> => {
-  const options = {
+  const options: AxiosRequestConfig = {
     method: 'GET',
     url: 'https://v3.football.api-sports.io/fixtures/players',
     // fulham v leeds

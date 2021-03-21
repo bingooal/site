@@ -2,14 +2,26 @@ type Props = {
   imageUrl: string;
   name: string;
   points: number;
+  selected: boolean;
+  onClick: (name: string) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EventCard: React.VFC<Props> = ({ imageUrl, name, points }: Props) => (
-  <div>
+const EventCard: React.VFC<Props> = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  imageUrl,
+  name,
+  points,
+  selected,
+  onClick,
+}: Props) => (
+  // eslint-disable-next-line
+  <div onClick={() => onClick(name)}>
     {/* <div>{imageUrl}</div> */}
-    <div>{name}</div>
+    <div>
+      <b>{name}</b>
+    </div>
     <div>{points}</div>
+    {selected && <div>Selected</div>}
   </div>
 );
 

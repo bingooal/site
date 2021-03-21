@@ -1,6 +1,6 @@
 import Head from 'next/head';
 // import { useRouter } from 'next/router';
-import React from 'react';
+import { useState } from 'react';
 import EventCard from '../../domain/event/components/eventCard';
 // import { useQuery } from 'react-query';
 // import { getFixtures } from '../domain/fixture/api/indexFrontEnd';
@@ -42,6 +42,21 @@ const FixturePage: React.VFC = () => {
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const numberOfSelectedEvents = selectedEvents.length;
+
+  const isSelected = (name) => selectedEvents.includes(name);
+
+  const selectEvent = (name) => setSelectedEvents([...selectedEvents, name]);
+  const deselectEvent = (name) =>
+    setSelectedEvents(
+      selectedEvents.filter(
+        (nameOfSelectedEvent) => nameOfSelectedEvent !== name
+      )
+    );
+  const onClick = (name) =>
+    selectedEvents.includes(name) ? deselectEvent(name) : selectEvent(name);
+
   return (
     <div>
       <Head>
@@ -49,8 +64,16 @@ const FixturePage: React.VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>{fixtureName}</div>
+      <div>{`Selected ${numberOfSelectedEvents}/${events.length}`}</div>
       {events.map(({ imageUrl, name, points }) => (
-        <EventCard key={name} imageUrl={imageUrl} name={name} points={points} />
+        <EventCard
+          key={name}
+          imageUrl={imageUrl}
+          name={name}
+          points={points}
+          selected={isSelected(name)}
+          onClick={onClick}
+        />
       ))}
     </div>
   );

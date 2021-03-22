@@ -12,7 +12,7 @@ const Fixtures: React.VFC = () => {
         <title>Fixtures</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>Fixtures</div>
+      <h1>Fixtures</h1>
       {data &&
         data.map((fixture) => (
           <FixtureCard

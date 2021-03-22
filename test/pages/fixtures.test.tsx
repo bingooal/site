@@ -21,7 +21,7 @@ describe('Fixtures page', () => {
   });
 
   it('shows the title', () => {
-    expect(screen.getByText('Fixtures')).toBeInTheDocument();
+    expect(screen.getByRole('heading')).toHaveTextContent('Fixtures');
   });
 
   it('shows a fixture', async () => {

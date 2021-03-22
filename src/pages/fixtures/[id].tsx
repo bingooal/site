@@ -1,8 +1,7 @@
 import Head from 'next/head';
-import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
-
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import EventCard from '../../domain/event/components/eventCard';
 import { getFixture } from '../../domain/fixture/api/indexFrontEnd';
 
@@ -15,7 +14,7 @@ const FixturePage: React.VFC = () => {
   );
 
   if (isLoading) {
-    return <div>is loading</div>;
+    return <div>Loading...</div>;
   }
 
   const { homeTeamName, awayTeamName, events } = data;
@@ -42,8 +41,8 @@ const FixturePage: React.VFC = () => {
         <title>{fixtureName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>{fixtureName}</div>
-      <div>{`Selected ${numberOfSelectedEvents}/${events.length}`}</div>
+      <h1>{fixtureName}</h1>
+      <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
       {events.map(({ name, points }) => (
         <EventCard
           key={name}

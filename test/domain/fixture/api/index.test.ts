@@ -29,12 +29,10 @@ describe('getFixture', () => {
       events: expect.arrayContaining([
         // e.g.:
         // {
-        //   imageUrl: '',
         //   name: '[WATFORD_STRIKER] scores a goal',
         //   points: 5,
         // },
         {
-          imageUrl: expect.any(String),
           name: expect.any(String),
           points: expect.any(Number),
         },

@@ -6,19 +6,16 @@ import { useState } from 'react';
 import EventCard from '../../domain/event/components/eventCard';
 import { getFixture } from '../../domain/fixture/api/indexFrontEnd';
 
-
 const FixturePage: React.VFC = () => {
   const router = useRouter();
 
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const { data, isLoading } = useQuery(`getFixture(${router.query.id})`, () => getFixture(router.query.id as string));
+  const { data, isLoading } = useQuery(`getFixture(${router.query.id})`, () =>
+    getFixture(router.query.id as string)
+  );
 
   if (isLoading) {
-    return (
-      <div>
-        is loading
-      </div>
-    )
+    return <div>is loading</div>;
   }
 
   const { homeTeamName, awayTeamName, events } = data;
@@ -47,10 +44,9 @@ const FixturePage: React.VFC = () => {
       </Head>
       <div>{fixtureName}</div>
       <div>{`Selected ${numberOfSelectedEvents}/${events.length}`}</div>
-      {events.map(({ imageUrl, name, points }) => (
+      {events.map(({ name, points }) => (
         <EventCard
           key={name}
-          imageUrl={imageUrl}
           name={name}
           points={points}
           selected={isSelected(name)}

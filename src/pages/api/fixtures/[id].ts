@@ -6,7 +6,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const data = await getFixture('593330');
+  const data = await getFixture(req.query.id as string);
   res.status(200).json(data);
 };
 

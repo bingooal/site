@@ -14,7 +14,6 @@ const EventCard: React.VFC<Props> = ({
   selected,
   onClick,
 }: Props) => (
-  // eslint-disable-next-line
   <div onClick={() => onClick(name)}>
     {/* <div>{imageUrl}</div> */}
     <div>

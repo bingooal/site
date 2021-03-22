@@ -50,7 +50,6 @@
         "plugin:@typescript-eslint/recommended",
         "airbnb-typescript",
         "airbnb/hooks",
-        "plugin:jsx-a11y/recommended",
         // Prettier config turns off eslint formatting rules
         "prettier/@typescript-eslint",
         "prettier/react",
@@ -69,7 +68,10 @@
         "camelcase": "off",
         "import/no-cycle": "off",
         "import/prefer-default-export": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off" // ALlows 'any' to be used more
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
       },
       "plugins": ["react", "@typescript-eslint"],
       "settings": {

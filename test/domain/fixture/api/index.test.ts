@@ -1,8 +1,12 @@
-import { getFixture, getFixtures } from '../../../../src/domain/fixture/api/indexBackEnd';
+import {
+  getFixture,
+  getFixtures,
+} from '../../../../src/domain/fixture/api/indexBackEnd';
 
 describe('getFixtures', () => {
-  it('should get the fixtures from the FA cup for today', async () => {
+  it('should get a list of fixtures', async () => {
     const fixtures = await getFixtures();
+    expect(fixtures).toBeArray();
     fixtures.forEach((fixture) => {
       expect(fixture).toMatchObject({
         id: expect.any(String),
@@ -14,49 +18,27 @@ describe('getFixtures', () => {
 });
 
 describe('getFixture', () => {
-  it('should get the fixture for the Watford vs Birmingham game', async () => {
-    const fixture = await getFixture('593331');
+  it('should get the correct fixture', async () => {
+    const fixtureId = '593320';
+    const fixture = await getFixture(fixtureId);
 
     expect(fixture).toMatchObject({
-      id: '593331',
-      homeTeamName: 'Watford',
-      awayTeamName: 'Birmingham',
+      id: fixtureId,
+      homeTeamName: expect.any(String),
+      awayTeamName: expect.any(String),
       events: expect.arrayContaining([
+        // e.g.:
+        // {
+        //   imageUrl: '',
+        //   name: '[WATFORD_STRIKER] scores a goal',
+        //   points: 5,
+        // },
         {
-          imageUrl: '',
-          name: '[CITY_STRIKER] scores a goal',
-          points: 5,
+          imageUrl: expect.any(String),
+          name: expect.any(String),
+          points: expect.any(Number),
         },
-        {
-          imageUrl: '',
-          name: '[WATFORD_STRIKER] scores a goal',
-          points: 5,
-        },
-        ...
-      ])
-    })
-  });
-
-  it('should get the fixture for the Barnsley vs Sheffield Wednesday game', async () => {
-    const fixture = await getFixture('593320');
-
-    expect(fixture).toMatchObject({
-      id: '593331',
-      homeTeamName: 'Barnsley',
-      awayTeamName: 'Sheffield Wednesday',
-      events: expect.arrayContaining([
-        {
-          imageUrl: '',
-          name: '[WEDNESDAY_STRIKER] scores a goal',
-          points: 5,
-        },
-        {
-          imageUrl: '',
-          name: '[BARNSLEY_STRIKER] scores a goal',
-          points: 5,
-        },
-        ...
-      ])
-    })
+      ]),
+    });
   });
 });

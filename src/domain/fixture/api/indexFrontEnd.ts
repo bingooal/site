@@ -1,7 +1,9 @@
 import FixturePreview from '../data/FixturePreview';
 import Fixture from '../data/Fixture';
-// eslint-disable-next-line import/no-cycle
-import { getFixturesFromBingoal, getFixtureFromBingoal } from './adapter/bingoal';
+import {
+  getFixturesFromBingoal,
+  getFixtureFromBingoal,
+} from './adapter/bingoal';
 
 export type GetFixtures = () => Promise<FixturePreview[]>;
 export const getFixtures: GetFixtures = getFixturesFromBingoal;

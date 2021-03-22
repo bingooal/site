@@ -1,25 +1,14 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable import/prefer-default-export */
-
-import axios, { AxiosRequestConfig } from 'axios';
+import makeRequest from '../../../../services/request';
 import { GetFixtures, GetFixture } from '../indexBackEnd';
 
-export const getFixturesFromBingoal: GetFixtures = async () => {
-  const options: AxiosRequestConfig = {
-    method: 'GET',
+export const getFixturesFromBingoal: GetFixtures = async () =>
+  makeRequest({
+    method: 'get',
     url: `${window.location.origin}/api/fixtures`,
-  };
-  const res = await axios.request(options);
+  });
 
-  return res.data;
-};
-
-export const getFixtureFromBingoal: GetFixture = async (id: string) => {
-  const options: AxiosRequestConfig = {
-    method: 'GET',
+export const getFixtureFromBingoal: GetFixture = async (id: string) =>
+  makeRequest({
+    method: 'get',
     url: `${window.location.origin}/api/fixtures/${id}`,
-  };
-  const res = await axios.request(options);
-
-  return res.data;
-};
+  });

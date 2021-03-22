@@ -14,5 +14,9 @@ module.exports = {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
   },
-  setupFilesAfterEnv: ['./test/mock-next-link.tsx', './test/setup-tests.ts'],
+  setupFilesAfterEnv: [
+    'jest-extended',
+    './test/mock-next-link.tsx',
+    './test/setup-tests.ts',
+  ],
 };

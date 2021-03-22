@@ -2,13 +2,15 @@ import {
   getFixture,
   getFixtures,
 } from '../../../../src/domain/fixture/api/indexBackEnd';
+import Fixture from '../../../../src/domain/fixture/data/Fixture';
+import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 
 describe('getFixtures', () => {
-  it('should get a list of fixtures', async () => {
+  it('should get a list of fixture previews', async () => {
     const fixtures = await getFixtures();
     expect(fixtures).toBeArray();
     fixtures.forEach((fixture) => {
-      expect(fixture).toMatchObject({
+      expect(fixture).toMatchObject<FixturePreview>({
         id: expect.any(String),
         homeTeamName: expect.any(String),
         awayTeamName: expect.any(String),
@@ -18,11 +20,11 @@ describe('getFixtures', () => {
 });
 
 describe('getFixture', () => {
-  it('should get the correct fixture', async () => {
+  it('should get a fixture', async () => {
     const fixtureId = '593320';
     const fixture = await getFixture(fixtureId);
 
-    expect(fixture).toMatchObject({
+    expect(fixture).toMatchObject<Fixture>({
       id: fixtureId,
       homeTeamName: expect.any(String),
       awayTeamName: expect.any(String),

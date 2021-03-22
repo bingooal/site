@@ -2,9 +2,10 @@ import FixturePreview from '../data/FixturePreview';
 import Fixture from '../data/Fixture';
 import {
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  getFixturesFromApiFootball,
-  mockGetFixturesFromApiFootball,
-  mockGetFixtureFromApiFootball,
+  getFixtures as getFixturesFromApiFootball,
+  mockGetFixtures as mockGetFixturesFromApiFootball,
+  getFixture as getFixtureFromApiFootball,
+  mockGetFixture as mockGetFixtureFromApiFootball,
   /* eslint-enable @typescript-eslint/no-unused-vars */
 } from './adapter/api-football';
 

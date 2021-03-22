@@ -1,9 +1,19 @@
 import makeRequest from '../../../../services/request';
+import { generateEvents } from '../../../event/services/eventGenerator';
 import { mockFixture } from '../../data/Fixture';
 import { mockFixturePreviews } from '../../data/FixturePreview';
 import { GetFixture, GetFixtures } from '../indexBackEnd';
+import { mockFixturesLineupsData } from './mockApiFootballData';
 
-const makeRequestToApiFootball = async ({ method, path, params }) => {
+const makeRequestToApiFootball = async ({
+  method,
+  path,
+  params,
+}: {
+  method: string;
+  path: string;
+  params?: unknown;
+}) => {
   const res = await makeRequest({
     method,
     url: `https://v3.football.api-sports.io/${path}`,
@@ -16,10 +26,46 @@ const makeRequestToApiFootball = async ({ method, path, params }) => {
   return res.response;
 };
 
-export const mockGetFixtureFromApiFootball: GetFixture = async () =>
-  mockFixture;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getPlayersStats = async (fixtureId: string): Promise<any> =>
+  makeRequestToApiFootball({
+    method: 'GET',
+    path: 'fixtures/players',
+    params: { fixture: fixtureId },
+  });
 
-export const getFixturesFromApiFootball: GetFixtures = async () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getLineups = async (fixtureId: string): Promise<any> =>
+  makeRequestToApiFootball({
+    method: 'GET',
+    path: 'fixtures/lineups',
+    params: { fixture: fixtureId },
+  });
+
+export const mockGetFixture: GetFixture = async () => mockFixture;
+
+export const getFixture: GetFixture = async (fixtureId) => {
+  const actions = ['scores a goal'];
+
+  // const [team1Data, team2Data] = await getLineups(fixtureId);
+  const [team1Data, team2Data] = mockFixturesLineupsData;
+  const team1Players = team1Data.startXI;
+  const team2Players = team2Data.startXI;
+  const playersData = team1Players.concat(team2Players);
+  const playerNames = playersData.map(({ player: { name } }) => name);
+
+  const events = generateEvents(playerNames, actions);
+
+  return {
+    // TODO check whether team 1 is home or away
+    homeTeamName: team1Data.team.name,
+    awayTeamName: team2Data.team.name,
+    id: fixtureId,
+    events,
+  };
+};
+
+export const getFixtures: GetFixtures = async () => {
   const data = await makeRequestToApiFootball({
     method: 'GET',
     path: 'fixtures',
@@ -37,5 +83,4 @@ export const getFixturesFromApiFootball: GetFixtures = async () => {
   }));
 };
 
-export const mockGetFixturesFromApiFootball: GetFixtures = async () =>
-  mockFixturePreviews;
+export const mockGetFixtures: GetFixtures = async () => mockFixturePreviews;

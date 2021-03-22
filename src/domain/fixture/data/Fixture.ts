@@ -6,9 +6,9 @@ type Fixture = FixturePreview & {
 };
 
 export const mockFixture = {
+  id: '593320',
   homeTeamName: 'Barnsley',
   awayTeamName: 'Sheffield Wednesday',
-  id: '593320',
   events: mockEvents,
 };
 

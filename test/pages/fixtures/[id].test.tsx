@@ -1,9 +1,25 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
-import { mockFixture } from '../../../src/domain/fixture/data/Fixture';
-import FixturePage from '../../../src/pages/fixtures/[id]';
 import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontEnd';
+import Fixture from '../../../src/domain/fixture/data/Fixture';
+import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';
+
+const mockFixture: Fixture = {
+  id: '593320',
+  homeTeamName: 'Barnsley',
+  awayTeamName: 'Sheffield Wednesday',
+  events: [
+    {
+      name: 'Bruno Fernandes gets an assist',
+      points: 7,
+    },
+    {
+      name: 'Jamie Vardy bangs a goal in',
+      points: 8,
+    },
+  ],
+};
 
 const { id, homeTeamName, awayTeamName, events } = mockFixture;
 const mockNextRouter: Partial<nextRouter.NextRouter> = {

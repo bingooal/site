@@ -1,9 +1,10 @@
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
-import { mockFixture } from '../../data/Fixture';
-import { mockFixturePreviews } from '../../data/FixturePreview';
 import { GetFixture, GetFixtures } from '../indexBackEnd';
-import { mockFixturesLineupsData } from './mockApiFootballData';
+import {
+  mockFixturesLineupsData,
+  mockFixturesData,
+} from './mockApiFootballData';
 
 const makeRequestToApiFootball = async ({
   method,
@@ -42,8 +43,6 @@ const getLineups = async (fixtureId: string): Promise<any> =>
     params: { fixture: fixtureId },
   });
 
-export const mockGetFixture: GetFixture = async () => mockFixture;
-
 export const getFixture: GetFixture = async (fixtureId) => {
   const actions = ['scores a goal'];
 
@@ -66,21 +65,20 @@ export const getFixture: GetFixture = async (fixtureId) => {
 };
 
 export const getFixtures: GetFixtures = async () => {
-  const data = await makeRequestToApiFootball({
-    method: 'GET',
-    path: 'fixtures',
-    params: {
-      date: '2021-03-20',
-      league: '40',
-      season: 2020,
-      timezone: 'Europe/London',
-    },
-  });
+  const data = mockFixturesData;
+  // const data = await makeRequestToApiFootball({
+  //   method: 'GET',
+  //   path: 'fixtures',
+  //   params: {
+  //     date: '2021-03-20',
+  //     league: '40',
+  //     season: 2020,
+  //     timezone: 'Europe/London',
+  //   },
+  // });
   return data.map(({ fixture, teams }) => ({
     id: `${fixture.id}`,
     homeTeamName: teams.home.name,
     awayTeamName: teams.away.name,
   }));
 };
-
-export const mockGetFixtures: GetFixtures = async () => mockFixturePreviews;

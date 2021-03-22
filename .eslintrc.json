@@ -67,7 +67,8 @@
       },
       "rules": {
         "camelcase": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "import/no-cycle": "off",
+        "import/prefer-default-export": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off" // ALlows 'any' to be used more
       },
       "plugins": ["react", "@typescript-eslint"],

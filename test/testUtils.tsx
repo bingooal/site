@@ -1,17 +1,19 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import 'jest-extended';
+import MyApp from '../src/pages/_app';
 // import { ThemeProvider } from "my-ui-lib"
 // import { TranslationProvider } from "my-i18n-lib"
 // import defaultStrings from "i18n/en-x-default"
 
-const Providers = ({ children }) => children;
-// return (
-//   <ThemeProvider theme="light">
-//     <TranslationProvider messages={defaultStrings}>
-//       {children}
-//     </TranslationProvider>
-//   </ThemeProvider>
-// )
+const Providers = ({ children }: any) => (
+  <MyApp Component={() => children} pageProps={{}} />
+  // <ThemeProvider theme="light">
+  //   <TranslationProvider messages={defaultStrings}>
+  //     {children}
+  //   </TranslationProvider>
+  // </ThemeProvider>
+);
 
 const customRender = (ui: any, options = {}): unknown =>
   render(ui, { wrapper: Providers, ...options });

@@ -1,10 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import dayjs from 'dayjs';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
 import { GetFixture, GetFixtures } from '../indexBackEnd';
-import {
-  mockFixturesLineupsData,
-  mockFixturesData,
-} from './mockApiFootballData';
+import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
+import { mockFixturesData } from './mockApiFootballData/fixtures';
+import { mockFixturesLineupsData } from './mockApiFootballData/fixturesLineups';
 
 const makeRequestToApiFootball = async ({
   method,
@@ -64,21 +65,38 @@ export const getFixture: GetFixture = async (fixtureId) => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getLeaguePreviews = async () => {
+  const data = await makeRequestToApiFootball({
+    method: 'GET',
+    path: 'leagues',
+    params: {
+      current: 'true',
+    },
+  });
+  return data.map(({ league: { id, name }, country }) => ({
+    id,
+    name,
+    country: country.name,
+  }));
+};
+
 export const getFixtures: GetFixtures = async () => {
   const data = mockFixturesData;
   // const data = await makeRequestToApiFootball({
   //   method: 'GET',
   //   path: 'fixtures',
   //   params: {
-  //     date: '2021-03-20',
-  //     league: '40',
+  //     date: dayjs().format('YYYY-MM-DD'),
   //     season: 2020,
   //     timezone: 'Europe/London',
   //   },
   // });
-  return data.map(({ fixture, teams }) => ({
-    id: `${fixture.id}`,
-    homeTeamName: teams.home.name,
-    awayTeamName: teams.away.name,
-  }));
+  return data
+    .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
+    .map(({ fixture, teams }) => ({
+      id: `${fixture.id}`,
+      homeTeamName: teams.home.name,
+      awayTeamName: teams.away.name,
+    }));
 };

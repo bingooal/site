@@ -24,12 +24,16 @@ describe('Fixtures page', () => {
     expect(screen.getByRole('heading')).toHaveTextContent('Fixtures');
   });
 
-  it('shows a fixture', async () => {
-    expect(await screen.findByText(homeTeamName)).toBeInTheDocument();
+  it('shows a fixture', () => {
+    expect(
+      screen.getByText(homeTeamName, { exact: false })
+    ).toBeInTheDocument();
   });
 
-  it('redirects to the fixture page when clicking a fixture', async () => {
-    const fixtureComponent = await screen.findByText(homeTeamName);
+  it('redirects to the fixture page when clicking a fixture', () => {
+    const fixtureComponent = screen.getByText(homeTeamName, {
+      exact: false,
+    });
 
     userEvent.click(fixtureComponent);
 

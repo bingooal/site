@@ -44,17 +44,6 @@ const leaguesWeWatch = [
     name: 'EFL Trophy',
     country: 'England',
   },
-  // Not sure why FA Cup and League Cup have 2 entries each
-  // {
-  //   id: 47,
-  //   name: 'FA Trophy',
-  //   country: 'England',
-  // },
-  // {
-  //   id: 48,
-  //   name: 'League Cup',
-  //   country: 'England',
-  // },
 ];
 
 export const idsOfLeaguesWeWatch = leaguesWeWatch.map(({ id }) => id);

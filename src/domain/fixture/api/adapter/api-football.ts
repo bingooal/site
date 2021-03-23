@@ -47,19 +47,18 @@ const getLineups = async (fixtureId: string): Promise<any> =>
 export const getFixture: GetFixture = async (fixtureId) => {
   const actions = ['scores a goal'];
 
-  // const [team1Data, team2Data] = await getLineups(fixtureId);
-  const [team1Data, team2Data] = mockFixturesLineupsData;
-  const team1Players = team1Data.startXI;
-  const team2Players = team2Data.startXI;
-  const playersData = team1Players.concat(team2Players);
+  // const [homeTeamData, awayTeamData] = await getLineups(fixtureId);
+  const [homeTeamData, awayTeamData] = mockFixturesLineupsData;
+  const homePlayers = homeTeamData.startXI;
+  const awayPlayers = awayTeamData.startXI;
+  const playersData = homePlayers.concat(awayPlayers);
   const playerNames = playersData.map(({ player: { name } }) => name);
 
   const events = generateEvents(playerNames, actions);
 
   return {
-    // TODO check whether team 1 is home or away
-    homeTeamName: team1Data.team.name,
-    awayTeamName: team2Data.team.name,
+    homeTeamName: homeTeamData.team.name,
+    awayTeamName: awayTeamData.team.name,
     id: fixtureId,
     events,
   };

@@ -1,5 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dayjs from 'dayjs';
+import { FOOTBALL_API_KEY, IS_DEV_ENV } from '../../../../config';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
 import { GetFixture, GetFixtures } from '../indexBackEnd';
@@ -21,7 +21,7 @@ const makeRequestToApiFootball = async ({
     url: `https://v3.football.api-sports.io/${path}`,
     params,
     headers: {
-      'x-rapidapi-key': process.env.FOOTBALL_API_KEY,
+      'x-rapidapi-key': FOOTBALL_API_KEY,
       'x-rapidapi-host': 'v3.football.api-sports.io',
     },
   });
@@ -36,7 +36,6 @@ const getPlayersStats = async (fixtureId: string): Promise<any> =>
     params: { fixture: fixtureId },
   });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getLineups = async (fixtureId: string): Promise<any> =>
   makeRequestToApiFootball({
     method: 'GET',
@@ -47,8 +46,9 @@ const getLineups = async (fixtureId: string): Promise<any> =>
 export const getFixture: GetFixture = async (fixtureId) => {
   const actions = ['scores a goal'];
 
-  // const [homeTeamData, awayTeamData] = await getLineups(fixtureId);
-  const [homeTeamData, awayTeamData] = mockFixturesLineupsData;
+  const [homeTeamData, awayTeamData] = IS_DEV_ENV
+    ? mockFixturesLineupsData
+    : await getLineups(fixtureId);
   const homePlayers = homeTeamData.startXI;
   const awayPlayers = awayTeamData.startXI;
   const playersData = homePlayers.concat(awayPlayers);
@@ -81,16 +81,17 @@ const getLeaguePreviews = async () => {
 };
 
 export const getFixtures: GetFixtures = async () => {
-  const data = mockFixturesData;
-  // const data = await makeRequestToApiFootball({
-  //   method: 'GET',
-  //   path: 'fixtures',
-  //   params: {
-  //     date: dayjs().format('YYYY-MM-DD'),
-  //     season: 2020,
-  //     timezone: 'Europe/London',
-  //   },
-  // });
+  const data = IS_DEV_ENV
+    ? mockFixturesData
+    : await makeRequestToApiFootball({
+        method: 'GET',
+        path: 'fixtures',
+        params: {
+          date: dayjs().format('YYYY-MM-DD'),
+          season: 2020,
+          timezone: 'Europe/London',
+        },
+      });
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
     .map(({ fixture, teams }) => ({

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { FOOTBALL_API_KEY, IS_DEV_ENV } from '../../../../config';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
-import { GetFixture, GetFixtures } from '../indexBackEnd';
+import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import { mockFixturesData } from './mockApiFootballData/fixtures';
 import { mockFixturesLineupsData } from './mockApiFootballData/fixturesLineups';

@@ -1,7 +1,7 @@
 import {
   getFixture,
   getFixtures,
-} from '../../../../src/domain/fixture/api/indexBackEnd';
+} from '../../../../src/domain/fixture/api/indexBackend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
 import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 

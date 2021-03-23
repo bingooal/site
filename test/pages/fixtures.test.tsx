@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import React from 'react';
-import * as fixtureApi from '../../src/domain/fixture/api/indexFrontEnd';
+import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import { mockFixturePreviews } from '../../src/domain/fixture/data/FixturePreview';
 import Fixtures from '../../src/pages/fixtures';
 import { render, screen } from '../testUtils';

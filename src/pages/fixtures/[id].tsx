@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import EventCard from '../../domain/event/components/eventCard';
-import { getFixture } from '../../domain/fixture/api/indexFrontEnd';
+import { getFixture } from '../../domain/fixture/api/indexFrontend';
 
 const FixturePage: React.VFC = () => {
   const router = useRouter();

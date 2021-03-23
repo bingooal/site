@@ -1,5 +1,5 @@
 import makeRequest from '../../../../services/request';
-import { GetFixtures, GetFixture } from '../indexBackEnd';
+import { GetFixtures, GetFixture } from '../indexBackend';
 
 export const getFixturesFromBingoal: GetFixtures = async () =>
   makeRequest({

@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
-import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontEnd';
+import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';

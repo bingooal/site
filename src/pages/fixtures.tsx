@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import { useQuery } from 'react-query';
 import FixtureCard from '../domain/fixture/components/fixtureCard';
-import { getFixtures } from '../domain/fixture/api/indexFrontEnd';
+import { getFixtures } from '../domain/fixture/api/indexFrontend';
 
 const Fixtures: React.VFC = () => {
   const { data } = useQuery('getFixtures', getFixtures);

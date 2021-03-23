@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getFixtures } from '../../domain/fixture/api/indexBackEnd';
+import { getFixtures } from '../../domain/fixture/api/indexBackend';
 
 const handler = async (
   req: NextApiRequest,

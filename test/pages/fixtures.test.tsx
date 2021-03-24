@@ -6,17 +6,18 @@ import { mockFixturePreviews } from '../../src/domain/fixture/data/FixturePrevie
 import Fixtures from '../../src/pages/fixtures';
 import { render, screen } from '../testUtils';
 
-const mockPush = jest.fn();
-const mockNextRouter: Partial<nextRouter.NextRouter> = { push: mockPush };
-jest
-  .spyOn(nextRouter, 'useRouter')
-  .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
-jest.spyOn(fixtureApi, 'getFixtures').mockResolvedValue(mockFixturePreviews);
-
+const mockNextRouter: Partial<nextRouter.NextRouter> = { push: jest.fn() };
 const { id, homeTeamName } = mockFixturePreviews[0];
 
 describe('Fixtures page', () => {
   beforeEach(() => {
+    jest
+      .spyOn(nextRouter, 'useRouter')
+      .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
+    jest
+      .spyOn(fixtureApi, 'getFixtures')
+      .mockResolvedValue(mockFixturePreviews);
+
     render(<Fixtures />);
   });
 
@@ -37,7 +38,10 @@ describe('Fixtures page', () => {
 
     userEvent.click(fixtureComponent);
 
-    expect(mockPush).toBeCalledTimes(1);
-    expect(mockPush).toBeCalledWith(`fixtures/${id}`, `fixtures/${id}`);
+    expect(mockNextRouter.push).toBeCalledTimes(1);
+    expect(mockNextRouter.push).toBeCalledWith(
+      `fixtures/${id}`,
+      `fixtures/${id}`
+    );
   });
 });

@@ -19,4 +19,5 @@ module.exports = {
     './test/mock-next-link.tsx',
     './test/setup-tests.ts',
   ],
+  resetMocks: true,
 };

@@ -25,16 +25,19 @@ const { id, homeTeamName, awayTeamName, events } = mockFixture;
 const mockNextRouter: Partial<nextRouter.NextRouter> = {
   query: { id },
 };
-jest
-  .spyOn(nextRouter, 'useRouter')
-  .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
-
-const getFixtureSpy = jest
-  .spyOn(fixtureApi, 'getFixture')
-  .mockResolvedValue(mockFixture);
 
 describe('Fixture page', () => {
+  let getFixtureSpy;
+
   beforeEach(() => {
+    jest
+      .spyOn(nextRouter, 'useRouter')
+      .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
+
+    getFixtureSpy = jest
+      .spyOn(fixtureApi, 'getFixture')
+      .mockResolvedValue(mockFixture);
+
     render(<FixturePage />);
   });
 

@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
+import * as useLogin from '../../../src/domain/user/hooks/useLogin';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';
@@ -25,11 +26,14 @@ const { id, homeTeamName, awayTeamName, events } = mockFixture;
 const mockNextRouter: Partial<nextRouter.NextRouter> = {
   query: { id },
 };
+const userId = 'userId';
 
 describe('Fixture page', () => {
   let getFixtureSpy;
 
   beforeEach(() => {
+    jest.spyOn(useLogin, 'default').mockReturnValue(userId);
+
     jest
       .spyOn(nextRouter, 'useRouter')
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
@@ -39,6 +43,10 @@ describe('Fixture page', () => {
       .mockResolvedValue(mockFixture);
 
     render(<FixturePage />);
+  });
+
+  it('displays the users ID', () => {
+    expect(screen.getByText(`User ID: ${userId}`)).toBeInTheDocument();
   });
 
   it('fetches the fixture', () => {

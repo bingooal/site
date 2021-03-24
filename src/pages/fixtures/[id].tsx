@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import EventCard from '../../domain/event/components/eventCard';
 import { getFixture } from '../../domain/fixture/api/indexFrontend';
+import useLogin from '../../domain/user/hooks/useLogin';
 
 const FixturePage: React.VFC = () => {
+  const userId = useLogin();
   const router = useRouter();
 
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -41,6 +43,7 @@ const FixturePage: React.VFC = () => {
         <title>{fixtureName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div>{`User ID: ${userId}`}</div>
       <h1>{fixtureName}</h1>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
       {events.map(({ name, points }) => (

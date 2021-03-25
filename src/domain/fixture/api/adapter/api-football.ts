@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FOOTBALL_API_KEY, IS_DEV_ENV } from '../../../../config';
+import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
 import { GetFixture, GetFixtures } from '../indexBackend';
@@ -58,9 +58,9 @@ const extractPlayerNames = (
 };
 
 export const getFixture: GetFixture = async (fixtureId) => {
-  const fixtureData: ApiFootballFixture = IS_DEV_ENV
-    ? mockPastFixture
-    : await getFixtureFromApiFootball(fixtureId);
+  const fixtureData: ApiFootballFixture = IS_PROD_ENV
+    ? await getFixtureFromApiFootball(fixtureId)
+    : mockPastFixture;
 
   const {
     teams: { home, away },
@@ -97,9 +97,8 @@ const getLeaguePreviews = async () => {
 
 // https://www.api-football.com/documentation-v3#operation/get-fixtures
 export const getFixtures: GetFixtures = async () => {
-  const data = IS_DEV_ENV
-    ? mockFixturesData
-    : await makeRequestToApiFootball({
+  const data = IS_PROD_ENV
+    ? await makeRequestToApiFootball({
         method: 'GET',
         path: 'fixtures',
         params: {
@@ -107,7 +106,8 @@ export const getFixtures: GetFixtures = async () => {
           season: 2020,
           timezone: 'Europe/London',
         },
-      });
+      })
+    : mockFixturesData;
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
     .map(({ fixture, teams }) => ({

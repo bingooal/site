@@ -8,14 +8,16 @@ import useLogin from '../../domain/user/hooks/useLogin';
 
 const FixturePage: React.VFC = () => {
   const userId = useLogin();
-  const router = useRouter();
+  const { query, isReady } = useRouter();
 
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const { data, isLoading } = useQuery(`getFixture(${router.query.id})`, () =>
-    getFixture(router.query.id as string)
+  const { data, isIdle, isLoading } = useQuery(
+    `getFixture(${query.id})`,
+    () => getFixture(query.id as string),
+    { enabled: isReady }
   );
 
-  if (isLoading) {
+  if (isIdle || isLoading) {
     return <div>Loading...</div>;
   }
 

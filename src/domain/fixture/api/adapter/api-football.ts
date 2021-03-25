@@ -57,6 +57,33 @@ const extractPlayerNames = (
   return playerNames;
 };
 
+const actions = [
+  // first 11
+  'makes a save',
+  'concedes a penalty',
+  'receives a red card',
+  'commits a foul',
+  'is substituted on or off',
+  'intercepts a pass',
+  'plays a key pass',
+  'makes a tackle',
+  'blocks a shot',
+  'receives a yellow card',
+  'takes a shot',
+  // next 11
+  'makes a save',
+  'concedes a penalty',
+  'dribbles past a player',
+  'takes a shot on target',
+  'assists a goal',
+  'draws a foul',
+  'scores a goal',
+  'wins or scores a penalty',
+  'makes a tackle',
+  'blocks a shot',
+  'receives a yellow card',
+];
+
 export const getFixture: GetFixture = async (fixtureId) => {
   const fixtureData: ApiFootballFixture = IS_PROD_ENV
     ? await getFixtureFromApiFootball(fixtureId)
@@ -68,7 +95,6 @@ export const getFixture: GetFixture = async (fixtureId) => {
   } = fixtureData;
 
   const playerNames = extractPlayerNames(lineups);
-  const actions = ['scores a goal'];
   const events = generateEvents(playerNames, actions);
 
   return {

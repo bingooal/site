@@ -8,7 +8,7 @@ export const matchActorsToActions = (
     return [];
   }
   if (actors.length > actions.length) {
-    return actors.map((actor) => `${actor} ${actions[0]}`);
+    return actors.map((actor, i) => `${actor} ${actions[i] || actions[0]}`);
   }
   if (actors.length < actions.length) {
     return actions.map((action) => `${actors[0]} ${action}`);

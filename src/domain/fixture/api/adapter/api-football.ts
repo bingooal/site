@@ -5,7 +5,10 @@ import { generateEvents } from '../../../event/services/eventGenerator';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import { mockFixturesData } from './mockApiFootballData/fixtures';
-import { mockFixturesLineupsData } from './mockApiFootballData/fixturesLineups';
+import {
+  ApiFootballFixture,
+  mockPastFixture,
+} from './mockApiFootballData/pastFixture';
 
 const makeRequestToApiFootball = async ({
   method,
@@ -28,37 +31,49 @@ const makeRequestToApiFootball = async ({
   return res.response;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getPlayersStats = async (fixtureId: string): Promise<any> =>
-  makeRequestToApiFootball({
+// https://www.api-football.com/documentation-v3#operation/get-fixtures
+const getFixtureFromApiFootball = async (
+  fixtureId: string
+): Promise<ApiFootballFixture> => {
+  const fixtures = await makeRequestToApiFootball({
     method: 'GET',
-    path: 'fixtures/players',
-    params: { fixture: fixtureId },
+    path: 'fixtures',
+    params: { id: fixtureId },
   });
+  return fixtures[0];
+};
 
-const getLineups = async (fixtureId: string): Promise<any> =>
-  makeRequestToApiFootball({
-    method: 'GET',
-    path: 'fixtures/lineups',
-    params: { fixture: fixtureId },
-  });
-
-export const getFixture: GetFixture = async (fixtureId) => {
-  const actions = ['scores a goal'];
-
-  const [homeTeamData, awayTeamData] = IS_DEV_ENV
-    ? mockFixturesLineupsData
-    : await getLineups(fixtureId);
-  const homePlayers = homeTeamData.startXI;
-  const awayPlayers = awayTeamData.startXI;
+const extractPlayerNames = (
+  lineups: ApiFootballFixture['lineups']
+): string[] => {
+  if (!lineups.length) {
+    return [];
+  }
+  const [homeLineupData, awayLineupData] = lineups;
+  const homePlayers = homeLineupData.startXI;
+  const awayPlayers = awayLineupData.startXI;
   const playersData = homePlayers.concat(awayPlayers);
   const playerNames = playersData.map(({ player: { name } }) => name);
+  return playerNames;
+};
 
+export const getFixture: GetFixture = async (fixtureId) => {
+  const fixtureData: ApiFootballFixture = IS_DEV_ENV
+    ? mockPastFixture
+    : await getFixtureFromApiFootball(fixtureId);
+
+  const {
+    teams: { home, away },
+    lineups,
+  } = fixtureData;
+
+  const playerNames = extractPlayerNames(lineups);
+  const actions = ['scores a goal'];
   const events = generateEvents(playerNames, actions);
 
   return {
-    homeTeamName: homeTeamData.team.name,
-    awayTeamName: awayTeamData.team.name,
+    homeTeamName: home.name,
+    awayTeamName: away.name,
     id: fixtureId,
     events,
   };
@@ -80,6 +95,7 @@ const getLeaguePreviews = async () => {
   }));
 };
 
+// https://www.api-football.com/documentation-v3#operation/get-fixtures
 export const getFixtures: GetFixtures = async () => {
   const data = IS_DEV_ENV
     ? mockFixturesData

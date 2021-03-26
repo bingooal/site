@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 
-const useSelectableEvents = () => {
-  const [selectedEvents, setSelectedEvents] = useState([]);
+const useSelectableEvents = (fixtureId: string) => {
+  const [selectedEvents, setSelectedEvents] = useLocalStorageState(
+    `selectedEvents-${fixtureId}`,
+    []
+  );
 
   const isSelected = (name: string) => selectedEvents.includes(name);
 

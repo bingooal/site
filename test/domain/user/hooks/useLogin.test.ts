@@ -4,38 +4,12 @@ import useLogin from '../../../../src/domain/user/hooks/useLogin';
 
 const loginSpy = jest.spyOn(loginApi, 'login');
 
-const useMockStorage = () => {
-  let store;
-
-  const originalGetItem = Storage.prototype.getItem;
-  const originalSetItem = Storage.prototype.setItem;
-  const clear = () => {
-    store = {};
-  };
-  const getItem = (key) => store[key] || null;
-  const setItem = (key, val) => {
-    store[key] = val;
-  };
-
-  beforeEach(() => {
-    clear();
-    Storage.prototype.getItem = jest.fn(getItem);
-    Storage.prototype.setItem = jest.fn(setItem);
-  });
-
-  afterEach(() => {
-    clear();
-    Storage.prototype.getItem = originalGetItem;
-    Storage.prototype.setItem = originalSetItem;
-  });
-
-  return { getItem, setItem, clear };
-};
+beforeEach(() => {
+  localStorage.clear();
+});
 
 describe('useLogin', () => {
-  const { setItem } = useMockStorage();
-
-  it('signs a new user up and stores their userId in sessionStorage', async () => {
+  it('signs a new user up and stores their userId in localStorage', async () => {
     const newUserId = 'newUserId';
     loginSpy.mockResolvedValue({ userId: newUserId });
 
@@ -45,13 +19,14 @@ describe('useLogin', () => {
     expect(result.current).toEqual(newUserId);
     expect(loginSpy).toHaveBeenCalledTimes(1);
     expect(loginSpy).toHaveBeenCalledWith('null');
-    expect(sessionStorage.setItem).toHaveBeenCalledTimes(1);
-    expect(sessionStorage.setItem).toHaveBeenCalledWith('userId', newUserId);
+    expect(localStorage.getItem('bingoalUserId')).toEqual(
+      JSON.stringify(newUserId)
+    );
   });
 
-  it('logs an existing user in and stores their userId in sessionStorage', async () => {
+  it('logs an existing user in and stores their userId in localStorage', async () => {
     const existingUserId = 'existingUserId';
-    setItem('userId', existingUserId);
+    localStorage.setItem('bingoalUserId', JSON.stringify(existingUserId));
     loginSpy.mockResolvedValue({ userId: existingUserId });
 
     const { result, waitForNextUpdate } = renderHook(() => useLogin());
@@ -60,10 +35,8 @@ describe('useLogin', () => {
     expect(result.current).toEqual(existingUserId);
     expect(loginSpy).toHaveBeenCalledTimes(1);
     expect(loginSpy).toHaveBeenCalledWith(existingUserId);
-    expect(sessionStorage.setItem).toHaveBeenCalledTimes(1);
-    expect(sessionStorage.setItem).toHaveBeenCalledWith(
-      'userId',
-      existingUserId
+    expect(localStorage.getItem('bingoalUserId')).toEqual(
+      JSON.stringify(existingUserId)
     );
   });
 });

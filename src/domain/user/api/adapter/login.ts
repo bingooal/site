@@ -6,10 +6,10 @@ import { Login } from '../indexBackend';
 const createUser = (): User => ({ id: uuidv4() });
 
 export const login: Login = async (userId) => {
-  if (userRepository.contains(userId)) {
+  if (await userRepository.contains(userId)) {
     return { userId };
   }
   const newUser = createUser();
-  userRepository.insert(newUser);
+  await userRepository.insert(newUser);
   return { userId: newUser.id };
 };

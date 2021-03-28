@@ -13,11 +13,11 @@ class LocalUserRepository {
     this.users = initialStore;
   }
 
-  insert(user: User) {
+  async insert(user: User) {
     this.users = this.users.concat([user]);
   }
 
-  contains(userId: string) {
+  async contains(userId: string) {
     return this.users.some((user) => user.id === userId);
   }
 }

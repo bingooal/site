@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
+import * as eventApi from '../../../src/domain/event/api/indexFrontend';
 import * as useLogin from '../../../src/domain/user/hooks/useLogin';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
@@ -34,6 +35,8 @@ describe('Fixture page', () => {
   beforeEach(() => {
     jest.spyOn(useLogin, 'default').mockReturnValue(userId);
 
+    jest.spyOn(eventApi, 'selectEvent').mockResolvedValue();
+
     jest
       .spyOn(nextRouter, 'useRouter')
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
@@ -53,7 +56,7 @@ describe('Fixture page', () => {
     expect(getFixtureSpy).toHaveBeenCalledWith(id);
   });
 
-  it('shows the title', async () => {
+  it('shows the title', () => {
     const firstHeading = screen.getAllByRole('heading')[0];
     expect(firstHeading).toHaveTextContent(
       `${homeTeamName} vs ${awayTeamName}`
@@ -67,7 +70,7 @@ describe('Fixture page', () => {
     expect(screen.getByText(events[1].points)).toBeInTheDocument();
   });
 
-  it('lets the user select and deselect events', async () => {
+  it('lets the user select and deselect events', () => {
     const event = screen.getByText(events[0].name).parentElement.parentElement;
 
     expect(screen.getByText(`Selected 0/${events.length}`)).toBeInTheDocument();

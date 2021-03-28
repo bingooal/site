@@ -14,7 +14,7 @@ const FixturePage: React.VFC = () => {
     numberOfSelectedEvents,
     isSelected,
     toggleEvent,
-  } = useSelectableEvents(query.id as string);
+  } = useSelectableEvents(userId, query.id as string);
 
   const { data, isIdle, isLoading } = useQuery(
     `getFixture(${query.id})`,

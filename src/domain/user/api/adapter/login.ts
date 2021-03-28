@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import userRepository from '../../repositories';
+import userRepository from '../../repositories/userRepository';
 import User from '../../data/User';
 import { Login } from '../indexBackend';
 

@@ -1,8 +1,9 @@
-import User from '../data/User';
+import { UserRepository } from './index';
+import User from '../../data/User';
 
 const initialStore: ReadonlyArray<User> = [];
 
-class LocalUserRepository {
+class LocalUserRepository implements UserRepository {
   private users: typeof initialStore;
 
   constructor() {

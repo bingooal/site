@@ -44,7 +44,7 @@ describe('useLogin', () => {
 
     expect(result.current).toEqual(newUserId);
     expect(loginSpy).toHaveBeenCalledTimes(1);
-    expect(loginSpy).toHaveBeenCalledWith(null);
+    expect(loginSpy).toHaveBeenCalledWith('null');
     expect(sessionStorage.setItem).toHaveBeenCalledTimes(1);
     expect(sessionStorage.setItem).toHaveBeenCalledWith('userId', newUserId);
   });

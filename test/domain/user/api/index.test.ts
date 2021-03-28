@@ -1,6 +1,6 @@
 import { login } from '../../../../src/domain/user/api/indexBackend';
 import { LoginInfo } from '../../../../src/domain/user/data/User';
-import userRepository from '../../../../src/domain/user/repositories';
+import userRepository from '../../../../src/domain/user/repositories/userRepository';
 
 describe('login', () => {
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe('login', () => {
   });
 
   it('signs a new user up', async () => {
-    const loginData = await login(undefined);
+    const loginData = await login('null');
 
     expect(loginData).toMatchObject<LoginInfo>({
       userId: expect.any(String),
@@ -16,7 +16,7 @@ describe('login', () => {
   });
 
   it('logs an existing user in', async () => {
-    const { userId } = await login(undefined);
+    const { userId } = await login('null');
 
     const newLoginData = await login(userId);
 

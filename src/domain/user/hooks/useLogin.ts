@@ -5,7 +5,7 @@ const useLogin = () => {
   const [userId, setUserId] = useState('');
   useEffect(() => {
     const manageLogin = async () => {
-      const loginData = await login(sessionStorage.getItem('userId'));
+      const loginData = await login(String(sessionStorage.getItem('userId')));
       sessionStorage.setItem('userId', loginData.userId);
       setUserId(loginData.userId);
     };

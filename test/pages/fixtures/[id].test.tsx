@@ -3,6 +3,7 @@ import * as nextRouter from 'next/router';
 import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
 import * as eventApi from '../../../src/domain/event/api/indexFrontend';
 import * as useLogin from '../../../src/domain/user/hooks/useLogin';
+import * as useUsersPlayingFixture from '../../../src/domain/fixture/hooks/useUsersPlayingFixture';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';
@@ -28,6 +29,7 @@ const mockNextRouter: Partial<nextRouter.NextRouter> = {
   query: { id },
 };
 const userId = 'userId';
+const numberOfUsersPlayingFixture = 123;
 
 describe('Fixture page', () => {
   beforeEach(() => {
@@ -41,6 +43,10 @@ describe('Fixture page', () => {
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
 
     jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(mockFixture);
+
+    jest
+      .spyOn(useUsersPlayingFixture, 'default')
+      .mockReturnValue({ numberOfUsersPlayingFixture });
 
     render(<FixturePage />);
   });
@@ -58,6 +64,14 @@ describe('Fixture page', () => {
     expect(firstHeading).toHaveTextContent(
       `${homeTeamName} vs ${awayTeamName}`
     );
+  });
+
+  it('shows how many users are playing this fixture', () => {
+    expect(
+      screen.getByText(
+        `${numberOfUsersPlayingFixture} users playing this fixture`
+      )
+    ).toBeInTheDocument();
   });
 
   it('shows events names and their points', () => {

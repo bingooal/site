@@ -4,6 +4,7 @@ import { userSessionRepository as localUserSessionRepository } from './local';
 
 export type UserSessionRepository = {
   getSelectedEvents: (userId: string, fixtureId: string) => Promise<string[]>;
+  getUsersPlayingFixture: (fixtureId: string) => Promise<string[]>;
   selectEvent: (
     userId: string,
     fixtureId: string,

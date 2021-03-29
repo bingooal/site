@@ -42,6 +42,26 @@ const getSelectedEvents: UserSessionRepository['getSelectedEvents'] = async (
   return response.Items[0]?.selectedEvents[AttributeType.SelectedEvents] || [];
 };
 
+const getUsersPlayingFixture: UserSessionRepository['getUsersPlayingFixture'] = async (
+  fixtureId: string
+) => {
+  const command = new QueryCommand({
+    TableName: TABLE_NAME,
+    ConsistentRead: true,
+    KeyConditionExpression: `${AttributeName.FixtureId} = :fixtureId`,
+    ExpressionAttributeValues: {
+      ':fixtureId': {
+        [AttributeType.FixtureId]: fixtureId,
+      },
+    },
+  });
+  const response = await client.send(command);
+  const userIds = response.Items.map(
+    (item) => item.userId[AttributeType.UserId]
+  );
+  return userIds;
+};
+
 const selectEvent: UserSessionRepository['selectEvent'] = async (
   userId: string,
   fixtureId: string,
@@ -94,6 +114,7 @@ const deselectEvent: UserSessionRepository['deselectEvent'] = async (
 
 export const userSessionRepository: UserSessionRepository = {
   getSelectedEvents,
+  getUsersPlayingFixture,
   selectEvent,
   deselectEvent,
 };

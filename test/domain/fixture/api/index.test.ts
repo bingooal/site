@@ -1,9 +1,11 @@
 import {
   getFixture,
   getFixtures,
+  getUsersPlayingFixture,
 } from '../../../../src/domain/fixture/api/indexBackend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
 import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
+import userSessionRepository from '../../../../src/domain/user/repositories/userSessionRepository';
 
 describe('getFixtures', () => {
   it('should get a list of fixture previews', async () => {
@@ -40,5 +42,29 @@ describe('getFixture', () => {
         },
       ]),
     });
+  });
+});
+
+describe('getUsersPlayingFixture', () => {
+  beforeEach(() => {
+    userSessionRepository.reset();
+  });
+
+  it('should get the number of users playing the fixture', async () => {
+    const userId1 = 'userId1';
+    const userId2 = 'userId2';
+    const fixtureId1 = 'fixtureId1';
+    const fixtureId2 = 'fixtureId2';
+    const eventName = 'eventName';
+
+    expect(await getUsersPlayingFixture(fixtureId1)).toEqual(0);
+    expect(await getUsersPlayingFixture(fixtureId2)).toEqual(0);
+
+    await userSessionRepository.selectEvent(userId1, fixtureId1, eventName);
+    await userSessionRepository.selectEvent(userId2, fixtureId1, eventName);
+    await userSessionRepository.selectEvent(userId1, fixtureId2, eventName);
+
+    expect(await getUsersPlayingFixture(fixtureId1)).toEqual(2);
+    expect(await getUsersPlayingFixture(fixtureId2)).toEqual(1);
   });
 });

@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import EventCard from '../../domain/event/components/eventCard';
 import useSelectableEvents from '../../domain/event/hooks/useSelectableEvents';
 import { getFixture } from '../../domain/fixture/api/indexFrontend';
+import useUsersPlayingFixture from '../../domain/fixture/hooks/useUsersPlayingFixture';
 import useLogin from '../../domain/user/hooks/useLogin';
 
 const FixturePage: React.VFC = () => {
@@ -26,6 +27,10 @@ const FixturePage: React.VFC = () => {
     { enabled: isReady }
   );
 
+  const { numberOfUsersPlayingFixture } = useUsersPlayingFixture(
+    query.id as string
+  );
+
   if (isIdle || isLoading) {
     return <div>Loading...</div>;
   }
@@ -42,6 +47,7 @@ const FixturePage: React.VFC = () => {
       </Head>
       <div>{`User ID: ${userId}`}</div>
       <h1>{fixtureName}</h1>
+      <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
       {events.map(({ name, points }) => (
         <EventCard

@@ -1,5 +1,8 @@
 import userSessionRepository from '../../../user/repositories/userSessionRepository';
 
+export const getSelectedEvents = (userId: string, fixtureId: string) =>
+  userSessionRepository.getSelectedEvents(userId, fixtureId);
+
 export const selectEvent = (
   userId: string,
   fixtureId: string,

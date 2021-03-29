@@ -35,6 +35,7 @@ describe('Fixture page', () => {
   beforeEach(() => {
     jest.spyOn(useLogin, 'default').mockReturnValue(userId);
 
+    jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([]);
     jest.spyOn(eventApi, 'selectEvent').mockResolvedValue();
 
     jest

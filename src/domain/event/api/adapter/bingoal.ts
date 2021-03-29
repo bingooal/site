@@ -1,5 +1,12 @@
 import makeRequest from '../../../../services/request';
-import { SelectEvent, DeselectEvent } from '../indexBackend';
+import { GetSelectedEvents, SelectEvent, DeselectEvent } from '../indexBackend';
+
+export const getSelectedEvents: GetSelectedEvents = async (userId, fixtureId) =>
+  makeRequest({
+    method: 'get',
+    url: `${window.location.origin}/api/fixtures/${fixtureId}/events`,
+    params: { userId },
+  });
 
 export const selectEvent: SelectEvent = async (userId, fixtureId, eventName) =>
   makeRequest({

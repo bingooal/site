@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 import {
-  selectEvent as updateBackendWithSelectedEvent,
-  deselectEvent as updateBackendWithDeselectedEvent,
+  getSelectedEvents as queryBackendForSelectedEvents,
+  selectEvent as mutateBackendWithSelectedEvent,
+  deselectEvent as mutateBackendWithDeselectedEvent,
 } from '../api/indexFrontend';
 
 const useSelectableEvents = (userId: string, fixtureId: string) => {
@@ -10,15 +12,28 @@ const useSelectableEvents = (userId: string, fixtureId: string) => {
     []
   );
 
+  useEffect(() => {
+    const loadSelectedEventsFromBackend = async () => {
+      if (!userId || !fixtureId) {
+        return;
+      }
+      const events = await queryBackendForSelectedEvents(userId, fixtureId);
+      if (events.length) {
+        setSelectedEvents(events);
+      }
+    };
+    loadSelectedEventsFromBackend();
+  }, [userId, fixtureId, setSelectedEvents]);
+
   const isSelected = (name: string) => selectedEvents.includes(name);
 
   const selectEvent = (name: string) => {
-    updateBackendWithSelectedEvent(userId, fixtureId, name);
+    mutateBackendWithSelectedEvent(userId, fixtureId, name);
     setSelectedEvents([...selectedEvents, name]);
   };
 
   const deselectEvent = (name: string) => {
-    updateBackendWithDeselectedEvent(userId, fixtureId, name);
+    mutateBackendWithDeselectedEvent(userId, fixtureId, name);
     setSelectedEvents(
       selectedEvents.filter(
         (nameOfSelectedEvent) => nameOfSelectedEvent !== name

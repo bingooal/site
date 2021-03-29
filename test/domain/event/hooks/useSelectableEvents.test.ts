@@ -4,11 +4,13 @@ import * as eventApi from '../../../../src/domain/event/api/indexFrontend';
 
 const userId = 'userId';
 const fixtureId = 'fixture1';
+const event = 'event';
 
 describe('useSelectableEvents', () => {
   beforeEach(() => {
     localStorage.clear();
 
+    jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([]);
     jest.spyOn(eventApi, 'selectEvent').mockResolvedValue();
     jest.spyOn(eventApi, 'deselectEvent').mockResolvedValue();
   });
@@ -16,7 +18,6 @@ describe('useSelectableEvents', () => {
   it('lets the caller select and deselect events', () => {
     expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(null);
 
-    const event = 'event';
     const { result } = renderHook(() => useSelectableEvents(userId, fixtureId));
 
     expect(result.current.numberOfSelectedEvents).toEqual(0);
@@ -50,7 +51,6 @@ describe('useSelectableEvents', () => {
   });
 
   it('lets the caller select events for different fixtures', () => {
-    const event = 'event';
     const { result: fixture1Result } = renderHook(() =>
       useSelectableEvents(userId, fixtureId)
     );
@@ -74,5 +74,54 @@ describe('useSelectableEvents', () => {
 
     expect(fixture1Result.current.numberOfSelectedEvents).toEqual(1);
     expect(fixture2Result.current.numberOfSelectedEvents).toEqual(1);
+  });
+
+  it('loads selected events from backend when first ran', async () => {
+    jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([event]);
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useSelectableEvents(userId, fixtureId)
+    );
+    await waitForNextUpdate();
+
+    expect(eventApi.getSelectedEvents).toBeCalledTimes(1);
+    expect(result.current.numberOfSelectedEvents).toEqual(1);
+    expect(result.current.isSelected(event)).toEqual(true);
+    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
+      JSON.stringify([event])
+    );
+  });
+
+  it('does not fetch selected events from backend when userId is not defined', () => {
+    jest
+      .spyOn(eventApi, 'getSelectedEvents')
+      .mockRejectedValue(new Error('userId not defined'));
+
+    const { result } = renderHook(() =>
+      useSelectableEvents(undefined, fixtureId)
+    );
+
+    expect(eventApi.getSelectedEvents).toBeCalledTimes(0);
+    expect(result.current.numberOfSelectedEvents).toEqual(0);
+  });
+
+  it('does not fetch selected events from backend when fixtureId is not defined', () => {
+    jest
+      .spyOn(eventApi, 'getSelectedEvents')
+      .mockRejectedValue(new Error('fixtureId not defined'));
+
+    const { result } = renderHook(() => useSelectableEvents(userId, undefined));
+
+    expect(eventApi.getSelectedEvents).toBeCalledTimes(0);
+    expect(result.current.numberOfSelectedEvents).toEqual(0);
+  });
+
+  it('does not load selected events from backend when there are no selected events in backend', () => {
+    jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([]);
+
+    const { result } = renderHook(() => useSelectableEvents(userId, fixtureId));
+
+    expect(eventApi.getSelectedEvents).toBeCalledTimes(1);
+    expect(result.current.numberOfSelectedEvents).toEqual(0);
   });
 });

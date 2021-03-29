@@ -19,7 +19,7 @@ describe('selectEvents', () => {
   it('lets the caller get, select and deselect events for users and fixtures', async () => {
     expect(
       await userSessionRepository.getSelectedEvents(userId1, fixtureId1)
-    ).toEqual(null);
+    ).toEqual([]);
 
     await selectEvent(userId1, fixtureId1, eventName1);
     await selectEvent(userId2, fixtureId1, eventName1);

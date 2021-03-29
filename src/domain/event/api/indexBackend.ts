@@ -1,4 +1,13 @@
-export { selectEvent, deselectEvent } from './adapter/selectEvents';
+export {
+  getSelectedEvents,
+  selectEvent,
+  deselectEvent,
+} from './adapter/selectEvents';
+
+export type GetSelectedEvents = (
+  userId: string,
+  fixtureId: string
+) => Promise<string[]>;
 
 export type SelectEvent = (
   userId: string,

@@ -1,3 +1,5 @@
+import { IS_PROD_ENV } from '../../../../config';
+import { userSessionRepository as dynamoDbUserSessionRepository } from './dynamodb';
 import { userSessionRepository as localUserSessionRepository } from './local';
 
 export type UserSessionRepository = {
@@ -15,7 +17,8 @@ export type UserSessionRepository = {
   getSelectedEvents: (userId: string, fixtureId: string) => Promise<string[]>;
 };
 
-const userSessionRepository: UserSessionRepository = localUserSessionRepository;
-
+const userSessionRepository: UserSessionRepository = IS_PROD_ENV
+  ? dynamoDbUserSessionRepository
+  : localUserSessionRepository;
 
 export default userSessionRepository;

@@ -8,3 +8,17 @@ UsersTable:
   inputs:
     name: Users
 
+UsersSessionsTable:
+  component: '@serverless/aws-dynamodb'
+  inputs:
+    name: UsersSessions
+    attributeDefinitions:
+      - AttributeName: fixtureId
+        AttributeType: S
+      - AttributeName: userId
+        AttributeType: S
+    keySchema:
+      - AttributeName: fixtureId
+        KeyType: HASH
+      - AttributeName: userId
+        KeyType: RANGE

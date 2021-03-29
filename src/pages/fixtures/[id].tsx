@@ -16,7 +16,11 @@ const FixturePage: React.VFC = () => {
     toggleEvent,
   } = useSelectableEvents(userId, query.id as string);
 
-  const { data, isIdle, isLoading } = useQuery(
+  const {
+    data: fixtureData,
+    isIdle,
+    isLoading,
+  } = useQuery(
     `getFixture(${query.id})`,
     () => getFixture(query.id as string),
     { enabled: isReady }
@@ -26,7 +30,7 @@ const FixturePage: React.VFC = () => {
     return <div>Loading...</div>;
   }
 
-  const { homeTeamName, awayTeamName, events } = data;
+  const { homeTeamName, awayTeamName, events } = fixtureData;
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 

@@ -30,8 +30,6 @@ const mockNextRouter: Partial<nextRouter.NextRouter> = {
 const userId = 'userId';
 
 describe('Fixture page', () => {
-  let getFixtureSpy;
-
   beforeEach(() => {
     jest.spyOn(useLogin, 'default').mockReturnValue(userId);
 
@@ -42,9 +40,7 @@ describe('Fixture page', () => {
       .spyOn(nextRouter, 'useRouter')
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
 
-    getFixtureSpy = jest
-      .spyOn(fixtureApi, 'getFixture')
-      .mockResolvedValue(mockFixture);
+    jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(mockFixture);
 
     render(<FixturePage />);
   });
@@ -54,7 +50,7 @@ describe('Fixture page', () => {
   });
 
   it('fetches the fixture', () => {
-    expect(getFixtureSpy).toHaveBeenCalledWith(id);
+    expect(fixtureApi.getFixture).toHaveBeenCalledWith(id);
   });
 
   it('shows the title', () => {

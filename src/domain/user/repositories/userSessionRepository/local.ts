@@ -1,4 +1,4 @@
-import { UserSessionRepository } from './index';
+import { UserSessionRepository } from '.';
 
 const initialStore: { [key: string]: string[] } = {};
 
@@ -14,12 +14,12 @@ class LocalUserSessionRepository implements UserSessionRepository {
   }
 
   async getSelectedEvents(userId: string, fixtureId: string) {
-    return this.selectedEvents[`${userId}-${fixtureId}`] || [];
+    return this.selectedEvents[`${fixtureId}-${userId}`] || [];
   }
 
   async selectEvent(userId: string, fixtureId: string, selectedEvent: string) {
-    this.selectedEvents[`${userId}-${fixtureId}`] = [
-      ...(this.selectedEvents[`${userId}-${fixtureId}`] || []),
+    this.selectedEvents[`${fixtureId}-${userId}`] = [
+      ...(this.selectedEvents[`${fixtureId}-${userId}`] || []),
       selectedEvent,
     ];
   }
@@ -29,11 +29,11 @@ class LocalUserSessionRepository implements UserSessionRepository {
     fixtureId: string,
     deselectedEvent: string
   ) {
-    if (!this.selectedEvents[`${userId}-${fixtureId}`]) {
+    if (!this.selectedEvents[`${fixtureId}-${userId}`]) {
       return;
     }
-    this.selectedEvents[`${userId}-${fixtureId}`] = this.selectedEvents[
-      `${userId}-${fixtureId}`
+    this.selectedEvents[`${fixtureId}-${userId}`] = this.selectedEvents[
+      `${fixtureId}-${userId}`
     ].filter((eventName) => eventName !== deselectedEvent);
   }
 }

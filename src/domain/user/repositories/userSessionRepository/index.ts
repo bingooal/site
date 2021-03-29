@@ -3,6 +3,7 @@ import { userSessionRepository as dynamoDbUserSessionRepository } from './dynamo
 import { userSessionRepository as localUserSessionRepository } from './local';
 
 export type UserSessionRepository = {
+  getSelectedEvents: (userId: string, fixtureId: string) => Promise<string[]>;
   selectEvent: (
     userId: string,
     fixtureId: string,
@@ -14,7 +15,6 @@ export type UserSessionRepository = {
     eventName: string
   ) => Promise<void>;
   reset?: () => void;
-  getSelectedEvents: (userId: string, fixtureId: string) => Promise<string[]>;
 };
 
 const userSessionRepository: UserSessionRepository = IS_PROD_ENV

@@ -1,5 +1,7 @@
 site:
   component: '@sls-next/serverless-component@1.17'
+  inputs:
+    policy: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
 
 UsersTable:
   component: '@serverless/aws-dynamodb'

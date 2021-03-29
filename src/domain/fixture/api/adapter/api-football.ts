@@ -98,9 +98,11 @@ export const getFixture: GetFixture = async (fixtureId) => {
   const events = generateEvents(playerNames, actions);
 
   return {
+    id: fixtureId,
     homeTeamName: home.name,
     awayTeamName: away.name,
-    id: fixtureId,
+    homeTeamLogo: home.logo,
+    awayTeamLogo: away.logo,
     events,
   };
 };
@@ -140,5 +142,7 @@ export const getFixtures: GetFixtures = async () => {
       id: `${fixture.id}`,
       homeTeamName: teams.home.name,
       awayTeamName: teams.away.name,
+      homeTeamLogo: teams.home.logo,
+      awayTeamLogo: teams.away.logo,
     }));
 };

@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import EventCard from '../../domain/event/components/eventCard';
 import useSelectableEvents from '../../domain/event/hooks/useSelectableEvents';
 import { getFixture } from '../../domain/fixture/api/indexFrontend';
+import FixtureCard from '../../domain/fixture/components/fixtureCard';
 import useUsersPlayingFixture from '../../domain/fixture/hooks/useUsersPlayingFixture';
 import useLogin from '../../domain/user/hooks/useLogin';
 
@@ -46,7 +47,14 @@ const FixturePage: React.VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>{`User ID: ${userId}`}</div>
-      <h1>{fixtureName}</h1>
+      <FixtureCard
+        key={fixtureData.id}
+        id={fixtureData.id}
+        homeTeamName={fixtureData.homeTeamName}
+        awayTeamName={fixtureData.awayTeamName}
+        homeTeamLogo={fixtureData.homeTeamLogo}
+        awayTeamLogo={fixtureData.awayTeamLogo}
+      />
       <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
       {events.map(({ name, points }) => (

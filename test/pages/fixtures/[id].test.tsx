@@ -12,6 +12,8 @@ const mockFixture: Fixture = {
   id: '593320',
   homeTeamName: 'Barnsley',
   awayTeamName: 'Sheffield Wednesday',
+  homeTeamLogo: 'https://media.api-sports.io/football/teams/747.png',
+  awayTeamLogo: 'https://media.api-sports.io/football/teams/74.png',
   events: [
     {
       name: 'Bruno Fernandes gets an assist',
@@ -59,11 +61,10 @@ describe('Fixture page', () => {
     expect(fixtureApi.getFixture).toHaveBeenCalledWith(id);
   });
 
-  it('shows the title', () => {
-    const firstHeading = screen.getAllByRole('heading')[0];
-    expect(firstHeading).toHaveTextContent(
-      `${homeTeamName} vs ${awayTeamName}`
-    );
+  it('shows the fixture', () => {
+    expect(
+      screen.getByText(`${homeTeamName} vs ${awayTeamName}`)
+    ).toBeInTheDocument();
   });
 
   it('shows how many users are playing this fixture', () => {

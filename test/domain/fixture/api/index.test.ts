@@ -16,6 +16,8 @@ describe('getFixtures', () => {
         id: expect.any(String),
         homeTeamName: expect.any(String),
         awayTeamName: expect.any(String),
+        homeTeamLogo: expect.any(String),
+        awayTeamLogo: expect.any(String),
       });
     });
   });
@@ -30,6 +32,8 @@ describe('getFixture', () => {
       id: fixtureId,
       homeTeamName: expect.any(String),
       awayTeamName: expect.any(String),
+      homeTeamLogo: expect.any(String),
+      awayTeamLogo: expect.any(String),
       events: expect.arrayContaining([
         // e.g.:
         // {

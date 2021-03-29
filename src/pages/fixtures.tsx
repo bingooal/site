@@ -20,6 +20,8 @@ const Fixtures: React.VFC = () => {
             id={fixture.id}
             homeTeamName={fixture.homeTeamName}
             awayTeamName={fixture.awayTeamName}
+            homeTeamLogo={fixture.homeTeamLogo}
+            awayTeamLogo={fixture.awayTeamLogo}
           />
         ))}
     </div>

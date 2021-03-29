@@ -2,12 +2,18 @@ import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
-import { mockFixturePreviews } from '../../src/domain/fixture/data/FixturePreview';
 import Fixtures from '../../src/pages/fixtures';
 import { render, screen } from '../testUtils';
 
 const mockNextRouter: Partial<nextRouter.NextRouter> = { push: jest.fn() };
-const { id, homeTeamName } = mockFixturePreviews[0];
+const mockFixturePreview = {
+  id: '593329',
+  homeTeamName: 'Stoke City',
+  awayTeamName: 'Derby',
+  homeTeamLogo: 'https://media.api-sports.io/football/teams/33.png',
+  awayTeamLogo: 'https://media.api-sports.io/football/teams/747.png',
+};
+const { id, homeTeamName } = mockFixturePreview;
 
 describe('Fixtures page', () => {
   beforeEach(() => {
@@ -16,7 +22,7 @@ describe('Fixtures page', () => {
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
     jest
       .spyOn(fixtureApi, 'getFixtures')
-      .mockResolvedValue(mockFixturePreviews);
+      .mockResolvedValue([mockFixturePreview]);
 
     render(<Fixtures />);
   });
@@ -26,15 +32,12 @@ describe('Fixtures page', () => {
   });
 
   it('shows a fixture', () => {
-    expect(
-      screen.getByText(homeTeamName, { exact: false })
-    ).toBeInTheDocument();
+    const fixtureComponent = screen.getByText(homeTeamName, { exact: false });
+    expect(fixtureComponent).toBeInTheDocument();
   });
 
   it('redirects to the fixture page when clicking a fixture', () => {
-    const fixtureComponent = screen.getByText(homeTeamName, {
-      exact: false,
-    });
+    const fixtureComponent = screen.getByText(homeTeamName, { exact: false });
 
     userEvent.click(fixtureComponent);
 

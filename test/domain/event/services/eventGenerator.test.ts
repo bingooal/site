@@ -4,9 +4,10 @@ import {
 } from '../../../../src/domain/event/services/eventGenerator';
 
 describe('eventGenerator', () => {
-  const actor = 'Kaka';
-  const actor2 = 'Zidane';
-  const actor3 = 'Figo';
+  const imageUrl = 'imageUrl';
+  const actor = { name: 'Kaka', imageUrl };
+  const actor2 = { name: 'Zidane', imageUrl };
+  const actor3 = { name: 'Figo', imageUrl };
   const action = 'scores';
   const action2 = 'tackles';
 
@@ -22,9 +23,9 @@ describe('eventGenerator', () => {
       ${'returns no matches when given no actors nor actions'}  | ${[]}                      | ${[]}                | ${[]}
       ${'returns no matches when given no actors'}              | ${[]}                      | ${[action]}          | ${[]}
       ${'returns no matches when given no actions'}             | ${[actor]}                 | ${[]}                | ${[]}
-      ${'returns matches when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[`${actor} ${action}`, `${actor2} ${action2}`]}
-      ${'returns matches when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[`${actor} ${action}`, `${actor2} ${action2}`, `${actor3} ${action}`]}
-      ${'returns matches when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[`${actor} ${action}`, `${actor} ${action2}`]}
+      ${'returns matches when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`]}
+      ${'returns matches when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`, `${actor3.name} ${action}`]}
+      ${'returns matches when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor.name} ${action2}`]}
     `('$testName', ({ actors, actions, expected }: Table) => {
       expect(matchActorsToActions(actors, actions)).toEqual(expected);
     });
@@ -36,8 +37,9 @@ describe('eventGenerator', () => {
         ReturnType<typeof generateEvents>
       >([
         {
-          name: `${actor} ${action}`,
+          name: `${actor.name} ${action}`,
           points: expect.any(Number),
+          imageUrl,
         },
       ]);
     });

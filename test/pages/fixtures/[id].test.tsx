@@ -17,10 +17,12 @@ const mockFixture: Fixture = {
   events: [
     {
       name: 'Bruno Fernandes gets an assist',
+      imageUrl: 'https://media.api-sports.io/football/players/20016.png',
       points: 7,
     },
     {
       name: 'Jamie Vardy bangs a goal in',
+      imageUrl: 'https://media.api-sports.io/football/players/40495.png',
       points: 8,
     },
   ],
@@ -75,11 +77,13 @@ describe('Fixture page', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows events names and their points', () => {
+  it('shows events names, points and images', () => {
     expect(screen.getByText(events[0].name)).toBeInTheDocument();
-    expect(screen.getByText(events[0].points)).toBeInTheDocument();
+    expect(screen.getByText(`${events[0].points} points`)).toBeInTheDocument();
+    expect(screen.getByAltText(events[0].name)).toBeInTheDocument();
     expect(screen.getByText(events[1].name)).toBeInTheDocument();
-    expect(screen.getByText(events[1].points)).toBeInTheDocument();
+    expect(screen.getByText(`${events[1].points} points`)).toBeInTheDocument();
+    expect(screen.getByAltText(events[1].name)).toBeInTheDocument();
   });
 
   it('lets the user select and deselect events', () => {

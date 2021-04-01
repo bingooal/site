@@ -2,11 +2,14 @@ import dayjs from 'dayjs';
 import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
+import { FootballPlayer } from '../../data/Fixture';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import { mockFixturesData } from './mockApiFootballData/fixtures';
 import {
   ApiFootballFixture,
+  ApiFootballLineups,
+  ApiFootballPlayer,
   mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
@@ -43,20 +46,6 @@ const getFixtureFromApiFootball = async (
   return fixtures[0];
 };
 
-const extractPlayerNames = (
-  lineups: ApiFootballFixture['lineups']
-): string[] => {
-  if (!lineups.length) {
-    return [];
-  }
-  const [homeLineupData, awayLineupData] = lineups;
-  const homePlayers = homeLineupData.startXI;
-  const awayPlayers = awayLineupData.startXI;
-  const playersData = homePlayers.concat(awayPlayers);
-  const playerNames = playersData.map(({ player: { name } }) => name);
-  return playerNames;
-};
-
 const actions = [
   // first 11
   'makes a save',
@@ -84,6 +73,41 @@ const actions = [
   'receives a yellow card',
 ];
 
+const extractPlayerNamesFromLineups = (
+  lineups: ApiFootballLineups
+): string[] => {
+  if (!lineups.length) {
+    return [];
+  }
+  const [homeLineupData, awayLineupData] = lineups;
+  const homePlayers = homeLineupData.startXI;
+  const awayPlayers = awayLineupData.startXI;
+  const playersData = [...homePlayers, ...awayPlayers];
+  const playerNames = playersData.map(({ player: { name } }) => name);
+  return playerNames;
+};
+
+const extractPlayer = ({ player }: ApiFootballPlayer): FootballPlayer => ({
+  name: player.name,
+  imageUrl: player.photo,
+});
+
+const extractPlayers = (fixtureData: ApiFootballFixture): FootballPlayer[] => {
+  const { lineups, players } = fixtureData;
+  if (!lineups.length) {
+    return [];
+  }
+  const namesOfPlayersInLineup = extractPlayerNamesFromLineups(lineups);
+  const [{ players: homePlayers }, { players: awayPlayers }] = players;
+  const playersData = [
+    ...homePlayers.map(extractPlayer),
+    ...awayPlayers.map(extractPlayer),
+  ];
+  return playersData.filter((player) =>
+    namesOfPlayersInLineup.includes(player.name)
+  );
+};
+
 export const getFixture: GetFixture = async (fixtureId) => {
   const fixtureData: ApiFootballFixture = IS_PROD_ENV
     ? await getFixtureFromApiFootball(fixtureId)
@@ -91,11 +115,10 @@ export const getFixture: GetFixture = async (fixtureId) => {
 
   const {
     teams: { home, away },
-    lineups,
   } = fixtureData;
 
-  const playerNames = extractPlayerNames(lineups);
-  const events = generateEvents(playerNames, actions);
+  const players = extractPlayers(fixtureData);
+  const events = generateEvents(players, actions);
 
   return {
     id: fixtureId,

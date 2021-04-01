@@ -57,11 +57,12 @@ const FixturePage: React.VFC = () => {
       />
       <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
-      {events.map(({ name, points }) => (
+      {events.map(({ name, points, imageUrl }) => (
         <EventCard
           key={name}
           name={name}
           points={points}
+          imageUrl={imageUrl}
           selected={isSelected(name)}
           onClick={toggleEvent}
         />

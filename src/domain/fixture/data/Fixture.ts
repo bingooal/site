@@ -5,4 +5,9 @@ type Fixture = FixturePreview & {
   events: Event[];
 };
 
+export type FootballPlayer = {
+  name: string;
+  imageUrl: string;
+};
+
 export default Fixture;

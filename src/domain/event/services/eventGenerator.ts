@@ -1,28 +1,30 @@
+import { FootballPlayer } from '../../fixture/data/Fixture';
 import Event from '../data/Event';
 
 export const matchActorsToActions = (
-  actors: string[],
+  actors: FootballPlayer[],
   actions: string[]
 ): string[] => {
   if (!actors.length || !actions.length) {
     return [];
   }
   if (actors.length > actions.length) {
-    return actors.map((actor, i) => `${actor} ${actions[i] || actions[0]}`);
+    return actors.map(({ name }, i) => `${name} ${actions[i] || actions[0]}`);
   }
   if (actors.length < actions.length) {
-    return actions.map((action) => `${actors[0]} ${action}`);
+    return actions.map((action) => `${actors[0].name} ${action}`);
   }
-  return actors.map((actor, i) => `${actor} ${actions[i]}`);
+  return actors.map(({ name }, i) => `${name} ${actions[i]}`);
 };
 
 export const generateEvents = (
-  actors: string[],
+  actors: FootballPlayer[],
   actions: string[]
 ): Event[] => {
-  const names = matchActorsToActions(actors, actions);
-  return names.map((name) => ({
-    name,
+  const eventNames = matchActorsToActions(actors, actions);
+  return actors.map((actor, i) => ({
+    name: eventNames[i],
     points: 3,
+    imageUrl: actor.imageUrl,
   }));
 };

@@ -43,6 +43,7 @@ describe('getFixture', () => {
         {
           name: expect.any(String),
           points: expect.any(Number),
+          imageUrl: expect.any(String),
         },
       ]),
     });

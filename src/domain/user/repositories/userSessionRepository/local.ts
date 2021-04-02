@@ -1,4 +1,4 @@
-import { UserSessionRepository } from '.';
+import { UserAndSelectedEvents, UserSessionRepository } from '.';
 
 const initialStore: { [key: string]: string[] } = {};
 
@@ -17,12 +17,20 @@ class LocalUserSessionRepository implements UserSessionRepository {
     return this.selectedEvents[`${fixtureId}-${userId}`] || [];
   }
 
-  async getUsersPlayingFixture(fixtureId: string) {
-    const userIds = Object.keys(this.selectedEvents)
-      .map((fixtureIdUserId) => fixtureIdUserId.split('-'))
-      .filter(([_fixtureId]) => _fixtureId === fixtureId)
-      .map(([, userId]) => userId);
-    return userIds;
+  async getUsersAndSelectedEvents(fixtureId: string) {
+    const usersAndSelectedEvents: UserAndSelectedEvents[] = [];
+    Object.entries(this.selectedEvents).forEach(
+      ([primaryKey, selectedEvents]) => {
+        const [thisFixtureId, userId] = primaryKey.split('-');
+        if (thisFixtureId === fixtureId) {
+          usersAndSelectedEvents.push({
+            userId,
+            selectedEvents,
+          });
+        }
+      }
+    );
+    return usersAndSelectedEvents;
   }
 
   async selectEvent(userId: string, fixtureId: string, selectedEvent: string) {

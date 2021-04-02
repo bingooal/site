@@ -1,9 +1,5 @@
 import makeRequest from '../../../../services/request';
-import {
-  GetFixtures,
-  GetFixture,
-  GetUsersPlayingFixture,
-} from '../indexBackend';
+import { GetFixtures, GetFixture, GetLeaderboard } from '../indexBackend';
 
 export const getFixtures: GetFixtures = async () =>
   makeRequest({
@@ -17,10 +13,8 @@ export const getFixture: GetFixture = async (id: string) =>
     url: `${window.location.origin}/api/fixtures/${id}`,
   });
 
-export const getUsersPlayingFixture: GetUsersPlayingFixture = async (
-  id: string
-) =>
+export const getLeaderboard: GetLeaderboard = async (id: string) =>
   makeRequest({
     method: 'get',
-    url: `${window.location.origin}/api/fixtures/${id}/users`,
+    url: `${window.location.origin}/api/fixtures/${id}/leaderboard`,
   });

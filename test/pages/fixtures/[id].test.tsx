@@ -3,7 +3,7 @@ import * as nextRouter from 'next/router';
 import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
 import * as eventApi from '../../../src/domain/event/api/indexFrontend';
 import * as useLogin from '../../../src/domain/user/hooks/useLogin';
-import * as useUsersPlayingFixture from '../../../src/domain/fixture/hooks/useUsersPlayingFixture';
+import * as useLeaderboard from '../../../src/domain/fixture/hooks/useLeaderboard';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';
@@ -36,7 +36,11 @@ const mockNextRouter: Partial<nextRouter.NextRouter> = {
   query: { id },
 };
 const userId = 'userId';
+const userRank = 1;
 const numberOfUsersPlayingFixture = 123;
+
+const getEventElement = (eventName) =>
+  screen.getByText(eventName).parentElement.parentElement;
 
 describe('Fixture page', () => {
   beforeEach(() => {
@@ -52,8 +56,8 @@ describe('Fixture page', () => {
     jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(mockFixture);
 
     jest
-      .spyOn(useUsersPlayingFixture, 'default')
-      .mockReturnValue({ numberOfUsersPlayingFixture });
+      .spyOn(useLeaderboard, 'default')
+      .mockReturnValue({ userRank, numberOfUsersPlayingFixture });
 
     render(<FixturePage />);
   });
@@ -72,10 +76,10 @@ describe('Fixture page', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows how many users are playing this fixture', () => {
+  it("shows the user's rank against others playing this fixture", () => {
     expect(
       screen.getByText(
-        `${numberOfUsersPlayingFixture} users playing this fixture`
+        `Ranked ${userRank} out of ${numberOfUsersPlayingFixture} people playing this fixture`
       )
     ).toBeInTheDocument();
   });
@@ -90,26 +94,29 @@ describe('Fixture page', () => {
   });
 
   it('lets the user select and deselect events', () => {
-    const event = screen.getByText(events[0].name).parentElement.parentElement;
+    const event = getEventElement(events[0].name);
 
-    expect(screen.getByText(`Selected 0/${events.length}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`Selected 0/${events.length} events`)
+    ).toBeInTheDocument();
     expect(event).not.toHaveTextContent('Selected');
 
     userEvent.click(event);
 
-    expect(screen.getByText(`Selected 1/${events.length}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`Selected 1/${events.length} events`)
+    ).toBeInTheDocument();
     expect(event).toHaveTextContent('Selected');
 
     userEvent.click(event);
 
-    expect(screen.getByText(`Selected 0/${events.length}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`Selected 0/${events.length} events`)
+    ).toBeInTheDocument();
     expect(event).not.toHaveTextContent('Selected');
   });
 
   it('highlights only events that have occured', () => {
-    const getEventElement = (eventName) =>
-      screen.getByText(eventName).parentElement.parentElement;
-
     expect(getEventElement(eventThatHasOccured.name)).toHaveTextContent(
       'Has occured'
     );
@@ -119,6 +126,10 @@ describe('Fixture page', () => {
   });
 
   it("shows the user's points for this fixture", () => {
+    expect(screen.getByText('Your points: 0')).toBeInTheDocument();
+
+    userEvent.click(getEventElement(eventThatHasOccured.name));
+
     expect(
       screen.getByText(`Your points: ${eventThatHasOccured.points}`)
     ).toBeInTheDocument();

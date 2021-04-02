@@ -1,11 +1,9 @@
-import {
-  getFixture,
-  getFixtures,
-  getUsersPlayingFixture,
-} from '../../../../src/domain/fixture/api/indexBackend';
+import * as fixtureApi from '../../../../src/domain/fixture/api/indexBackend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
 import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 import userSessionRepository from '../../../../src/domain/user/repositories/userSessionRepository';
+
+const { getFixture, getFixtures, getLeaderboard } = fixtureApi;
 
 describe('getFixtures', () => {
   it('should get a list of fixture previews', async () => {
@@ -71,26 +69,89 @@ describe('getFixture', () => {
   });
 });
 
-describe('getUsersPlayingFixture', () => {
+describe('getLeaderboard', () => {
   beforeEach(() => {
     userSessionRepository.reset();
   });
 
-  it('should get the number of users playing the fixture', async () => {
+  it('should get the leaderboard for the fixture', async () => {
+    const fixturePreview = {
+      homeTeamName: 'Manchester United',
+      awayTeamName: 'Chelsea',
+      homeTeamLogo: 'https://media.api-sports.io/football/teams/33.png',
+      awayTeamLogo: 'https://media.api-sports.io/football/teams/49.png',
+      id: '123',
+    };
+    const imageUrl = 'imageUrl';
     const userId1 = 'userId1';
     const userId2 = 'userId2';
     const fixtureId1 = 'fixtureId1';
     const fixtureId2 = 'fixtureId2';
-    const eventName = 'eventName';
+    const highPointsEventThatHasOccured = {
+      name: 'highPointsEventThatHasOccured',
+      points: 2,
+      imageUrl,
+      hasOccured: true,
+    };
+    const lowPointsEventThatHasOccured = {
+      name: 'lowPointsEventThatHasOccured',
+      points: 1,
+      imageUrl,
+      hasOccured: true,
+    };
+    const eventThatHasNotOccured = {
+      name: 'eventThatHasNotOccured',
+      points: 3,
+      imageUrl,
+      hasOccured: false,
+    };
 
-    expect(await getUsersPlayingFixture(fixtureId1)).toEqual(0);
-    expect(await getUsersPlayingFixture(fixtureId2)).toEqual(0);
+    jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue({
+      ...fixturePreview,
+      events: [
+        highPointsEventThatHasOccured,
+        lowPointsEventThatHasOccured,
+        eventThatHasNotOccured,
+      ],
+    });
 
-    await userSessionRepository.selectEvent(userId1, fixtureId1, eventName);
-    await userSessionRepository.selectEvent(userId2, fixtureId1, eventName);
-    await userSessionRepository.selectEvent(userId1, fixtureId2, eventName);
+    expect(await getLeaderboard(fixtureId1)).toEqual([]);
+    expect(await getLeaderboard(fixtureId2)).toEqual([]);
 
-    expect(await getUsersPlayingFixture(fixtureId1)).toEqual(2);
-    expect(await getUsersPlayingFixture(fixtureId2)).toEqual(1);
+    await userSessionRepository.selectEvent(
+      userId1,
+      fixtureId1,
+      highPointsEventThatHasOccured.name
+    );
+    await userSessionRepository.selectEvent(
+      userId1,
+      fixtureId1,
+      eventThatHasNotOccured.name
+    );
+    await userSessionRepository.selectEvent(
+      userId2,
+      fixtureId1,
+      lowPointsEventThatHasOccured.name
+    );
+
+    await userSessionRepository.selectEvent(
+      userId1,
+      fixtureId2,
+      lowPointsEventThatHasOccured.name
+    );
+    await userSessionRepository.selectEvent(
+      userId2,
+      fixtureId2,
+      highPointsEventThatHasOccured.name
+    );
+
+    expect(await getLeaderboard(fixtureId1)).toEqual([
+      { userId: userId1, points: highPointsEventThatHasOccured.points },
+      { userId: userId2, points: lowPointsEventThatHasOccured.points },
+    ]);
+    expect(await getLeaderboard(fixtureId2)).toEqual([
+      { userId: userId2, points: highPointsEventThatHasOccured.points },
+      { userId: userId1, points: lowPointsEventThatHasOccured.points },
+    ]);
   });
 });

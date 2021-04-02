@@ -1,4 +1,4 @@
-import sum from 'lodash.sum';
+import sum from 'lodash/sum';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
@@ -6,7 +6,7 @@ import EventCard from '../../domain/event/components/eventCard';
 import useSelectableEvents from '../../domain/event/hooks/useSelectableEvents';
 import { getFixture } from '../../domain/fixture/api/indexFrontend';
 import FixtureCard from '../../domain/fixture/components/fixtureCard';
-import useUsersPlayingFixture from '../../domain/fixture/hooks/useUsersPlayingFixture';
+import useLeaderboard from '../../domain/fixture/hooks/useLeaderboard';
 import useLogin from '../../domain/user/hooks/useLogin';
 
 const FixturePage: React.VFC = () => {
@@ -29,8 +29,9 @@ const FixturePage: React.VFC = () => {
     { enabled: isReady }
   );
 
-  const { numberOfUsersPlayingFixture } = useUsersPlayingFixture(
-    query.id as string
+  const { userRank, numberOfUsersPlayingFixture } = useLeaderboard(
+    query.id as string,
+    userId
   );
 
   if (isIdle || isLoading) {
@@ -42,7 +43,9 @@ const FixturePage: React.VFC = () => {
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
   const yourPoints = sum(
-    events.filter(({ hasOccured }) => hasOccured).map(({ points }) => points)
+    events
+      .filter(({ name, hasOccured }) => isSelected(name) && hasOccured)
+      .map(({ points }) => points)
   );
 
   return (
@@ -53,9 +56,9 @@ const FixturePage: React.VFC = () => {
       </Head>
       <div>{`User ID: ${userId}`}</div>
       <FixtureCard key={fixture.id} fixture={fixture} />
-      <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
-      <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
-      <h3>{`Your points: ${yourPoints}`}</h3>
+      <h2>{`Your points: ${yourPoints}`}</h2>
+      <p>{`Ranked ${userRank} out of ${numberOfUsersPlayingFixture} people playing this fixture`}</p>
+      <h3>{`Selected ${numberOfSelectedEvents}/${events.length} events`}</h3>
       {events.map((event) => (
         <EventCard
           key={event.name}

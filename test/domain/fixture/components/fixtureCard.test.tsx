@@ -2,13 +2,7 @@ import FixtureCard from '../../../../src/domain/fixture/components/fixtureCard';
 import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 import { render, screen } from '../../../testUtils';
 
-const {
-  homeTeamName,
-  awayTeamName,
-  homeTeamLogo,
-  awayTeamLogo,
-  id,
-}: FixturePreview = {
+const fixture: FixturePreview = {
   homeTeamName: 'Manchester United',
   awayTeamName: 'Chelsea',
   homeTeamLogo: 'https://media.api-sports.io/football/teams/33.png',
@@ -20,20 +14,16 @@ describe('FixtureCard', () => {
   beforeEach(() => {
     render(
       <FixtureCard
-        id={id}
-        homeTeamName={homeTeamName}
-        awayTeamName={awayTeamName}
-        homeTeamLogo={homeTeamLogo}
-        awayTeamLogo={awayTeamLogo}
+        fixture={fixture}
       />
     );
   });
 
   it('shows the team names and logos', () => {
     expect(
-      screen.getByText(`${homeTeamName} vs ${awayTeamName}`)
+      screen.getByText(`${fixture.homeTeamName} vs ${fixture.awayTeamName}`)
     ).toBeInTheDocument();
-    expect(screen.getByAltText(homeTeamName)).toBeInTheDocument();
-    expect(screen.getByAltText(awayTeamName)).toBeInTheDocument();
+    expect(screen.getByAltText(fixture.homeTeamName)).toBeInTheDocument();
+    expect(screen.getByAltText(fixture.awayTeamName)).toBeInTheDocument();
   });
 });

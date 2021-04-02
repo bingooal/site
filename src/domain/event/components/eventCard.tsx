@@ -1,17 +1,16 @@
 import Image from 'next/image';
+import Event from '../data/Event';
 
 type Props = {
-  name: string;
-  points: number;
-  imageUrl: string;
+  event: Event;
   selected: boolean;
   onClick: (name: string) => void;
 };
 
 const EventCard: React.VFC<Props> = ({
-  name,
-  points,
-  imageUrl,
+  event: {
+    name, points, imageUrl, hasOccured,
+  },
   selected,
   onClick,
 }: Props) => (
@@ -22,6 +21,7 @@ const EventCard: React.VFC<Props> = ({
     </div>
     <Image src={imageUrl} alt={name} width={50} height={50} />
     {selected && <div>Selected</div>}
+    {hasOccured && <div>Has occured</div>}
   </div>
 );
 

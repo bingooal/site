@@ -44,9 +44,26 @@ describe('getFixture', () => {
           name: expect.any(String),
           points: expect.any(Number),
           imageUrl: expect.any(String),
+          hasOccured: expect.any(Boolean),
         },
       ]),
     });
+  });
+
+  it('should get events with a flag if they have occured or not', async () => {
+    const fixtureId = '593320';
+
+    const { events } = await getFixture(fixtureId);
+
+    expect(events).toContainEqual(expect.objectContaining({
+      name: "Joe Wildsmith makes a save",
+      hasOccured: true,
+    }))
+
+    expect(events).toContainEqual(expect.objectContaining({
+      name: "Bradley Collins makes a save",
+      hasOccured: false,
+    }))
   });
 });
 

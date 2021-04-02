@@ -19,12 +19,14 @@ export const matchActorsToActions = (
 
 export const generateEvents = (
   actors: FootballPlayer[],
-  actions: string[]
+  actions: string[],
+  occuredEventNames: string[],
 ): Event[] => {
   const eventNames = matchActorsToActions(actors, actions);
   return actors.map((actor, i) => ({
     name: eventNames[i],
     points: 3,
     imageUrl: actor.imageUrl,
+    hasOccured: occuredEventNames.includes(eventNames[i]),
   }));
 };

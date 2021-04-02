@@ -19,11 +19,13 @@ const mockFixture: Fixture = {
       name: 'Bruno Fernandes gets an assist',
       imageUrl: 'https://media.api-sports.io/football/players/20016.png',
       points: 7,
+      hasOccured: true
     },
     {
       name: 'Jamie Vardy bangs a goal in',
       imageUrl: 'https://media.api-sports.io/football/players/40495.png',
       points: 8,
+      hasOccured: false
     },
   ],
 };
@@ -101,5 +103,15 @@ describe('Fixture page', () => {
 
     expect(screen.getByText(`Selected 0/${events.length}`)).toBeInTheDocument();
     expect(event).not.toHaveTextContent('Selected');
+  });
+
+  it('should highlight which events have already occured', () => {
+    const eventThatHasOccured = screen.getByText(events[0].name).parentElement.parentElement;
+
+    expect(eventThatHasOccured).toHaveTextContent('Has occured');
+
+    const eventThatHasNotOccured = screen.getByText(events[1].name).parentElement.parentElement;
+
+    expect(eventThatHasNotOccured).not.toHaveTextContent('Has occured');
   });
 });

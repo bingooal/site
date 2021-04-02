@@ -1,19 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import FixturePreview from '../data/FixturePreview';
 
 type Props = {
-  homeTeamName: string;
-  awayTeamName: string;
-  homeTeamLogo: string;
-  awayTeamLogo: string;
-  id: string;
+  fixture: FixturePreview;
 };
 const FixtureCard: React.VFC<Props> = ({
-  homeTeamName,
-  awayTeamName,
-  homeTeamLogo,
-  awayTeamLogo,
-  id,
+  fixture: { homeTeamName, awayTeamName, homeTeamLogo, awayTeamLogo, id },
 }: Props) => (
   <Link href={`fixtures/${id}`}>
     <div>

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
 import makeRequest from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
-import { FootballPlayer } from '../../data/Fixture';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import { mockFixturesData } from './mockApiFootballData/fixtures';
@@ -46,31 +45,50 @@ const getFixtureFromApiFootball = async (
   return fixtures[0];
 };
 
-const actions = [
+enum Action { 
+  MakesASave = 'makes a save',
+  ConcedesAPenalty = 'concedes a penalty', 
+  ReceivesARedCard = 'receives a red card', 
+  ReceivesAYellowCard = 'receives a yellow card', 
+  CommitsAFoul = 'commits a foul', 
+  InterceptsAPass = 'intercepts a pass', 
+  PlaysAKeyPass = 'plays a key pass', 
+  MakesATackle = 'makes a tackle', 
+  BlocksAShot = 'blocks a shot', 
+  TakesAShot = 'takes a shot', 
+  DribblesPastAPlayer = 'dribbles past a player', 
+  TakesAShotOnTarget = 'takes a shot on target', 
+  AssistsAGoal = 'assists a goal', 
+  DrawsAFoul = 'draws a foul', 
+  ScoresAGoal = 'scores a goal', 
+  WinsOrScoresAPenalty = 'wins or scores a penalty', 
+}
+
+const actions: Action[] = [
   // first 11
-  'makes a save',
-  'concedes a penalty',
-  'receives a red card',
-  'commits a foul',
-  'is substituted on or off',
-  'intercepts a pass',
-  'plays a key pass',
-  'makes a tackle',
-  'blocks a shot',
-  'receives a yellow card',
-  'takes a shot',
+  Action.MakesASave,
+  Action.ConcedesAPenalty,
+  Action.ReceivesARedCard,
+  Action.CommitsAFoul,
+  Action.MakesATackle,
+  Action.InterceptsAPass,
+  Action.PlaysAKeyPass,
+  Action.MakesATackle,
+  Action.BlocksAShot,
+  Action.ReceivesAYellowCard,
+  Action.TakesAShot,
   // next 11
-  'makes a save',
-  'concedes a penalty',
-  'dribbles past a player',
-  'takes a shot on target',
-  'assists a goal',
-  'draws a foul',
-  'scores a goal',
-  'wins or scores a penalty',
-  'makes a tackle',
-  'blocks a shot',
-  'receives a yellow card',
+  Action.MakesASave,
+  Action.ConcedesAPenalty,
+  Action.DribblesPastAPlayer,
+  Action.TakesAShotOnTarget,
+  Action.AssistsAGoal,
+  Action.DrawsAFoul,
+  Action.ScoresAGoal,
+  Action.WinsOrScoresAPenalty,
+  Action.MakesATackle,
+  Action.BlocksAShot,
+  Action.ReceivesAYellowCard,
 ];
 
 const extractPlayerNamesFromLineups = (
@@ -87,25 +105,103 @@ const extractPlayerNamesFromLineups = (
   return playerNames;
 };
 
-const extractPlayer = ({ player }: ApiFootballPlayer): FootballPlayer => ({
-  name: player.name,
-  imageUrl: player.photo,
-});
+const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
+  const statistic = statistics[0];
+  const events: string[] = [];
+  
+  if (statistic.goals.saves > 0) {
+    events.push(`${player.name} ${Action.MakesASave}`);
+  }
+  
+  if (statistic.penalty.commited > 0) {
+    events.push(`${player.name} ${Action.ConcedesAPenalty}`);
+  }
+  
+  if (statistic.cards.red > 0) {
+    events.push(`${player.name} ${Action.ReceivesARedCard}`);
+  }
+  
+  if (statistic.cards.yellow > 0) {
+    events.push(`${player.name} ${Action.ReceivesAYellowCard}`);
+  }
+  
+  if (statistic.fouls.committed > 0) {
+    events.push(`${player.name} ${Action.CommitsAFoul}`);
+  }
+  
+  if (statistic.tackles.interceptions > 0) {
+    events.push(`${player.name} ${Action.InterceptsAPass}`);
+  }
+  
+  if (statistic.passes.key > 0) {
+    events.push(`${player.name} ${Action.PlaysAKeyPass}`);
+  }
+  
+  if (statistic.tackles.total > 0) {
+    events.push(`${player.name} ${Action.MakesATackle}`);
+  }
+  
+  if (statistic.tackles.blocks > 0) {
+    events.push(`${player.name} ${Action.BlocksAShot}`);
+  }
+  
+  if (statistic.shots.total > 0) {
+    events.push(`${player.name} ${Action.TakesAShot}`);
+  }
+  
+  if (statistic.dribbles.past > 0) {
+    events.push(`${player.name} ${Action.DribblesPastAPlayer}`);
+  }
 
-const extractPlayers = (fixtureData: ApiFootballFixture): FootballPlayer[] => {
+  if (statistic.shots.on > 0) {
+    events.push(`${player.name} ${Action.TakesAShotOnTarget}`);
+  }
+
+  if (statistic.goals.assists > 0) {
+    events.push(`${player.name} ${Action.AssistsAGoal}`);
+  }
+
+  if (statistic.fouls.drawn > 0) {
+    events.push(`${player.name} ${Action.DrawsAFoul}`);
+  }
+
+  if (statistic.goals.total > 0) {
+    events.push(`${player.name} ${Action.ScoresAGoal}`);
+  }
+
+  if (statistic.penalty.won > 0 || statistic.penalty.scored > 0) {
+    events.push(`${player.name} ${Action.WinsOrScoresAPenalty}`);
+  }
+
+  return {
+    footballPlayer: {
+      name: player.name,
+      imageUrl: player.photo,
+    },
+    events,
+  };
+};
+
+const extractPlayersAndEvents = (fixtureData: ApiFootballFixture) => {
   const { lineups, players } = fixtureData;
   if (!lineups.length) {
-    return [];
+    return { footballPlayers: [], occuredEventNames: []};
   }
   const namesOfPlayersInLineup = extractPlayerNamesFromLineups(lineups);
   const [{ players: homePlayers }, { players: awayPlayers }] = players;
   const playersData = [
-    ...homePlayers.map(extractPlayer),
-    ...awayPlayers.map(extractPlayer),
+    ...homePlayers.map(extractPlayerAndEvents),
+    ...awayPlayers.map(extractPlayerAndEvents),
   ];
-  return playersData.filter((player) =>
-    namesOfPlayersInLineup.includes(player.name)
+
+  const playersAndEvents = playersData.filter(({ footballPlayer}) =>
+    namesOfPlayersInLineup.includes(footballPlayer.name)
   );
+
+  const footballPlayers = playersAndEvents.map(({ footballPlayer }) => footballPlayer);
+  const occuredEventNames = playersAndEvents.flatMap(({ events }) => events);
+
+  return { footballPlayers, occuredEventNames}
 };
 
 export const getFixture: GetFixture = async (fixtureId) => {
@@ -117,8 +213,9 @@ export const getFixture: GetFixture = async (fixtureId) => {
     teams: { home, away },
   } = fixtureData;
 
-  const players = extractPlayers(fixtureData);
-  const events = generateEvents(players, actions);
+  const { footballPlayers, occuredEventNames} = extractPlayersAndEvents(fixtureData);
+
+  const generatedEvents = generateEvents(footballPlayers, actions, occuredEventNames);
 
   return {
     id: fixtureId,
@@ -126,7 +223,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     awayTeamName: away.name,
     homeTeamLogo: home.logo,
     awayTeamLogo: away.logo,
-    events,
+    events: generatedEvents,
   };
 };
 

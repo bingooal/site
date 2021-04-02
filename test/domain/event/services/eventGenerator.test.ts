@@ -33,13 +33,27 @@ describe('eventGenerator', () => {
 
   describe('generateEvents', () => {
     it('should return events', () => {
-      expect(generateEvents([actor], [action])).toEqual<
+      expect(generateEvents([actor], [action], [])).toEqual<
         ReturnType<typeof generateEvents>
       >([
         {
           name: `${actor.name} ${action}`,
           points: expect.any(Number),
           imageUrl,
+          hasOccured: false,
+        },
+      ]);
+    });
+
+    it('should return events that have occured', () => {
+      expect(generateEvents([actor], [action], [`${actor.name} ${action}`])).toEqual<
+        ReturnType<typeof generateEvents>
+      >([
+        {
+          name: `${actor.name} ${action}`,
+          points: expect.any(Number),
+          imageUrl,
+          hasOccured: true,
         },
       ]);
     });

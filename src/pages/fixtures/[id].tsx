@@ -1,3 +1,4 @@
+import sum from 'lodash.sum';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
@@ -40,6 +41,10 @@ const FixturePage: React.VFC = () => {
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
+  const yourPoints = sum(
+    events.filter(({ hasOccured }) => hasOccured).map(({ points }) => points)
+  );
+
   return (
     <div>
       <Head>
@@ -50,6 +55,7 @@ const FixturePage: React.VFC = () => {
       <FixtureCard key={fixture.id} fixture={fixture} />
       <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
+      <h3>{`Your points: ${yourPoints}`}</h3>
       {events.map((event) => (
         <EventCard
           key={event.name}

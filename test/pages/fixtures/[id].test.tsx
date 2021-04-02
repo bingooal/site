@@ -8,26 +8,27 @@ import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
 import { render, screen } from '../../testUtils';
 
+const eventThatHasOccured = {
+  name: 'Bruno Fernandes gets an assist',
+  imageUrl: 'https://media.api-sports.io/football/players/20016.png',
+  points: 7,
+  hasOccured: true,
+};
+
+const eventThatHasNotOccured = {
+  name: 'Jamie Vardy bangs a goal in',
+  imageUrl: 'https://media.api-sports.io/football/players/40495.png',
+  points: 8,
+  hasOccured: false,
+};
+
 const mockFixture: Fixture = {
   id: '593320',
   homeTeamName: 'Barnsley',
   awayTeamName: 'Sheffield Wednesday',
   homeTeamLogo: 'https://media.api-sports.io/football/teams/747.png',
   awayTeamLogo: 'https://media.api-sports.io/football/teams/74.png',
-  events: [
-    {
-      name: 'Bruno Fernandes gets an assist',
-      imageUrl: 'https://media.api-sports.io/football/players/20016.png',
-      points: 7,
-      hasOccured: true,
-    },
-    {
-      name: 'Jamie Vardy bangs a goal in',
-      imageUrl: 'https://media.api-sports.io/football/players/40495.png',
-      points: 8,
-      hasOccured: false,
-    },
-  ],
+  events: [eventThatHasOccured, eventThatHasNotOccured],
 };
 
 const { id, homeTeamName, awayTeamName, events } = mockFixture;
@@ -109,10 +110,17 @@ describe('Fixture page', () => {
     const getEventElement = (eventName) =>
       screen.getByText(eventName).parentElement.parentElement;
 
-    const eventThatHasOccured = getEventElement(events[0].name);
-    expect(eventThatHasOccured).toHaveTextContent('Has occured');
+    expect(getEventElement(eventThatHasOccured.name)).toHaveTextContent(
+      'Has occured'
+    );
+    expect(getEventElement(eventThatHasNotOccured.name)).not.toHaveTextContent(
+      'Has occured'
+    );
+  });
 
-    const eventThatHasNotOccured = getEventElement(events[1].name);
-    expect(eventThatHasNotOccured).not.toHaveTextContent('Has occured');
+  it("shows the user's points for this fixture", () => {
+    expect(
+      screen.getByText(`Your points: ${eventThatHasOccured.points}`)
+    ).toBeInTheDocument();
   });
 });

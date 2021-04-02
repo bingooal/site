@@ -25,6 +25,7 @@
     "@aws-sdk/client-dynamodb": "^3.10.0",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
+    "lodash.sum": "^4.0.2",
     "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

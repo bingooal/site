@@ -55,15 +55,19 @@ describe('getFixture', () => {
 
     const { events } = await getFixture(fixtureId);
 
-    expect(events).toContainEqual(expect.objectContaining({
-      name: "Joe Wildsmith makes a save",
-      hasOccured: true,
-    }))
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        name: 'Joe Wildsmith makes a save',
+        hasOccured: true,
+      })
+    );
 
-    expect(events).toContainEqual(expect.objectContaining({
-      name: "Bradley Collins makes a save",
-      hasOccured: false,
-    }))
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        name: 'Bradley Collins makes a save',
+        hasOccured: false,
+      })
+    );
   });
 });
 

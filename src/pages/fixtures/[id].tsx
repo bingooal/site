@@ -19,7 +19,7 @@ const FixturePage: React.VFC = () => {
   } = useSelectableEvents(userId, query.id as string);
 
   const {
-    data: fixtureData,
+    data: fixture,
     isIdle,
     isLoading,
   } = useQuery(
@@ -36,7 +36,7 @@ const FixturePage: React.VFC = () => {
     return <div>Loading...</div>;
   }
 
-  const { homeTeamName, awayTeamName, events } = fixtureData;
+  const { homeTeamName, awayTeamName, events } = fixture;
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
@@ -47,10 +47,7 @@ const FixturePage: React.VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>{`User ID: ${userId}`}</div>
-      <FixtureCard
-        key={fixtureData.id}
-        fixture={fixtureData}
-      />
+      <FixtureCard key={fixture.id} fixture={fixture} />
       <p>{`${numberOfUsersPlayingFixture} users playing this fixture`}</p>
       <h2>{`Selected ${numberOfSelectedEvents}/${events.length}`}</h2>
       {events.map((event) => (

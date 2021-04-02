@@ -12,11 +12,7 @@ const fixture: FixturePreview = {
 
 describe('FixtureCard', () => {
   beforeEach(() => {
-    render(
-      <FixtureCard
-        fixture={fixture}
-      />
-    );
+    render(<FixtureCard fixture={fixture} />);
   });
 
   it('shows the team names and logos', () => {

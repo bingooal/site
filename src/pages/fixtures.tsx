@@ -15,10 +15,7 @@ const Fixtures: React.VFC = () => {
       <h1>Fixtures</h1>
       {data &&
         data.map((fixture) => (
-          <FixtureCard
-            key={fixture.id}
-            fixture={fixture}
-          />
+          <FixtureCard key={fixture.id} fixture={fixture} />
         ))}
     </div>
   );

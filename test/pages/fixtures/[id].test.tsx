@@ -19,13 +19,13 @@ const mockFixture: Fixture = {
       name: 'Bruno Fernandes gets an assist',
       imageUrl: 'https://media.api-sports.io/football/players/20016.png',
       points: 7,
-      hasOccured: true
+      hasOccured: true,
     },
     {
       name: 'Jamie Vardy bangs a goal in',
       imageUrl: 'https://media.api-sports.io/football/players/40495.png',
       points: 8,
-      hasOccured: false
+      hasOccured: false,
     },
   ],
 };
@@ -57,7 +57,7 @@ describe('Fixture page', () => {
     render(<FixturePage />);
   });
 
-  it('displays the users ID', () => {
+  it("shows the user's ID", () => {
     expect(screen.getByText(`User ID: ${userId}`)).toBeInTheDocument();
   });
 
@@ -105,13 +105,14 @@ describe('Fixture page', () => {
     expect(event).not.toHaveTextContent('Selected');
   });
 
-  it('should highlight which events have already occured', () => {
-    const eventThatHasOccured = screen.getByText(events[0].name).parentElement.parentElement;
+  it('highlights only events that have occured', () => {
+    const getEventElement = (eventName) =>
+      screen.getByText(eventName).parentElement.parentElement;
 
+    const eventThatHasOccured = getEventElement(events[0].name);
     expect(eventThatHasOccured).toHaveTextContent('Has occured');
 
-    const eventThatHasNotOccured = screen.getByText(events[1].name).parentElement.parentElement;
-
+    const eventThatHasNotOccured = getEventElement(events[1].name);
     expect(eventThatHasNotOccured).not.toHaveTextContent('Has occured');
   });
 });

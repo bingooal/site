@@ -8,9 +8,7 @@ type Props = {
 };
 
 const EventCard: React.VFC<Props> = ({
-  event: {
-    name, points, imageUrl, hasOccured,
-  },
+  event: { name, points, imageUrl, hasOccured },
   selected,
   onClick,
 }: Props) => (

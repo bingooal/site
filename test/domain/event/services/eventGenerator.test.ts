@@ -19,13 +19,13 @@ describe('eventGenerator', () => {
     };
 
     it.each`
-      testName                                                  | actors                     | actions              | expected
-      ${'returns no matches when given no actors nor actions'}  | ${[]}                      | ${[]}                | ${[]}
-      ${'returns no matches when given no actors'}              | ${[]}                      | ${[action]}          | ${[]}
-      ${'returns no matches when given no actions'}             | ${[actor]}                 | ${[]}                | ${[]}
-      ${'returns matches when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`]}
-      ${'returns matches when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`, `${actor3.name} ${action}`]}
-      ${'returns matches when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor.name} ${action2}`]}
+      testName                                                                  | actors                     | actions              | expected
+      ${'returns no matches when given no actors nor actions'}                  | ${[]}                      | ${[]}                | ${[]}
+      ${'returns no matches when given no actors'}                              | ${[]}                      | ${[action]}          | ${[]}
+      ${'returns no matches when given no actions'}                             | ${[actor]}                 | ${[]}                | ${[]}
+      ${'matches each actor to an action when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`]}
+      ${'matches each actor to an action when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`, `${actor3.name} ${action}`]}
+      ${'matches each actor to an action when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[`${actor.name} ${action}`]}
     `('$testName', ({ actors, actions, expected }: Table) => {
       expect(matchActorsToActions(actors, actions)).toEqual(expected);
     });
@@ -45,16 +45,18 @@ describe('eventGenerator', () => {
       ]);
     });
 
-    it('should return events that have occured', () => {
-      expect(generateEvents([actor], [action], [`${actor.name} ${action}`])).toEqual<
-        ReturnType<typeof generateEvents>
-      >([
-        {
+    it('should return events marked as having occured or not', () => {
+      expect(
+        generateEvents([actor, actor2], [action], [`${actor.name} ${action}`])
+      ).toEqual<ReturnType<typeof generateEvents>>([
+        expect.objectContaining({
           name: `${actor.name} ${action}`,
-          points: expect.any(Number),
-          imageUrl,
           hasOccured: true,
-        },
+        }),
+        expect.objectContaining({
+          name: `${actor2.name} ${action}`,
+          hasOccured: false,
+        }),
       ]);
     });
   });

@@ -27,8 +27,14 @@ describe('Fixtures page', () => {
     render(<Fixtures />);
   });
 
-  it('shows the title', () => {
-    expect(screen.getByRole('heading')).toHaveTextContent('Fixtures');
+  it('shows the Fixtures heading', () => {
+    expect(
+      screen.getByRole('heading', { name: 'Fixtures' })
+    ).toBeInTheDocument();
+  });
+
+  it('shows the Today heading', () => {
+    expect(screen.getByRole('heading', { name: 'Today' })).toBeInTheDocument();
   });
 
   it('shows a fixture', () => {

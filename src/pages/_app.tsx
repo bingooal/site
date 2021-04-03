@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import { QueryClient, QueryClientProvider } from 'react-query';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tailwindcss/tailwind.css';
 
 const queryClient = new QueryClient();
 

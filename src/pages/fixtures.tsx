@@ -1,22 +1,20 @@
 import Head from 'next/head';
 import React from 'react';
 import { useQuery } from 'react-query';
-import FixtureCard from '../domain/fixture/components/fixtureCard';
 import { getFixtures } from '../domain/fixture/api/indexFrontend';
+import FixturesTable from '../domain/fixture/components/fixturesTable';
+import Header from '../domain/fixture/components/header';
 
 const Fixtures: React.VFC = () => {
-  const { data } = useQuery('getFixtures', getFixtures);
+  const { data: fixtures } = useQuery('getFixtures', getFixtures);
   return (
     <div>
       <Head>
         <title>Fixtures</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Fixtures</h1>
-      {data &&
-        data.map((fixture) => (
-          <FixtureCard key={fixture.id} fixture={fixture} />
-        ))}
+      <Header title="Fixtures" />
+      {fixtures && <FixturesTable fixtures={fixtures} />}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import FixtureCard from '../../../../src/domain/fixture/components/fixtureCard';
+import FixtureHeader from '../../../../src/domain/fixture/components/fixtureHeader';
 import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 import { render, screen } from '../../../testUtils';
 
@@ -10,16 +10,16 @@ const fixture: FixturePreview = {
   id: '123',
 };
 
-describe('FixtureCard', () => {
+describe('FixtureHeader', () => {
   beforeEach(() => {
-    render(<FixtureCard fixture={fixture} />);
+    render(<FixtureHeader fixture={fixture} />);
   });
 
   it('shows the team names and logos', () => {
-    expect(
-      screen.getByText(`${fixture.homeTeamName} vs ${fixture.awayTeamName}`)
-    ).toBeInTheDocument();
     expect(screen.getByAltText(fixture.homeTeamName)).toBeInTheDocument();
+    expect(screen.getByText(fixture.homeTeamName)).toBeInTheDocument();
+    expect(screen.getByText('vs')).toBeInTheDocument();
+    expect(screen.getByText(fixture.awayTeamName)).toBeInTheDocument();
     expect(screen.getByAltText(fixture.awayTeamName)).toBeInTheDocument();
   });
 });

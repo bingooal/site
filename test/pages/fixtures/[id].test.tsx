@@ -6,7 +6,7 @@ import * as useLogin from '../../../src/domain/user/hooks/useLogin';
 import * as useLeaderboard from '../../../src/domain/fixture/hooks/useLeaderboard';
 import Fixture from '../../../src/domain/fixture/data/Fixture';
 import FixturePage from '../../../src/pages/fixtures/[id]';
-import { render, screen } from '../../testUtils';
+import { render, screen, within } from '../../testUtils';
 
 const eventThatHasOccured = {
   name: 'Bruno Fernandes gets an assist',
@@ -40,7 +40,7 @@ const userRank = 1;
 const numberOfUsersPlayingFixture = 123;
 
 const getEventElement = (eventName) =>
-  screen.getByText(eventName).parentElement.parentElement;
+  screen.getByRole('cell', { name: eventName }).parentElement;
 
 describe('Fixture page', () => {
   beforeEach(() => {
@@ -62,76 +62,108 @@ describe('Fixture page', () => {
     render(<FixturePage />);
   });
 
-  it("shows the user's ID", () => {
-    expect(screen.getByText(`User ID: ${userId}`)).toBeInTheDocument();
+  it('shows the user ID', () => {
+    expect(screen.getByText(userId)).toBeInTheDocument();
   });
 
   it('fetches the fixture', () => {
     expect(fixtureApi.getFixture).toHaveBeenCalledWith(id);
   });
 
-  it('shows the fixture', () => {
-    expect(
-      screen.getByText(`${homeTeamName} vs ${awayTeamName}`)
-    ).toBeInTheDocument();
-  });
-
-  it("shows the user's rank against others playing this fixture", () => {
-    expect(
-      screen.getByText(
-        `Ranked ${userRank} out of ${numberOfUsersPlayingFixture} people playing this fixture`
-      )
-    ).toBeInTheDocument();
+  it('shows the fixture header', () => {
+    const fixtureHeader = screen.getByRole('banner');
+    expect(within(fixtureHeader).getByText(homeTeamName)).toBeInTheDocument();
+    expect(within(fixtureHeader).getByText(awayTeamName)).toBeInTheDocument();
   });
 
   it('shows events names, points and images', () => {
-    expect(screen.getByText(events[0].name)).toBeInTheDocument();
-    expect(screen.getByText(`${events[0].points} points`)).toBeInTheDocument();
-    expect(screen.getByAltText(events[0].name)).toBeInTheDocument();
-    expect(screen.getByText(events[1].name)).toBeInTheDocument();
-    expect(screen.getByText(`${events[1].points} points`)).toBeInTheDocument();
-    expect(screen.getByAltText(events[1].name)).toBeInTheDocument();
+    const eventsTable = screen.getAllByRole('table')[1];
+    expect(eventsTable).toBeInTheDocument();
+
+    expect(
+      within(eventsTable).getByRole('columnheader', {
+        name: 'Events (0 selected)',
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(eventsTable).getByRole('columnheader', {
+        name: `Points`,
+      })
+    ).toBeInTheDocument();
+
+    const eventElement = getEventElement(events[0].name);
+
+    expect(eventElement).toBeInTheDocument();
+    expect(
+      within(eventElement).getByText(events[0].points)
+    ).toBeInTheDocument();
+    expect(
+      within(eventElement).getByAltText(events[0].name)
+    ).toBeInTheDocument();
   });
 
   it('lets the user select and deselect events', () => {
     const event = getEventElement(events[0].name);
 
-    expect(
-      screen.getByText(`Selected 0/${events.length} events`)
-    ).toBeInTheDocument();
-    expect(event).not.toHaveTextContent('Selected');
+    expect(screen.getByText(`Events (0 selected)`)).toBeInTheDocument();
+    expect(event).not.toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Selected')
+    );
 
     userEvent.click(event);
 
-    expect(
-      screen.getByText(`Selected 1/${events.length} events`)
-    ).toBeInTheDocument();
-    expect(event).toHaveTextContent('Selected');
+    expect(screen.getByText(`Events (1 selected)`)).toBeInTheDocument();
+    expect(event).toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Selected')
+    );
 
     userEvent.click(event);
 
-    expect(
-      screen.getByText(`Selected 0/${events.length} events`)
-    ).toBeInTheDocument();
-    expect(event).not.toHaveTextContent('Selected');
+    expect(screen.getByText(`Events (0 selected)`)).toBeInTheDocument();
+    expect(event).not.toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Selected')
+    );
   });
 
   it('highlights only events that have occured', () => {
-    expect(getEventElement(eventThatHasOccured.name)).toHaveTextContent(
-      'Has occured'
+    expect(getEventElement(eventThatHasOccured.name)).toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Occured')
     );
-    expect(getEventElement(eventThatHasNotOccured.name)).not.toHaveTextContent(
-      'Has occured'
+    expect(getEventElement(eventThatHasNotOccured.name)).not.toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Occured')
     );
   });
 
-  it("shows the user's points for this fixture", () => {
-    expect(screen.getByText('Your points: 0')).toBeInTheDocument();
+  it('shows the user performance for this fixture', () => {
+    const userPerformanceTable = screen.getAllByRole('table')[0];
+    expect(userPerformanceTable).toBeInTheDocument();
+
+    expect(
+      within(userPerformanceTable).getByRole('columnheader', {
+        name: 'Total Points',
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(userPerformanceTable).getByRole('columnheader', {
+        name: `Rank (of ${numberOfUsersPlayingFixture} players)`,
+      })
+    ).toBeInTheDocument();
+
+    const totalPoints = within(userPerformanceTable).getByText('0');
+    expect(totalPoints).toBeInTheDocument();
+
+    const rank = within(userPerformanceTable).getByText('1');
+    expect(rank).toBeInTheDocument();
 
     userEvent.click(getEventElement(eventThatHasOccured.name));
 
     expect(
-      screen.getByText(`Your points: ${eventThatHasOccured.points}`)
+      within(userPerformanceTable).getByText(eventThatHasOccured.points)
     ).toBeInTheDocument();
   });
 });

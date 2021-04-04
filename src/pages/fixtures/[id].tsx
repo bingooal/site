@@ -2,10 +2,11 @@ import sum from 'lodash/sum';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import EventCard from '../../domain/event/components/eventCard';
+import EventsTable from '../../domain/event/components/eventsTable';
 import useSelectableEvents from '../../domain/event/hooks/useSelectableEvents';
 import { getFixture } from '../../domain/fixture/api/indexFrontend';
-import FixtureCard from '../../domain/fixture/components/fixtureCard';
+import FixtureHeader from '../../domain/fixture/components/fixtureHeader';
+import UserPerformanceTable from '../../domain/fixture/components/userPerformanceTable';
 import useLeaderboard from '../../domain/fixture/hooks/useLeaderboard';
 import useLogin from '../../domain/user/hooks/useLogin';
 
@@ -42,7 +43,7 @@ const FixturePage: React.VFC = () => {
 
   const fixtureName = `${homeTeamName} vs ${awayTeamName}`;
 
-  const yourPoints = sum(
+  const userPoints = sum(
     events
       .filter(({ name, hasOccured }) => isSelected(name) && hasOccured)
       .map(({ points }) => points)
@@ -54,19 +55,19 @@ const FixturePage: React.VFC = () => {
         <title>{fixtureName}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>{`User ID: ${userId}`}</div>
-      <FixtureCard key={fixture.id} fixture={fixture} />
-      <h2>{`Your points: ${yourPoints}`}</h2>
-      <p>{`Ranked ${userRank} out of ${numberOfUsersPlayingFixture} people playing this fixture`}</p>
-      <h3>{`Selected ${numberOfSelectedEvents}/${events.length} events`}</h3>
-      {events.map((event) => (
-        <EventCard
-          key={event.name}
-          event={event}
-          selected={isSelected(event.name)}
-          onClick={toggleEvent}
-        />
-      ))}
+      <FixtureHeader key={fixture.id} fixture={fixture} />
+      <div className="py-2 text-center text-gray-200">{userId}</div>
+      <UserPerformanceTable
+        userPoints={userPoints}
+        userRank={userRank}
+        numberOfUsersPlayingFixture={numberOfUsersPlayingFixture}
+      />
+      <EventsTable
+        events={events}
+        numberOfSelectedEvents={numberOfSelectedEvents}
+        isSelected={isSelected}
+        toggleEvent={toggleEvent}
+      />
     </div>
   );
 };

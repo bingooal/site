@@ -3452,6 +3452,8 @@ export const mockPastFixtureData = [
 
 export const [mockPastFixture] = mockPastFixtureData;
 
+export type ApiFootballFixtures = typeof mockPastFixtureData;
+
 export type ApiFootballFixture = typeof mockPastFixture;
 
 export type ApiFootballLineups = ApiFootballFixture['lineups'];

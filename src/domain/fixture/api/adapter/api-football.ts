@@ -81,15 +81,15 @@ const actions: Action[] = [
   // next 11
   Action.MakesASave,
   Action.ConcedesAPenalty,
-  Action.DribblesPastAPlayer,
-  Action.TakesAShotOnTarget,
+  Action.BlocksAShot,
+  Action.ReceivesAYellowCard,
   Action.AssistsAGoal,
   Action.DrawsAFoul,
   Action.ScoresAGoal,
   Action.WinsOrScoresAPenalty,
   Action.MakesATackle,
-  Action.BlocksAShot,
-  Action.ReceivesAYellowCard,
+  Action.DribblesPastAPlayer,
+  Action.TakesAShotOnTarget,
 ];
 
 const extractPlayerNamesFromLineups = (

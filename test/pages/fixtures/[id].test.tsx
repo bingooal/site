@@ -102,27 +102,37 @@ describe('Fixture page', () => {
     ).toBeInTheDocument();
   });
 
-  it('lets the user select and deselect events', () => {
-    const event = getEventElement(events[0].name);
+  it('lets the user select and deselect events that have not occured', () => {
+    const occuredEvent = getEventElement(eventThatHasOccured.name);
+    const notOccuredEvent = getEventElement(eventThatHasNotOccured.name);
 
     expect(screen.getByText(`Events (0 selected)`)).toBeInTheDocument();
-    expect(event).not.toHaveAttribute(
+    expect(occuredEvent).not.toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Selected')
+    );
+    expect(notOccuredEvent).not.toHaveAttribute(
       'aria-label',
       expect.stringContaining('Selected')
     );
 
-    userEvent.click(event);
+    userEvent.click(occuredEvent);
+    userEvent.click(notOccuredEvent);
 
     expect(screen.getByText(`Events (1 selected)`)).toBeInTheDocument();
-    expect(event).toHaveAttribute(
+    expect(occuredEvent).not.toHaveAttribute(
+      'aria-label',
+      expect.stringContaining('Selected')
+    );
+    expect(notOccuredEvent).toHaveAttribute(
       'aria-label',
       expect.stringContaining('Selected')
     );
 
-    userEvent.click(event);
+    userEvent.click(notOccuredEvent);
 
     expect(screen.getByText(`Events (0 selected)`)).toBeInTheDocument();
-    expect(event).not.toHaveAttribute(
+    expect(notOccuredEvent).not.toHaveAttribute(
       'aria-label',
       expect.stringContaining('Selected')
     );
@@ -159,11 +169,5 @@ describe('Fixture page', () => {
 
     const rank = within(userPerformanceTable).getByText('1');
     expect(rank).toBeInTheDocument();
-
-    userEvent.click(getEventElement(eventThatHasOccured.name));
-
-    expect(
-      within(userPerformanceTable).getByText(eventThatHasOccured.points)
-    ).toBeInTheDocument();
   });
 });

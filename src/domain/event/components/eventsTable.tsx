@@ -28,7 +28,7 @@ const EventRow: React.VFC<EventRowProps> = ({
   <tr
     onClick={() => onClick(name)}
     className={getBackgroundColor(selected, hasOccured)}
-    aria-label={`${selected ? 'Selected ' : ' '}${hasOccured ? 'Occured' : ''}`}
+    aria-label={`${selected ? 'Selected ' : ''}${hasOccured ? 'Occured' : ''}`}
   >
     <td className="w-4/5 px-2 py-5 text-sm">
       <div className="flex items-center">
@@ -88,7 +88,7 @@ const EventsTable: React.VFC<TableProps> = ({
                 key={event.name}
                 event={event}
                 selected={isSelected(event.name)}
-                onClick={toggleEvent}
+                onClick={event.hasOccured ? () => null : toggleEvent}
               />
             ))}
           </tbody>

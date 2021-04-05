@@ -1,9 +1,10 @@
-import dayjs from 'dayjs';
 import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
-import makeRequest from '../../../../services/request';
+import { now } from '../../../../services/date';
+import makeRequest, { RequestConfig } from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
-import { GetFixture, GetFixtures } from '../indexBackend';
 import { FootballPlayer } from '../../data/Fixture';
+import { Action, actions } from '../../services/actions';
+import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import { mockFixturesData } from './mockApiFootballData/fixtures';
 import {
@@ -13,19 +14,10 @@ import {
   mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
-const makeRequestToApiFootball = async ({
-  method,
-  path,
-  params,
-}: {
-  method: string;
-  path: string;
-  params?: unknown;
-}) => {
+const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
   const res = await makeRequest({
-    method,
-    url: `https://v3.football.api-sports.io/${path}`,
-    params,
+    ...requestConfig,
+    baseURL: 'https://v3.football.api-sports.io',
     headers: {
       'x-rapidapi-key': FOOTBALL_API_KEY,
       'x-rapidapi-host': 'v3.football.api-sports.io',
@@ -40,57 +32,11 @@ const getFixtureFromApiFootball = async (
 ): Promise<ApiFootballFixture> => {
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
-    path: 'fixtures',
+    url: 'fixtures',
     params: { id: fixtureId },
   });
   return fixtures[0];
 };
-
-enum Action {
-  TakesAShot = 'takes a shot',
-  TakesAShotOnTarget = 'takes a shot on target',
-  ScoresAGoal = 'scores a goal',
-  AssistsAGoal = 'assists a goal',
-  MakesASave = 'makes a save',
-  PlaysAKeyPass = 'plays a key pass',
-  MakesATackle = 'makes a tackle',
-  BlocksAShot = 'blocks a shot',
-  InterceptsAPass = 'intercepts a pass',
-  DribblesPastAPlayer = 'dribbles past a player',
-  CommitsAFoul = 'commits a foul',
-  DrawsAFoul = 'draws a foul',
-  ReceivesAYellowCard = 'receives a yellow card',
-  ReceivesARedCard = 'receives a red card',
-  WinsOrScoresAPenalty = 'wins or scores a penalty',
-  ConcedesAPenalty = 'concedes a penalty',
-}
-
-const actions: Action[] = [
-  // first 11
-  Action.MakesASave,
-  Action.ConcedesAPenalty,
-  Action.ReceivesARedCard,
-  Action.CommitsAFoul,
-  Action.MakesATackle,
-  Action.InterceptsAPass,
-  Action.PlaysAKeyPass,
-  Action.MakesATackle,
-  Action.BlocksAShot,
-  Action.ReceivesAYellowCard,
-  Action.TakesAShot,
-  // next 11
-  Action.MakesASave,
-  Action.ConcedesAPenalty,
-  Action.BlocksAShot,
-  Action.ReceivesAYellowCard,
-  Action.AssistsAGoal,
-  Action.DrawsAFoul,
-  Action.ScoresAGoal,
-  Action.WinsOrScoresAPenalty,
-  Action.MakesATackle,
-  Action.DribblesPastAPlayer,
-  Action.TakesAShotOnTarget,
-];
 
 const extractPlayerNamesFromLineups = (
   lineups: ApiFootballLineups
@@ -242,7 +188,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
 const getLeaguePreviews = async () => {
   const data = await makeRequestToApiFootball({
     method: 'GET',
-    path: 'leagues',
+    url: 'leagues',
     params: {
       current: 'true',
     },
@@ -259,9 +205,9 @@ export const getFixtures: GetFixtures = async () => {
   const data = IS_PROD_ENV
     ? await makeRequestToApiFootball({
         method: 'GET',
-        path: 'fixtures',
+        url: 'fixtures',
         params: {
-          date: dayjs().format('YYYY-MM-DD'),
+          date: now().format('YYYY-MM-DD'),
           season: 2020,
           timezone: 'Europe/London',
         },

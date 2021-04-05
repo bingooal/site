@@ -1,11 +1,12 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-type RequestConfig = Omit<AxiosRequestConfig, 'method'> & {
+export type RequestConfig = Omit<AxiosRequestConfig, 'method'> & {
   method: string;
 };
 
 const makeRequest = async ({
   method,
+  baseURL,
   url,
   params,
   headers,
@@ -13,13 +14,14 @@ const makeRequest = async ({
 }: RequestConfig) => {
   const options = {
     method,
+    baseURL,
     url,
     params,
     headers,
     data,
   } as AxiosRequestConfig;
-  const res = await axios.request(options);
-  return res.data;
+  const response = await axios.request(options);
+  return response.data;
 };
 
 export default makeRequest;

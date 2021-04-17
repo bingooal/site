@@ -1,5 +1,6 @@
 import sum from 'lodash/sum';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import EventsTable from '../../../domain/event/components/eventsTable';
@@ -15,25 +16,24 @@ const MAX_SELECTED_EVENTS = 3;
 const FixturePage: React.VFC = () => {
   const userId = useLogin();
   const { query, isReady } = useRouter();
+  const fixtureId = query.id as string;
 
   const {
     numberOfSelectedEvents,
     isSelected,
     toggleEvent,
-  } = useSelectableEvents(userId, query.id as string, MAX_SELECTED_EVENTS);
+  } = useSelectableEvents(userId, fixtureId, MAX_SELECTED_EVENTS);
 
-  const {
-    data: fixture,
-    isIdle,
-    isLoading,
-  } = useQuery(
-    `getFixture(${query.id})`,
-    () => getFixture(query.id as string),
-    { enabled: isReady }
+  const { data: fixture, isIdle, isLoading } = useQuery(
+    `getFixture(${fixtureId})`,
+    () => getFixture(fixtureId),
+    {
+      enabled: isReady,
+    }
   );
 
   const { userRank, numberOfUsersPlayingFixture } = useLeaderboard(
-    query.id as string,
+    fixtureId,
     userId
   );
 
@@ -58,7 +58,14 @@ const FixturePage: React.VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <FixtureHeader key={fixture.id} fixture={fixture} />
-      <div className="py-2 text-center text-gray-200">{userId}</div>
+      <div className="container flex flex-row px-2 mx-auto sm:px-16">
+        <div className="w-1/2 py-3 text-center text-gray-300">{userId}</div>
+        <Link href={`${fixture.id}/leaderboard`}>
+          <div className="w-1/2 py-3 text-center text-gray-300">
+            View Leaderboard
+          </div>
+        </Link>
+      </div>
       <UserPerformanceTable
         userPoints={userPoints}
         userRank={userRank}

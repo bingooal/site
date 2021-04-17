@@ -14,10 +14,10 @@ const UserPerformanceTable: React.VFC<Props> = ({
       <table className="min-w-full leading-normal">
         <thead>
           <tr>
-            <th className="px-4 py-3 text-xs font-semibold tracking-wider text-center uppercase bg-gray-100 border-b-2 border-gray-200">
+            <th className="w-1/2 py-3 text-xs font-semibold tracking-wider text-center uppercase bg-gray-100 border-b-2 border-gray-200 wpx-4">
               Total Points
             </th>
-            <th className="px-4 py-3 text-xs font-semibold tracking-wider text-center uppercase bg-gray-100 border-b-2 border-gray-200">
+            <th className="w-1/2 py-3 text-xs font-semibold tracking-wider text-center uppercase bg-gray-100 border-b-2 border-gray-200">
               {`Rank (of ${numberOfUsersPlayingFixture} players)`}
             </th>
           </tr>

@@ -14,14 +14,14 @@ class LocalUserSessionRepository implements UserSessionRepository {
   }
 
   async getSelectedEvents(userId: string, fixtureId: string) {
-    return this.selectedEvents[`${fixtureId}-${userId}`] || [];
+    return this.selectedEvents[`${fixtureId}_${userId}`] || [];
   }
 
   async getUsersAndSelectedEvents(fixtureId: string) {
     const usersAndSelectedEvents: UserAndSelectedEvents[] = [];
     Object.entries(this.selectedEvents).forEach(
       ([primaryKey, selectedEvents]) => {
-        const [thisFixtureId, userId] = primaryKey.split('-');
+        const [thisFixtureId, userId] = primaryKey.split('_');
         if (thisFixtureId === fixtureId) {
           usersAndSelectedEvents.push({
             userId,
@@ -34,8 +34,8 @@ class LocalUserSessionRepository implements UserSessionRepository {
   }
 
   async selectEvent(userId: string, fixtureId: string, selectedEvent: string) {
-    this.selectedEvents[`${fixtureId}-${userId}`] = [
-      ...(this.selectedEvents[`${fixtureId}-${userId}`] || []),
+    this.selectedEvents[`${fixtureId}_${userId}`] = [
+      ...(this.selectedEvents[`${fixtureId}_${userId}`] || []),
       selectedEvent,
     ];
   }
@@ -45,11 +45,11 @@ class LocalUserSessionRepository implements UserSessionRepository {
     fixtureId: string,
     deselectedEvent: string
   ) {
-    if (!this.selectedEvents[`${fixtureId}-${userId}`]) {
+    if (!this.selectedEvents[`${fixtureId}_${userId}`]) {
       return;
     }
-    this.selectedEvents[`${fixtureId}-${userId}`] = this.selectedEvents[
-      `${fixtureId}-${userId}`
+    this.selectedEvents[`${fixtureId}_${userId}`] = this.selectedEvents[
+      `${fixtureId}_${userId}`
     ].filter((eventName) => eventName !== deselectedEvent);
   }
 }

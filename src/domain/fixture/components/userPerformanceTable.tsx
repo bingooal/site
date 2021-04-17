@@ -9,7 +9,7 @@ const UserPerformanceTable: React.VFC<Props> = ({
   userRank,
   numberOfUsersPlayingFixture,
 }: Props) => (
-  <div className="container px-2 mx-auto sm:px-8">
+  <div className="container px-2 mx-auto sm:px-16">
     <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
       <table className="min-w-full leading-normal">
         <thead>

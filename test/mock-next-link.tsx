@@ -1,4 +1,4 @@
-import { cloneElement, PropsWithChildren, ReactElement } from 'react';
+import { cloneElement, PropsWithChildren, ReactElement, SyntheticEvent } from 'react';
 import { useRouter } from 'next/router';
 import { UrlObject } from 'url';
 
@@ -15,7 +15,7 @@ const MockNextLink = ({
 }: PropsWithChildren<LinkProps>): ReactElement => {
   const router = useRouter();
 
-  const onClick = (e): void => {
+  const onClick = (e: SyntheticEvent): void => {
     e.preventDefault();
     router.push(href, asHref ?? href);
   };

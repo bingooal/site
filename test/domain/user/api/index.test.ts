@@ -4,7 +4,7 @@ import userRepository from '../../../../src/domain/user/repositories/userReposit
 
 describe('login', () => {
   beforeEach(() => {
-    userRepository.reset();
+    userRepository.reset?.();
   });
 
   it('signs a new user up', async () => {

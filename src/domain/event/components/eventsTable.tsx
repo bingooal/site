@@ -68,8 +68,8 @@ const EventsTable: React.VFC<TableProps> = ({
   isSelected,
   toggleEvent,
 }: TableProps) => (
-  <div className="container px-2 py-2 mx-auto sm:px-8">
-    <div className="py-2 sm:px-8">
+  <div className="container px-2 py-2 mx-auto sm:px-16">
+    <div className="py-2">
       <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
         <table className="min-w-full leading-normal">
           <thead>

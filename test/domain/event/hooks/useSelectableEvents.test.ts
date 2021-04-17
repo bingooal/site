@@ -98,7 +98,7 @@ describe('useSelectableEvents', () => {
       .mockRejectedValue(new Error('userId not defined'));
 
     const { result } = renderHook(() =>
-      useSelectableEvents(undefined, fixtureId)
+      useSelectableEvents("", fixtureId)
     );
 
     expect(eventApi.getSelectedEvents).toBeCalledTimes(0);

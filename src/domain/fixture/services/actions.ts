@@ -17,6 +17,25 @@ export enum Action {
   ConcedesAPenalty = 'concedes a penalty',
 }
 
+export const actionsToPoints = {
+  [Action.TakesAShot]: 3,
+  [Action.TakesAShotOnTarget]: 4,
+  [Action.ScoresAGoal]: 8,
+  [Action.AssistsAGoal]: 6,
+  [Action.MakesASave]: 1,
+  [Action.PlaysAKeyPass]: 3,
+  [Action.MakesATackle]: 2,
+  [Action.BlocksAShot]: 3,
+  [Action.InterceptsAPass]: 3,
+  [Action.DribblesPastAPlayer]: 4,
+  [Action.CommitsAFoul]: 2,
+  [Action.DrawsAFoul]: 3,
+  [Action.ReceivesAYellowCard]: 3,
+  [Action.ReceivesARedCard]: 8,
+  [Action.WinsOrScoresAPenalty]: 6,
+  [Action.ConcedesAPenalty]: 8,
+};
+
 export const actions: Action[] = [
   // first 11
   Action.MakesASave,

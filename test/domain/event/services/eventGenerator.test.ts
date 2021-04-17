@@ -1,4 +1,9 @@
 import {
+  Action,
+  actionsToPoints,
+} from '../../../../src/domain/fixture/services/actions';
+import {
+  EventNameAndPoints,
   generateEvents,
   matchActorsToActions,
 } from '../../../../src/domain/event/services/eventGenerator';
@@ -8,14 +13,14 @@ describe('eventGenerator', () => {
   const actor = { name: 'Kaka', imageUrl };
   const actor2 = { name: 'Zidane', imageUrl };
   const actor3 = { name: 'Figo', imageUrl };
-  const action = 'scores';
-  const action2 = 'tackles';
+  const action = Action.ScoresAGoal;
+  const action2 = Action.MakesATackle;
 
   describe('matchActorsToActions', () => {
     type Table = {
       actors: Parameters<typeof matchActorsToActions>[0];
       actions: Parameters<typeof matchActorsToActions>[1];
-      expected: string[];
+      expected: EventNameAndPoints[];
     };
 
     it.each`
@@ -23,9 +28,9 @@ describe('eventGenerator', () => {
       ${'returns no matches when given no actors nor actions'}                  | ${[]}                      | ${[]}                | ${[]}
       ${'returns no matches when given no actors'}                              | ${[]}                      | ${[action]}          | ${[]}
       ${'returns no matches when given no actions'}                             | ${[actor]}                 | ${[]}                | ${[]}
-      ${'matches each actor to an action when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`]}
-      ${'matches each actor to an action when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[`${actor.name} ${action}`, `${actor2.name} ${action2}`, `${actor3.name} ${action}`]}
-      ${'matches each actor to an action when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[`${actor.name} ${action}`]}
+      ${'matches each actor to an action when given equal actors and actions'}  | ${[actor, actor2]}         | ${[action, action2]} | ${[{ eventName: `${actor.name} ${action}`, points: actionsToPoints[action] }, { eventName: `${actor2.name} ${action2}`, points: actionsToPoints[action2] }]}
+      ${'matches each actor to an action when given more actors than actions'}  | ${[actor, actor2, actor3]} | ${[action, action2]} | ${[{ eventName: `${actor.name} ${action}`, points: actionsToPoints[action] }, { eventName: `${actor2.name} ${action2}`, points: actionsToPoints[action2] }, { eventName: `${actor3.name} ${action}`, points: actionsToPoints[action] }]}
+      ${'matches each actor to an action when given fewer actors than actions'} | ${[actor]}                 | ${[action, action2]} | ${[{ eventName: `${actor.name} ${action}`, points: actionsToPoints[action] }]}
     `('$testName', ({ actors, actions, expected }: Table) => {
       expect(matchActorsToActions(actors, actions)).toEqual(expected);
     });

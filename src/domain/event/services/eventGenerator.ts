@@ -1,17 +1,35 @@
+import { actionsToPoints } from '../../fixture/services/actions';
 import { FootballPlayer } from '../../fixture/data/Fixture';
 import Event from '../data/Event';
+
+export type EventNameAndPoints = {
+  eventName: string;
+  points: number;
+};
 
 export const matchActorsToActions = (
   actors: FootballPlayer[],
   actions: string[]
-): string[] => {
+): EventNameAndPoints[] => {
   if (!actors.length || !actions.length) {
     return [];
   }
   if (actors.length > actions.length) {
-    return actors.map(({ name }, i) => `${name} ${actions[i] || actions[0]}`);
+    return actors.map(({ name }, i) => {
+      const action = actions[i] || actions[0];
+      return {
+        eventName: `${name} ${action}`,
+        points: actionsToPoints[action],
+      };
+    });
   }
-  return actors.map(({ name }, i) => `${name} ${actions[i]}`);
+  return actors.map(({ name }, i) => {
+    const action = actions[i];
+    return {
+      eventName: `${name} ${action}`,
+      points: actionsToPoints[action],
+    };
+  });
 };
 
 export const generateEvents = (
@@ -19,11 +37,11 @@ export const generateEvents = (
   actions: string[],
   occuredEventNames: string[]
 ): Event[] => {
-  const eventNames = matchActorsToActions(actors, actions);
-  return actors.map((actor, i) => ({
-    name: eventNames[i],
-    points: 3,
-    imageUrl: actor.imageUrl,
-    hasOccured: occuredEventNames.includes(eventNames[i]),
+  const eventNamesAndPoints = matchActorsToActions(actors, actions);
+  return eventNamesAndPoints.map(({ eventName, points }, i) => ({
+    name: eventName,
+    points,
+    imageUrl: actors[i].imageUrl,
+    hasOccured: occuredEventNames.includes(eventName),
   }));
 };

@@ -10,6 +10,8 @@ import UserPerformanceTable from '../../../domain/fixture/components/userPerform
 import useLeaderboard from '../../../domain/fixture/hooks/useLeaderboard';
 import useLogin from '../../../domain/user/hooks/useLogin';
 
+const MAX_SELECTED_EVENTS = 3;
+
 const FixturePage: React.VFC = () => {
   const userId = useLogin();
   const { query, isReady } = useRouter();
@@ -18,7 +20,7 @@ const FixturePage: React.VFC = () => {
     numberOfSelectedEvents,
     isSelected,
     toggleEvent,
-  } = useSelectableEvents(userId, query.id as string);
+  } = useSelectableEvents(userId, query.id as string, MAX_SELECTED_EVENTS);
 
   const {
     data: fixture,

@@ -6,7 +6,11 @@ import {
   deselectEvent as mutateBackendWithDeselectedEvent,
 } from '../api/indexFrontend';
 
-const useSelectableEvents = (userId: string, fixtureId: string) => {
+const useSelectableEvents = (
+  userId: string,
+  fixtureId: string,
+  maxSelectedEvents: number
+) => {
   const [selectedEvents, setSelectedEvents] = useLocalStorageState(
     `selectedEvents-${fixtureId}`,
     []
@@ -28,6 +32,9 @@ const useSelectableEvents = (userId: string, fixtureId: string) => {
   const isSelected = (name: string) => selectedEvents.includes(name);
 
   const selectEvent = (name: string) => {
+    if (selectedEvents.length === maxSelectedEvents) {
+      return;
+    }
     mutateBackendWithSelectedEvent(userId, fixtureId, name);
     setSelectedEvents([...selectedEvents, name]);
   };

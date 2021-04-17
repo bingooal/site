@@ -5,6 +5,7 @@ import * as eventApi from '../../../../src/domain/event/api/indexFrontend';
 const userId = 'userId';
 const fixtureId = 'fixture1';
 const event = 'event';
+const maxSelectedEvents = 1;
 
 describe('useSelectableEvents', () => {
   beforeEach(() => {
@@ -18,7 +19,9 @@ describe('useSelectableEvents', () => {
   it('lets the caller select and deselect events', () => {
     expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(null);
 
-    const { result } = renderHook(() => useSelectableEvents(userId, fixtureId));
+    const { result } = renderHook(() =>
+      useSelectableEvents(userId, fixtureId, maxSelectedEvents)
+    );
 
     expect(result.current.numberOfSelectedEvents).toEqual(0);
     expect(result.current.isSelected(event)).toEqual(false);
@@ -52,10 +55,10 @@ describe('useSelectableEvents', () => {
 
   it('lets the caller select events for different fixtures', () => {
     const { result: fixture1Result } = renderHook(() =>
-      useSelectableEvents(userId, fixtureId)
+      useSelectableEvents(userId, fixtureId, maxSelectedEvents)
     );
     const { result: fixture2Result } = renderHook(() =>
-      useSelectableEvents(userId, 'fixture2')
+      useSelectableEvents(userId, 'fixture2', maxSelectedEvents)
     );
 
     expect(fixture1Result.current.numberOfSelectedEvents).toEqual(0);
@@ -80,7 +83,7 @@ describe('useSelectableEvents', () => {
     jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([event]);
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useSelectableEvents(userId, fixtureId)
+      useSelectableEvents(userId, fixtureId, maxSelectedEvents)
     );
     await waitForNextUpdate();
 
@@ -98,7 +101,7 @@ describe('useSelectableEvents', () => {
       .mockRejectedValue(new Error('userId not defined'));
 
     const { result } = renderHook(() =>
-      useSelectableEvents("", fixtureId)
+      useSelectableEvents('', fixtureId, maxSelectedEvents)
     );
 
     expect(eventApi.getSelectedEvents).toBeCalledTimes(0);
@@ -110,7 +113,9 @@ describe('useSelectableEvents', () => {
       .spyOn(eventApi, 'getSelectedEvents')
       .mockRejectedValue(new Error('fixtureId not defined'));
 
-    const { result } = renderHook(() => useSelectableEvents(userId, undefined));
+    const { result } = renderHook(() =>
+      useSelectableEvents(userId, undefined, maxSelectedEvents)
+    );
 
     expect(eventApi.getSelectedEvents).toBeCalledTimes(0);
     expect(result.current.numberOfSelectedEvents).toEqual(0);
@@ -119,9 +124,41 @@ describe('useSelectableEvents', () => {
   it('does not load selected events from backend when there are no selected events in backend', () => {
     jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([]);
 
-    const { result } = renderHook(() => useSelectableEvents(userId, fixtureId));
+    const { result } = renderHook(() =>
+      useSelectableEvents(userId, fixtureId, maxSelectedEvents)
+    );
 
     expect(eventApi.getSelectedEvents).toBeCalledTimes(1);
     expect(result.current.numberOfSelectedEvents).toEqual(0);
+  });
+
+  it('limits how many events the caller can select', () => {
+    const { result } = renderHook(() =>
+      useSelectableEvents(userId, fixtureId, maxSelectedEvents)
+    );
+
+    act(() => {
+      result.current.toggleEvent(event);
+    });
+
+    expect(result.current.numberOfSelectedEvents).toEqual(1);
+    expect(result.current.isSelected(event)).toEqual(true);
+    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
+      JSON.stringify([event])
+    );
+    expect(eventApi.selectEvent).toBeCalledTimes(1);
+    expect(eventApi.selectEvent).toBeCalledWith(userId, fixtureId, event);
+
+    const event2 = `${event}2`;
+    act(() => {
+      result.current.toggleEvent(event2);
+    });
+
+    expect(result.current.numberOfSelectedEvents).toEqual(1);
+    expect(result.current.isSelected(event2)).toEqual(false);
+    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
+      JSON.stringify([event])
+    );
+    expect(eventApi.selectEvent).toBeCalledTimes(1);
   });
 });

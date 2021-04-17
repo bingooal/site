@@ -1,9 +1,11 @@
-import sum from 'lodash/sum';
 import orderBy from 'lodash/orderby';
+import sum from 'lodash/sum';
+import logger from '../../../../services/logger';
 import userSessionRepository from '../../../user/repositories/userSessionRepository';
 import { getFixture, GetLeaderboard } from '../indexBackend';
 
 export const getLeaderboard: GetLeaderboard = async (fixtureId: string) => {
+  logger.log('[getLeaderboard.ts] getLeaderboard() fixtureId', fixtureId, '\n');
   const usersAndSelectedEvents = await userSessionRepository.getUsersAndSelectedEvents(
     fixtureId
   );

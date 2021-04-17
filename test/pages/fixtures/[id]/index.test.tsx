@@ -1,12 +1,12 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
-import * as fixtureApi from '../../../src/domain/fixture/api/indexFrontend';
-import * as eventApi from '../../../src/domain/event/api/indexFrontend';
-import * as useLogin from '../../../src/domain/user/hooks/useLogin';
-import * as useLeaderboard from '../../../src/domain/fixture/hooks/useLeaderboard';
-import Fixture from '../../../src/domain/fixture/data/Fixture';
-import FixturePage from '../../../src/pages/fixtures/[id]';
-import { render, screen, within } from '../../testUtils';
+import * as fixtureApi from '../../../../src/domain/fixture/api/indexFrontend';
+import * as eventApi from '../../../../src/domain/event/api/indexFrontend';
+import * as useLogin from '../../../../src/domain/user/hooks/useLogin';
+import * as useLeaderboard from '../../../../src/domain/fixture/hooks/useLeaderboard';
+import Fixture from '../../../../src/domain/fixture/data/Fixture';
+import FixturePage from '../../../../src/pages/fixtures/[id]';
+import { render, screen, within } from '../../../testUtils';
 
 const eventThatHasOccured = {
   name: 'Bruno Fernandes gets an assist',

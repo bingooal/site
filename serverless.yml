@@ -1,7 +1,7 @@
 site:
   component: '@sls-next/serverless-component@1.19.0-alpha.37'
   inputs:
-    policy: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+    roleArn: arn:aws:iam::960028696012:role/bingoalApp
 
 UsersTable:
   component: '@serverless/aws-dynamodb'

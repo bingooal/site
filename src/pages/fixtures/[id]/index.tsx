@@ -2,13 +2,13 @@ import sum from 'lodash/sum';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import EventsTable from '../../domain/event/components/eventsTable';
-import useSelectableEvents from '../../domain/event/hooks/useSelectableEvents';
-import { getFixture } from '../../domain/fixture/api/indexFrontend';
-import FixtureHeader from '../../domain/fixture/components/fixtureHeader';
-import UserPerformanceTable from '../../domain/fixture/components/userPerformanceTable';
-import useLeaderboard from '../../domain/fixture/hooks/useLeaderboard';
-import useLogin from '../../domain/user/hooks/useLogin';
+import EventsTable from '../../../domain/event/components/eventsTable';
+import useSelectableEvents from '../../../domain/event/hooks/useSelectableEvents';
+import { getFixture } from '../../../domain/fixture/api/indexFrontend';
+import FixtureHeader from '../../../domain/fixture/components/fixtureHeader';
+import UserPerformanceTable from '../../../domain/fixture/components/userPerformanceTable';
+import useLeaderboard from '../../../domain/fixture/hooks/useLeaderboard';
+import useLogin from '../../../domain/user/hooks/useLogin';
 
 const FixturePage: React.VFC = () => {
   const userId = useLogin();

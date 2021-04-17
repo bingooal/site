@@ -1,5 +1,6 @@
 import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
 import { dayjs, getMillisecondsUntilTomorrow } from '../../../../services/date';
+import logger from '../../../../services/logger';
 import makeRequest, { RequestConfig } from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
 import { FootballPlayer } from '../../data/Fixture';
@@ -161,6 +162,7 @@ const extractPlayersAndEvents = (
 };
 
 export const getFixture: GetFixture = async (fixtureId) => {
+  logger.log('[api-football.ts] getFixture() fixtureId', fixtureId, '\n');
   const fixtureData: ApiFootballFixture = IS_PROD_ENV
     ? await getFixtureFromApiFootball(fixtureId)
     : mockPastFixture;
@@ -224,6 +226,7 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
 };
 
 export const getFixtures: GetFixtures = async () => {
+  logger.log('[api-football.ts] getFixtures()', '\n');
   const data = IS_PROD_ENV
     ? await getFixturesFromApiFootball()
     : mockFixturesData;

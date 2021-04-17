@@ -7,6 +7,7 @@ import FixtureHeader from '../../../domain/fixture/components/fixtureHeader';
 import LeaderboardTable from '../../../domain/fixture/components/leaderboardTable';
 import FixturePreview from '../../../domain/fixture/data/FixturePreview';
 import Leaderboard from '../../../domain/fixture/data/Leaderboard';
+import logger from '../../../services/logger';
 
 type Props = {
   fixture: FixturePreview | null;
@@ -29,6 +30,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     getFixture(fixtureId as string),
     getLeaderboard(fixtureId as string),
   ]);
+
+  if (fixture.status === 'rejected') {
+    logger.log('[leaderboard.tsx] getServerSideProps() fixture', fixture);
+  }
+  if (leaderboard.status === 'rejected') {
+    logger.log(
+      '[leaderboard.tsx] getServerSideProps() leaderboard',
+      leaderboard
+    );
+  }
 
   return {
     props: {

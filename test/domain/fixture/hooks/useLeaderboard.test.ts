@@ -32,8 +32,8 @@ describe('useLeaderboard', () => {
       { wrapper: wrapperWithQueryClient }
     );
 
-    expect(result.current.userRank).toEqual(1);
-    expect(result.current.numberOfUsersPlayingFixture).toEqual(1);
+    expect(result.current.userRank).toEqual(0);
+    expect(result.current.numberOfUsersPlayingFixture).toEqual(0);
     expect(result.current.getOtherUsersSelectingEvent(event)).toEqual([]);
 
     await waitForNextUpdate();
@@ -56,21 +56,7 @@ describe('useLeaderboard', () => {
       wrapper: wrapperWithQueryClient,
     });
 
-    expect(result.current.numberOfUsersPlayingFixture).toEqual(1);
+    expect(result.current.numberOfUsersPlayingFixture).toEqual(0);
     expect(fixtureApiSpy).toHaveBeenCalledTimes(0);
-  });
-
-  it('shows the user is ranked 1 out of 1 users when backend returns empty leaderboard', async () => {
-    fixtureApiSpy.mockResolvedValue([]);
-
-    const { result, waitForNextUpdate } = renderHook(
-      () => useLeaderboard(fixtureId, userId),
-      { wrapper: wrapperWithQueryClient }
-    );
-    await waitForNextUpdate();
-
-    expect(result.current.userRank).toEqual(1);
-    expect(result.current.numberOfUsersPlayingFixture).toEqual(1);
-    expect(fixtureApiSpy).toHaveBeenCalledTimes(1);
   });
 });

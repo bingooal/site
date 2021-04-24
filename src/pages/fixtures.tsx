@@ -6,7 +6,9 @@ import FixturesHeader from '../domain/fixture/components/fixturesHeader';
 import FixtureList from '../domain/fixture/components/fixtureList';
 
 const Fixtures: React.VFC = () => {
-  const { data: fixtures } = useQuery('getFixtures', getFixtures);
+  const { data: fixtures } = useQuery('getFixtures', getFixtures, {
+    refetchInterval: 60 * 1000,
+  });
   return (
     <div>
       <Head>

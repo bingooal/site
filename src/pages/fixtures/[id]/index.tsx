@@ -29,6 +29,7 @@ const FixturePage: React.VFC = () => {
     () => getFixture(fixtureId),
     {
       enabled: isReady,
+      refetchInterval: 60 * 1000,
     }
   );
 

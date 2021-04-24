@@ -4,7 +4,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tailwindcss/tailwind.css';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 0,
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }) {
   return (

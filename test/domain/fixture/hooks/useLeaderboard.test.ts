@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import * as fixtureApi from '../../../../src/domain/fixture/api/indexFrontend';
 import Leaderboard from '../../../../src/domain/fixture/data/Leaderboard';
 import useLeaderboard from '../../../../src/domain/fixture/hooks/useLeaderboard';
+import { wrapperWithQueryClient } from '../../../testUtils';
 
 const fixtureApiSpy = jest.spyOn(fixtureApi, 'getLeaderboard');
 
@@ -26,8 +27,9 @@ describe('useLeaderboard', () => {
   it('fetches users from the backend when fixtureId is defined', async () => {
     fixtureApiSpy.mockResolvedValue(leaderboard);
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLeaderboard(fixtureId, userId)
+    const { result, waitForNextUpdate } = renderHook(
+      () => useLeaderboard(fixtureId, userId),
+      { wrapper: wrapperWithQueryClient }
     );
 
     expect(result.current.userRank).toEqual(1);
@@ -50,7 +52,9 @@ describe('useLeaderboard', () => {
   it('does not fetch users from the backend when fixtureId is not defined', async () => {
     fixtureApiSpy.mockResolvedValue(leaderboard);
 
-    const { result } = renderHook(() => useLeaderboard(null, userId));
+    const { result } = renderHook(() => useLeaderboard(null, userId), {
+      wrapper: wrapperWithQueryClient,
+    });
 
     expect(result.current.numberOfUsersPlayingFixture).toEqual(1);
     expect(fixtureApiSpy).toHaveBeenCalledTimes(0);
@@ -59,8 +63,9 @@ describe('useLeaderboard', () => {
   it('shows the user is ranked 1 out of 1 users when backend returns empty leaderboard', async () => {
     fixtureApiSpy.mockResolvedValue([]);
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLeaderboard(fixtureId, userId)
+    const { result, waitForNextUpdate } = renderHook(
+      () => useLeaderboard(fixtureId, userId),
+      { wrapper: wrapperWithQueryClient }
     );
     await waitForNextUpdate();
 

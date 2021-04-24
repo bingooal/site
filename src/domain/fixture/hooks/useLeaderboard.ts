@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { getLeaderboard } from '../api/indexFrontend';
 
 const useLeaderboard = (fixtureId, userId) => {
-  const [leaderboard, setLeaderboard] = useState([]);
-
-  useEffect(() => {
-    if (!fixtureId) {
-      return;
+  const { data: leaderboard } = useQuery(
+    `getLeaderboard(${fixtureId})`,
+    () => getLeaderboard(fixtureId),
+    {
+      enabled: Boolean(fixtureId),
+      refetchInterval: 20 * 1000,
     }
-    const fetchData = async () => {
-      const data = await getLeaderboard(fixtureId);
-      setLeaderboard(data);
+  );
+
+  if (!leaderboard) {
+    return {
+      userRank: 1,
+      numberOfUsersPlayingFixture: 1,
+      getOtherUsersSelectingEvent: () => [],
     };
-    fetchData();
-  }, [fixtureId]);
+  }
 
   // this user won't have a backend session until they select an event,
   // but we still want to show that this user is playing, so default

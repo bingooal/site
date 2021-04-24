@@ -7,14 +7,18 @@ const fixtureApiSpy = jest.spyOn(fixtureApi, 'getLeaderboard');
 
 const fixtureId = 'fixtureId';
 const userId = 'userId';
+const userId2 = 'userId2';
+const event = 'event';
 const leaderboard: Leaderboard = [
   {
-    userId: 'userWithMorePointsThanYou',
+    userId: userId2,
     points: 2,
+    selectedEvents: [event],
   },
   {
     userId,
     points: 1,
+    selectedEvents: [event],
   },
 ];
 
@@ -28,6 +32,7 @@ describe('useLeaderboard', () => {
 
     expect(result.current.userRank).toEqual(1);
     expect(result.current.numberOfUsersPlayingFixture).toEqual(1);
+    expect(result.current.getOtherUsersSelectingEvent(event)).toEqual([]);
 
     await waitForNextUpdate();
 
@@ -35,6 +40,9 @@ describe('useLeaderboard', () => {
     expect(result.current.numberOfUsersPlayingFixture).toEqual(
       leaderboard.length
     );
+    expect(result.current.getOtherUsersSelectingEvent(event)).toEqual([
+      userId2,
+    ]);
     expect(fixtureApiSpy).toHaveBeenCalledTimes(1);
     expect(fixtureApiSpy).toHaveBeenCalledWith(fixtureId);
   });

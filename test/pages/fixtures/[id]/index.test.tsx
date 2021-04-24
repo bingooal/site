@@ -34,6 +34,8 @@ const mockNextRouter: Partial<nextRouter.NextRouter> = {
 const userId = 'userId';
 const userRank = 1;
 const numberOfUsersPlayingFixture = 123;
+const otherUserSelectingEvent = 'other-userId';
+const initialsOfOtherUserSelectingEvent = 'OU';
 
 const getEventElement = (eventName) =>
   screen.getByRole('cell', { name: eventName }).parentElement;
@@ -51,9 +53,11 @@ describe('Fixture page', () => {
 
     jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(fixture);
 
-    jest
-      .spyOn(useLeaderboard, 'default')
-      .mockReturnValue({ userRank, numberOfUsersPlayingFixture });
+    jest.spyOn(useLeaderboard, 'default').mockReturnValue({
+      userRank,
+      numberOfUsersPlayingFixture,
+      getOtherUsersSelectingEvent: () => [otherUserSelectingEvent],
+    });
 
     render(<FixturePage />);
   });
@@ -76,7 +80,7 @@ describe('Fixture page', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows events names, points and images', () => {
+  it('shows events names, points and images, and other users selecting them', () => {
     const eventsTable = screen.getAllByRole('table')[1];
     expect(eventsTable).toBeInTheDocument();
 
@@ -97,6 +101,9 @@ describe('Fixture page', () => {
     expect(eventElement).toBeInTheDocument();
     expect(within(eventElement).getByText(event.points)).toBeInTheDocument();
     expect(within(eventElement).getByAltText(event.name)).toBeInTheDocument();
+    expect(
+      within(eventElement).getByText(initialsOfOtherUserSelectingEvent)
+    ).toBeInTheDocument();
   });
 
   it('lets the user select and deselect events that have not occured', () => {

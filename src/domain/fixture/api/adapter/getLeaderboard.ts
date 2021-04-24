@@ -23,6 +23,7 @@ export const getLeaderboard: GetLeaderboard = async (fixtureId: string) => {
       return {
         userId,
         points,
+        selectedEvents,
       };
     }
   );

@@ -149,12 +149,31 @@ describe('getLeaderboard', () => {
     );
 
     expect(await getLeaderboard(fixtureId1)).toEqual([
-      { userId: userId1, points: highPointsEventThatHasOccured.points },
-      { userId: userId2, points: lowPointsEventThatHasOccured.points },
+      {
+        userId: userId1,
+        points: highPointsEventThatHasOccured.points,
+        selectedEvents: [
+          highPointsEventThatHasOccured.name,
+          eventThatHasNotOccured.name,
+        ],
+      },
+      {
+        userId: userId2,
+        points: lowPointsEventThatHasOccured.points,
+        selectedEvents: [lowPointsEventThatHasOccured.name],
+      },
     ]);
     expect(await getLeaderboard(fixtureId2)).toEqual([
-      { userId: userId2, points: highPointsEventThatHasOccured.points },
-      { userId: userId1, points: lowPointsEventThatHasOccured.points },
+      {
+        userId: userId2,
+        points: highPointsEventThatHasOccured.points,
+        selectedEvents: [highPointsEventThatHasOccured.name],
+      },
+      {
+        userId: userId1,
+        points: lowPointsEventThatHasOccured.points,
+        selectedEvents: [lowPointsEventThatHasOccured.name],
+      },
     ]);
   });
 });

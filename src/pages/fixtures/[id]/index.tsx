@@ -32,10 +32,11 @@ const FixturePage: React.VFC = () => {
     }
   );
 
-  const { userRank, numberOfUsersPlayingFixture } = useLeaderboard(
-    fixtureId,
-    userId
-  );
+  const {
+    userRank,
+    numberOfUsersPlayingFixture,
+    getOtherUsersSelectingEvent,
+  } = useLeaderboard(fixtureId, userId);
 
   if (isIdle || isLoading) {
     return <div>Loading...</div>;
@@ -50,6 +51,11 @@ const FixturePage: React.VFC = () => {
       .filter(({ name, hasOccured }) => isSelected(name) && hasOccured)
       .map(({ points }) => points)
   );
+
+  const eventsAndOtherUsersSelectingThem = events.map((event) => ({
+    event,
+    otherUsersSelectingEvent: getOtherUsersSelectingEvent(event.name),
+  }));
 
   return (
     <div>
@@ -72,7 +78,7 @@ const FixturePage: React.VFC = () => {
         numberOfUsersPlayingFixture={numberOfUsersPlayingFixture}
       />
       <EventsTable
-        events={events}
+        eventsAndOtherUsersSelectingThem={eventsAndOtherUsersSelectingThem}
         numberOfSelectedEvents={numberOfSelectedEvents}
         isSelected={isSelected}
         toggleEvent={toggleEvent}

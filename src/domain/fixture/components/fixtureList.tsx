@@ -24,15 +24,19 @@ const TeamRow: React.VFC<TeamRowProps> = ({
 );
 
 type FixtureStatusProps = {
+  status: string;
   date: string;
 };
 
 const FixtureStatus: React.VFC<FixtureStatusProps> = ({
+  status,
   date,
 }: FixtureStatusProps) => (
   <>
     <div className="text-sm font-medium">{getDay(date)}</div>
-    <div className="text-xs text-gray-600">{getTime(date)}</div>
+    <div className="text-xs text-gray-600">
+      {status === 'FT' ? 'Full time' : getTime(date)}
+    </div>
   </>
 );
 
@@ -44,6 +48,7 @@ export const FixtureCard: React.VFC<FixtureCardProps> = ({
   fixture: {
     id,
     date,
+    status,
     homeTeamName,
     homeTeamLogo,
     homeTeamGoals,
@@ -67,7 +72,7 @@ export const FixtureCard: React.VFC<FixtureCardProps> = ({
         />
       </div>
       <div className="flex flex-col justify-center w-1/4 text-center">
-        <FixtureStatus date={date} />
+        <FixtureStatus status={status} date={date} />
       </div>
     </div>
   </Link>

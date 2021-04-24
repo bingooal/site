@@ -186,6 +186,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
   return {
     id: fixtureId,
     date: fixture.date,
+    status: fixture.status.short,
     homeTeamName: home.name,
     homeTeamLogo: home.logo,
     homeTeamGoals,
@@ -245,6 +246,7 @@ export const getFixtures: GetFixtures = async () => {
       }) => ({
         id: `${fixture.id}`,
         date: fixture.date,
+        status: fixture.status.short,
         homeTeamName: teams.home.name,
         homeTeamLogo: teams.home.logo,
         homeTeamGoals,

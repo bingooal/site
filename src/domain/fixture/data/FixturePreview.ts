@@ -1,6 +1,7 @@
 type FixturePreview = {
   id: string;
   date: string;
+  status: string;
   homeTeamName: string;
   homeTeamLogo: string;
   homeTeamGoals: number | null;

@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import useLocalStorageState from 'use-local-storage-state';
+import { useEffect, useState } from 'react';
 import {
+  deselectEvent as mutateBackendWithDeselectedEvent,
   getSelectedEvents as queryBackendForSelectedEvents,
   selectEvent as mutateBackendWithSelectedEvent,
-  deselectEvent as mutateBackendWithDeselectedEvent,
 } from '../api/indexFrontend';
 
 const useSelectableEvents = (
@@ -11,10 +10,7 @@ const useSelectableEvents = (
   fixtureId: string,
   maxSelectedEvents: number
 ) => {
-  const [selectedEvents, setSelectedEvents] = useLocalStorageState(
-    `selectedEvents-${fixtureId}`,
-    []
-  );
+  const [selectedEvents, setSelectedEvents] = useState([]);
 
   useEffect(() => {
     const loadSelectedEventsFromBackend = async () => {

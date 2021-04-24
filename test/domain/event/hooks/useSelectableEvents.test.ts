@@ -9,23 +9,18 @@ const maxSelectedEvents = 1;
 
 describe('useSelectableEvents', () => {
   beforeEach(() => {
-    localStorage.clear();
-
     jest.spyOn(eventApi, 'getSelectedEvents').mockResolvedValue([]);
     jest.spyOn(eventApi, 'selectEvent').mockResolvedValue();
     jest.spyOn(eventApi, 'deselectEvent').mockResolvedValue();
   });
 
   it('lets the caller select and deselect events', () => {
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(null);
-
     const { result } = renderHook(() =>
       useSelectableEvents(userId, fixtureId, maxSelectedEvents)
     );
 
     expect(result.current.numberOfSelectedEvents).toEqual(0);
     expect(result.current.isSelected(event)).toEqual(false);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(null);
     expect(eventApi.selectEvent).toBeCalledTimes(0);
 
     act(() => {
@@ -34,9 +29,6 @@ describe('useSelectableEvents', () => {
 
     expect(result.current.numberOfSelectedEvents).toEqual(1);
     expect(result.current.isSelected(event)).toEqual(true);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
-      JSON.stringify([event])
-    );
     expect(eventApi.selectEvent).toBeCalledTimes(1);
     expect(eventApi.selectEvent).toBeCalledWith(userId, fixtureId, event);
 
@@ -46,9 +38,6 @@ describe('useSelectableEvents', () => {
 
     expect(result.current.numberOfSelectedEvents).toEqual(0);
     expect(result.current.isSelected(event)).toEqual(false);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
-      JSON.stringify([])
-    );
     expect(eventApi.deselectEvent).toBeCalledTimes(1);
     expect(eventApi.deselectEvent).toBeCalledWith(userId, fixtureId, event);
   });
@@ -90,9 +79,6 @@ describe('useSelectableEvents', () => {
     expect(eventApi.getSelectedEvents).toBeCalledTimes(1);
     expect(result.current.numberOfSelectedEvents).toEqual(1);
     expect(result.current.isSelected(event)).toEqual(true);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
-      JSON.stringify([event])
-    );
   });
 
   it('does not fetch selected events from backend when userId is not defined', () => {
@@ -143,9 +129,6 @@ describe('useSelectableEvents', () => {
 
     expect(result.current.numberOfSelectedEvents).toEqual(1);
     expect(result.current.isSelected(event)).toEqual(true);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
-      JSON.stringify([event])
-    );
     expect(eventApi.selectEvent).toBeCalledTimes(1);
     expect(eventApi.selectEvent).toBeCalledWith(userId, fixtureId, event);
 
@@ -156,9 +139,6 @@ describe('useSelectableEvents', () => {
 
     expect(result.current.numberOfSelectedEvents).toEqual(1);
     expect(result.current.isSelected(event2)).toEqual(false);
-    expect(localStorage.getItem(`selectedEvents-${fixtureId}`)).toEqual(
-      JSON.stringify([event])
-    );
     expect(eventApi.selectEvent).toBeCalledTimes(1);
   });
 });

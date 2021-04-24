@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getDay, getTime } from '../../../services/date';
 import FixturePreview from '../data/FixturePreview';
 
 type TeamRowProps = {
@@ -22,6 +23,19 @@ const TeamRow: React.VFC<TeamRowProps> = ({
   </div>
 );
 
+type FixtureStatusProps = {
+  date: string;
+};
+
+const FixtureStatus: React.VFC<FixtureStatusProps> = ({
+  date,
+}: FixtureStatusProps) => (
+  <>
+    <div className="text-sm font-medium">{getDay(date)}</div>
+    <div className="text-xs text-gray-600">{getTime(date)}</div>
+  </>
+);
+
 type FixtureCardProps = {
   fixture: FixturePreview;
 };
@@ -29,6 +43,7 @@ type FixtureCardProps = {
 export const FixtureCard: React.VFC<FixtureCardProps> = ({
   fixture: {
     id,
+    date,
     homeTeamName,
     homeTeamLogo,
     homeTeamGoals,
@@ -50,6 +65,9 @@ export const FixtureCard: React.VFC<FixtureCardProps> = ({
           logo={awayTeamLogo}
           goals={awayTeamGoals}
         />
+      </div>
+      <div className="flex flex-col justify-center w-1/4 text-center">
+        <FixtureStatus date={date} />
       </div>
     </div>
   </Link>

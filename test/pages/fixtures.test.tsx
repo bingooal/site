@@ -3,6 +3,7 @@ import * as nextRouter from 'next/router';
 import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import Fixtures from '../../src/pages/fixtures';
+import { getTime } from '../../src/services/date';
 import { fixturePreview } from '../mockData';
 import { render, screen, within } from '../testUtils';
 
@@ -30,8 +31,11 @@ describe('Fixtures page', () => {
 
   it('shows a fixture', () => {
     const fixtureComponent = screen.getByText(fixturePreview.homeTeamName)
-      .parentElement.parentElement;
+      .parentElement.parentElement.parentElement;
     expect(fixtureComponent).toBeInTheDocument();
+    expect(
+      within(fixtureComponent).getByText(getTime(fixturePreview.date))
+    ).toBeInTheDocument();
     expect(
       within(fixtureComponent).getByText(fixturePreview.homeTeamGoals)
     ).toBeInTheDocument();

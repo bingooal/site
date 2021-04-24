@@ -13,6 +13,7 @@ describe('getFixtures', () => {
     fixtures.forEach((fixture) => {
       expect(fixture).toMatchObject<FixturePreview>({
         id: expect.any(String),
+        date: expect.any(String),
         homeTeamName: expect.any(String),
         homeTeamLogo: expect.any(String),
         homeTeamGoals: expect.toMatchSome(
@@ -38,6 +39,7 @@ describe('getFixture', () => {
 
     expect(fixture).toMatchObject<Fixture>({
       id: fixtureId,
+      date: expect.any(String),
       homeTeamName: expect.any(String),
       homeTeamLogo: expect.any(String),
       homeTeamGoals: expect.any(Number),

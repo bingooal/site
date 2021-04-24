@@ -168,6 +168,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     : mockPastFixture;
 
   const {
+    fixture,
     teams: { home, away },
     goals: { home: homeTeamGoals, away: awayTeamGoals },
   } = fixtureData;
@@ -184,6 +185,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
 
   return {
     id: fixtureId,
+    date: fixture.date,
     homeTeamName: home.name,
     homeTeamLogo: home.logo,
     homeTeamGoals,
@@ -242,6 +244,7 @@ export const getFixtures: GetFixtures = async () => {
         goals: { home: homeTeamGoals, away: awayTeamGoals },
       }) => ({
         id: `${fixture.id}`,
+        date: fixture.date,
         homeTeamName: teams.home.name,
         homeTeamLogo: teams.home.logo,
         homeTeamGoals,

@@ -16,10 +16,16 @@ describe('getFixtures', () => {
         id: expect.any(String),
         homeTeamName: expect.any(String),
         homeTeamLogo: expect.any(String),
-        // homeTeamGoals: expect.anyTypeOrNull(Number),
+        homeTeamGoals: expect.toMatchSome(
+          expect.any(Number),
+          expect.toBeNull()
+        ),
         awayTeamName: expect.any(String),
         awayTeamLogo: expect.any(String),
-        // awayTeamGoals: expect.toBeTypeOrNull(Number),
+        awayTeamGoals: expect.toMatchSome(
+          expect.any(Number),
+          expect.toBeNull()
+        ),
       });
     });
   });

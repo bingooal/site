@@ -1,6 +1,6 @@
 import * as fixtureApi from '../../../../src/domain/fixture/api/indexBackend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
-// import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
+import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 import userSessionRepository from '../../../../src/domain/user/repositories/userSessionRepository';
 import { fixturePreview } from '../../../mockData';
 
@@ -11,8 +11,7 @@ describe('getFixtures', () => {
     const fixtures = await getFixtures();
     expect(fixtures).toBeArray();
     fixtures.forEach((fixture) => {
-      // expect(fixture).toMatchObject<FixturePreview>({
-      expect(fixture).toMatchObject({
+      expect(fixture).toMatchObject<FixturePreview>({
         id: expect.any(String),
         homeTeamName: expect.any(String),
         homeTeamLogo: expect.any(String),

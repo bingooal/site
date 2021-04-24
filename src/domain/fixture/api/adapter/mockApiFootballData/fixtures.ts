@@ -1,7 +1,7 @@
 // date: '2021-03-21', (Leiceister vs Manchester United in the FA Cup)
 // season: 2020,
 // filtered by leaguesWeWatch
-export const mockFixturesData = [
+export const mockPastFixturesData = [
   {
     fixture: {
       id: 676091,
@@ -132,16 +132,30 @@ export const mockFixturesData = [
       penalty: { home: null, away: null },
     },
   },
+];
+
+export const mockFutureFixturesData = [
   {
     fixture: {
-      id: 592312,
-      referee: 'Mike Dean, England',
+      id: 592821,
+      referee: 'Andre Marriner, England',
       timezone: 'Europe/London',
-      date: '2021-03-21T19:30:00+00:00',
-      timestamp: 1616355000,
-      periods: { first: 1616355000, second: 1616358600 },
-      venue: { id: 495, name: 'Villa Park', city: 'Birmingham' },
-      status: { long: 'Match Finished', short: 'FT', elapsed: 90 },
+      date: '2021-04-24T12:30:00+01:00',
+      timestamp: 1619263800,
+      periods: {
+        first: null,
+        second: null,
+      },
+      venue: {
+        id: 550,
+        name: 'Anfield',
+        city: 'Liverpool',
+      },
+      status: {
+        long: 'Not Started',
+        short: 'NS',
+        elapsed: null,
+      },
     },
     league: {
       id: 39,
@@ -150,28 +164,48 @@ export const mockFixturesData = [
       logo: 'https://media.api-sports.io/football/leagues/39.png',
       flag: 'https://media.api-sports.io/flags/gb.svg',
       season: 2020,
-      round: 'Regular Season - 18',
+      round: 'Regular Season - 33',
     },
     teams: {
       home: {
-        id: 66,
-        name: 'Aston Villa',
-        logo: 'https://media.api-sports.io/football/teams/66.png',
-        winner: false,
+        id: 40,
+        name: 'Liverpool',
+        logo: 'https://media.api-sports.io/football/teams/40.png',
+        winner: null,
       },
       away: {
-        id: 47,
-        name: 'Tottenham',
-        logo: 'https://media.api-sports.io/football/teams/47.png',
-        winner: true,
+        id: 34,
+        name: 'Newcastle',
+        logo: 'https://media.api-sports.io/football/teams/34.png',
+        winner: null,
       },
     },
-    goals: { home: 0, away: 2 },
+    goals: {
+      home: null,
+      away: null,
+    },
     score: {
-      halftime: { home: 0, away: 1 },
-      fulltime: { home: 0, away: 2 },
-      extratime: { home: null, away: null },
-      penalty: { home: null, away: null },
+      halftime: {
+        home: null,
+        away: null,
+      },
+      fulltime: {
+        home: null,
+        away: null,
+      },
+      extratime: {
+        home: null,
+        away: null,
+      },
+      penalty: {
+        home: null,
+        away: null,
+      },
     },
   },
+];
+
+export const mockFixturesData = [
+  ...mockPastFixturesData,
+  ...mockFutureFixturesData,
 ];

@@ -169,6 +169,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
 
   const {
     teams: { home, away },
+    goals: { home: homeTeamGoals, away: awayTeamGoals },
   } = fixtureData;
 
   const { footballPlayers, occuredEventNames } = extractPlayersAndEvents(
@@ -184,9 +185,11 @@ export const getFixture: GetFixture = async (fixtureId) => {
   return {
     id: fixtureId,
     homeTeamName: home.name,
-    awayTeamName: away.name,
     homeTeamLogo: home.logo,
+    homeTeamGoals,
+    awayTeamName: away.name,
     awayTeamLogo: away.logo,
+    awayTeamGoals,
     events: generatedEvents,
   };
 };
@@ -232,11 +235,19 @@ export const getFixtures: GetFixtures = async () => {
     : mockFixturesData;
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
-    .map(({ fixture, teams }) => ({
-      id: `${fixture.id}`,
-      homeTeamName: teams.home.name,
-      awayTeamName: teams.away.name,
-      homeTeamLogo: teams.home.logo,
-      awayTeamLogo: teams.away.logo,
-    }));
+    .map(
+      ({
+        fixture,
+        teams,
+        goals: { home: homeTeamGoals, away: awayTeamGoals },
+      }) => ({
+        id: `${fixture.id}`,
+        homeTeamName: teams.home.name,
+        homeTeamLogo: teams.home.logo,
+        homeTeamGoals,
+        awayTeamName: teams.away.name,
+        awayTeamLogo: teams.away.logo,
+        awayTeamGoals,
+      })
+    );
 };

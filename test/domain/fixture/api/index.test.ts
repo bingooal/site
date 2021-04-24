@@ -1,7 +1,8 @@
 import * as fixtureApi from '../../../../src/domain/fixture/api/indexBackend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
-import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
+// import FixturePreview from '../../../../src/domain/fixture/data/FixturePreview';
 import userSessionRepository from '../../../../src/domain/user/repositories/userSessionRepository';
+import { fixturePreview } from '../../../mockData';
 
 const { getFixture, getFixtures, getLeaderboard } = fixtureApi;
 
@@ -10,28 +11,34 @@ describe('getFixtures', () => {
     const fixtures = await getFixtures();
     expect(fixtures).toBeArray();
     fixtures.forEach((fixture) => {
-      expect(fixture).toMatchObject<FixturePreview>({
+      // expect(fixture).toMatchObject<FixturePreview>({
+      expect(fixture).toMatchObject({
         id: expect.any(String),
         homeTeamName: expect.any(String),
-        awayTeamName: expect.any(String),
         homeTeamLogo: expect.any(String),
+        // homeTeamGoals: expect.anyTypeOrNull(Number),
+        awayTeamName: expect.any(String),
         awayTeamLogo: expect.any(String),
+        // awayTeamGoals: expect.toBeTypeOrNull(Number),
       });
     });
   });
 });
 
 describe('getFixture', () => {
+  const fixtureId = '593320';
+
   it('should get a fixture', async () => {
-    const fixtureId = '593320';
     const fixture = await getFixture(fixtureId);
 
     expect(fixture).toMatchObject<Fixture>({
       id: fixtureId,
       homeTeamName: expect.any(String),
-      awayTeamName: expect.any(String),
       homeTeamLogo: expect.any(String),
+      homeTeamGoals: expect.any(Number),
+      awayTeamName: expect.any(String),
       awayTeamLogo: expect.any(String),
+      awayTeamGoals: expect.any(Number),
       events: expect.arrayContaining([
         // e.g.:
         // {
@@ -49,8 +56,6 @@ describe('getFixture', () => {
   });
 
   it('should get events with a flag if they have occured or not', async () => {
-    const fixtureId = '593320';
-
     const { events } = await getFixture(fixtureId);
 
     expect(events).toContainEqual(
@@ -75,13 +80,6 @@ describe('getLeaderboard', () => {
   });
 
   it('should get the leaderboard for the fixture', async () => {
-    const fixturePreview = {
-      homeTeamName: 'Manchester United',
-      awayTeamName: 'Chelsea',
-      homeTeamLogo: 'https://media.api-sports.io/football/teams/33.png',
-      awayTeamLogo: 'https://media.api-sports.io/football/teams/49.png',
-      id: '123',
-    };
     const imageUrl = 'imageUrl';
     const userId1 = 'userId1';
     const userId2 = 'userId2';

@@ -1,11 +1,12 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
-import * as fixtureApi from '../../../../src/domain/fixture/api/indexFrontend';
 import * as eventApi from '../../../../src/domain/event/api/indexFrontend';
-import * as useLogin from '../../../../src/domain/user/hooks/useLogin';
-import * as useLeaderboard from '../../../../src/domain/fixture/hooks/useLeaderboard';
+import * as fixtureApi from '../../../../src/domain/fixture/api/indexFrontend';
 import Fixture from '../../../../src/domain/fixture/data/Fixture';
+import * as useLeaderboard from '../../../../src/domain/fixture/hooks/useLeaderboard';
+import * as useLogin from '../../../../src/domain/user/hooks/useLogin';
 import FixturePage from '../../../../src/pages/fixtures/[id]';
+import { fixturePreview } from '../../../mockData';
 import { render, screen, within } from '../../../testUtils';
 
 const eventThatHasOccured = {
@@ -22,18 +23,13 @@ const eventThatHasNotOccured = {
   hasOccured: false,
 };
 
-const mockFixture: Fixture = {
-  id: '593320',
-  homeTeamName: 'Barnsley',
-  awayTeamName: 'Sheffield Wednesday',
-  homeTeamLogo: 'https://media.api-sports.io/football/teams/747.png',
-  awayTeamLogo: 'https://media.api-sports.io/football/teams/74.png',
+const fixture: Fixture = {
+  ...fixturePreview,
   events: [eventThatHasOccured, eventThatHasNotOccured],
 };
 
-const { id, homeTeamName, awayTeamName, events } = mockFixture;
 const mockNextRouter: Partial<nextRouter.NextRouter> = {
-  query: { id },
+  query: { id: fixture.id },
 };
 const userId = 'userId';
 const userRank = 1;
@@ -53,7 +49,7 @@ describe('Fixture page', () => {
       .spyOn(nextRouter, 'useRouter')
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
 
-    jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(mockFixture);
+    jest.spyOn(fixtureApi, 'getFixture').mockResolvedValue(fixture);
 
     jest
       .spyOn(useLeaderboard, 'default')
@@ -67,13 +63,17 @@ describe('Fixture page', () => {
   });
 
   it('fetches the fixture', () => {
-    expect(fixtureApi.getFixture).toHaveBeenCalledWith(id);
+    expect(fixtureApi.getFixture).toHaveBeenCalledWith(fixture.id);
   });
 
   it('shows the fixture header', () => {
     const fixtureHeader = screen.getByRole('banner');
-    expect(within(fixtureHeader).getByText(homeTeamName)).toBeInTheDocument();
-    expect(within(fixtureHeader).getByText(awayTeamName)).toBeInTheDocument();
+    expect(
+      within(fixtureHeader).getByText(fixture.homeTeamName)
+    ).toBeInTheDocument();
+    expect(
+      within(fixtureHeader).getByText(fixture.awayTeamName)
+    ).toBeInTheDocument();
   });
 
   it('shows events names, points and images', () => {
@@ -91,15 +91,12 @@ describe('Fixture page', () => {
       })
     ).toBeInTheDocument();
 
-    const eventElement = getEventElement(events[0].name);
+    const event = fixture.events[0];
+    const eventElement = getEventElement(event.name);
 
     expect(eventElement).toBeInTheDocument();
-    expect(
-      within(eventElement).getByText(events[0].points)
-    ).toBeInTheDocument();
-    expect(
-      within(eventElement).getByAltText(events[0].name)
-    ).toBeInTheDocument();
+    expect(within(eventElement).getByText(event.points)).toBeInTheDocument();
+    expect(within(eventElement).getByAltText(event.name)).toBeInTheDocument();
   });
 
   it('lets the user select and deselect events that have not occured', () => {

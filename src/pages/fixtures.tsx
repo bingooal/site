@@ -2,8 +2,8 @@ import Head from 'next/head';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { getFixtures } from '../domain/fixture/api/indexFrontend';
-import FixturesTable from '../domain/fixture/components/fixturesTable';
 import FixturesHeader from '../domain/fixture/components/fixturesHeader';
+import FixtureList from '../domain/fixture/components/fixtureList';
 
 const Fixtures: React.VFC = () => {
   const { data: fixtures } = useQuery('getFixtures', getFixtures);
@@ -14,7 +14,11 @@ const Fixtures: React.VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <FixturesHeader />
-      {fixtures && <FixturesTable fixtures={fixtures} />}
+      {fixtures && (
+        <div className="container px-4">
+          <FixtureList fixtures={fixtures} />
+        </div>
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ type Props = {
 const FixtureHeader: React.VFC<Props> = ({
   fixture: { homeTeamName, awayTeamName, homeTeamLogo, awayTeamLogo },
 }: Props) => (
-  <header className="sticky top-0 z-50 flex flex-row items-center justify-between w-full h-16 px-5 text-black bg-white border-b border-gray-200 md:h-20 sm:px-16 md:px-36 lg:px-52 xl:px-80 2xl:px-96">
+  <header className="sticky top-0 z-50 flex flex-row items-center justify-between w-full h-16 px-5 text-black bg-white border-b border-gray-200 md:h-20 sm:px-20 md:px-36 lg:px-52 xl:px-80 2xl:px-96">
     <div className="flex items-center justify-center w-2/5">
       <div className="relative flex-shrink-0 w-10 h-10 sm:table-cell">
         <Image src={homeTeamLogo} alt={homeTeamName} layout="fill" />

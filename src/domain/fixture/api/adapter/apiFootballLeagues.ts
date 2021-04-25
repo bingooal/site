@@ -40,8 +40,8 @@ const leaguesWeWatch = [
     country: 'England',
   },
   {
-    id: 46,
-    name: 'EFL Trophy',
+    id: 48,
+    name: 'League Cup',
     country: 'England',
   },
 ];

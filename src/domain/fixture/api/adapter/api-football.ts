@@ -140,8 +140,13 @@ const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
 };
 
 const extractPlayersAndEvents = (
+  fixtureId: string,
   fixtureData: ApiFootballFixture
 ): { footballPlayers: FootballPlayer[]; occuredEventNames: string[] } => {
+  logger.log(
+    `[api-football.ts] extractPlayersAndEvents(${fixtureId}) fixtureData`,
+    fixtureData
+  );
   const { lineups, players } = fixtureData;
   if (!lineups.length) {
     return { footballPlayers: [], occuredEventNames: [] };
@@ -181,7 +186,12 @@ export const getFixture: GetFixture = async (fixtureId) => {
     goals: { home: homeTeamGoals, away: awayTeamGoals },
   } = fixtureData;
 
+  logger.log(
+    `[api-football.ts] getFixture(${fixtureId}) fixtureData 2`,
+    fixtureData
+  );
   const { footballPlayers, occuredEventNames } = extractPlayersAndEvents(
+    fixtureId,
     fixtureData
   );
 

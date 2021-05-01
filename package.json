@@ -21,6 +21,9 @@
       "yarn format"
     ]
   },
+  "engines": {
+    "node": ">=12"
+  },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.10.0",
     "axios-cache-adapter": "^2.7.3",

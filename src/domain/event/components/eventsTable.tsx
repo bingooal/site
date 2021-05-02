@@ -65,7 +65,7 @@ const EventRow: React.VFC<EventRowProps> = ({
       <div className="flex items-center justify-center">
         <div className="mr-0">
           <p className="text-gray-900 whitespace-no-wrap ">
-            {otherUsersSelectingEvent.map(getUserInitials)}
+            {otherUsersSelectingEvent.map(getUserInitials).join(' ')}
           </p>
         </div>
       </div>

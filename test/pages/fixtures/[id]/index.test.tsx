@@ -35,7 +35,9 @@ const userId = 'userId';
 const userRank = 1;
 const numberOfUsersPlayingFixture = 123;
 const otherUserSelectingEvent = 'other-userId';
+const anotherUserSelectingEvent = 'another-userId';
 const initialsOfOtherUserSelectingEvent = 'OU';
+const initialsOfAnotherUserSelectingEvent = 'AU';
 
 const getEventElement = (eventName) =>
   screen.getByRole('cell', { name: eventName }).parentElement;
@@ -56,7 +58,10 @@ describe('Fixture page', () => {
     jest.spyOn(useLeaderboard, 'default').mockReturnValue({
       userRank,
       numberOfUsersPlayingFixture,
-      getOtherUsersSelectingEvent: () => [otherUserSelectingEvent],
+      getOtherUsersSelectingEvent: () => [
+        otherUserSelectingEvent,
+        anotherUserSelectingEvent,
+      ],
     });
 
     render(<FixturePage />);
@@ -102,7 +107,9 @@ describe('Fixture page', () => {
     expect(within(eventElement).getByText(event.points)).toBeInTheDocument();
     expect(within(eventElement).getByAltText(event.name)).toBeInTheDocument();
     expect(
-      within(eventElement).getByText(initialsOfOtherUserSelectingEvent)
+      within(eventElement).getByText(
+        `${initialsOfOtherUserSelectingEvent} ${initialsOfAnotherUserSelectingEvent}`
+      )
     ).toBeInTheDocument();
   });
 

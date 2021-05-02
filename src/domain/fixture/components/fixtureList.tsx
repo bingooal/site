@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getDay, getTime } from '../../../services/date';
+import { getTime } from '../../../services/date';
 import FixturePreview from '../data/FixturePreview';
 
 type TeamRowProps = {
@@ -26,19 +26,27 @@ const TeamRow: React.VFC<TeamRowProps> = ({
 type FixtureStatusProps = {
   status: string;
   date: string;
+  minute: number;
 };
 
 const FixtureStatus: React.VFC<FixtureStatusProps> = ({
   status,
   date,
-}: FixtureStatusProps) => (
-  <>
-    <div className="text-sm font-medium">{getDay(date)}</div>
-    <div className="text-xs text-gray-600">
-      {status === 'FT' ? 'Full time' : getTime(date)}
-    </div>
-  </>
-);
+  minute,
+}: FixtureStatusProps) => {
+  if (status === 'FT') {
+    return <div className="text-sm font-medium text-gray-600">Full time</div>;
+  }
+  if (status === 'HT') {
+    return <div className="text-sm font-medium text-gray-600">Half time</div>;
+  }
+  if (minute) {
+    return (
+      <div className="text-sm font-medium text-red-500">{`${minute}'`}</div>
+    );
+  }
+  return <div className="text-sm font-medium">{getTime(date)}</div>;
+};
 
 type FixtureCardProps = {
   fixture: FixturePreview;
@@ -49,6 +57,7 @@ export const FixtureCard: React.VFC<FixtureCardProps> = ({
     id,
     date,
     status,
+    minute,
     homeTeamName,
     homeTeamLogo,
     homeTeamGoals,
@@ -72,7 +81,7 @@ export const FixtureCard: React.VFC<FixtureCardProps> = ({
         />
       </div>
       <div className="flex flex-col justify-center w-1/4 text-center">
-        <FixtureStatus status={status} date={date} />
+        <FixtureStatus status={status} date={date} minute={minute} />
       </div>
     </div>
   </Link>

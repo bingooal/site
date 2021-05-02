@@ -3,7 +3,6 @@ import * as nextRouter from 'next/router';
 import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import Fixtures from '../../src/pages/fixtures';
-import { getTime } from '../../src/services/date';
 import { fixturePreview } from '../mockData';
 import { render, screen, within } from '../testUtils';
 
@@ -34,7 +33,7 @@ describe('Fixtures page', () => {
       .parentElement.parentElement.parentElement;
     expect(fixtureComponent).toBeInTheDocument();
     expect(
-      within(fixtureComponent).getByText(getTime(fixturePreview.date))
+      within(fixtureComponent).getByText(`${fixturePreview.minute}'`)
     ).toBeInTheDocument();
     expect(
       within(fixtureComponent).getByText(fixturePreview.homeTeamGoals)

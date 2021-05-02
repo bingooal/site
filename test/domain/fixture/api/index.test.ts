@@ -6,6 +6,11 @@ import { fixturePreview } from '../../../mockData';
 
 const { getFixture, getFixtures, getLeaderboard } = fixtureApi;
 
+const expectAnyNumberOrNull = expect.toMatchSome(
+  expect.any(Number),
+  expect.toBeNull()
+);
+
 describe('getFixtures', () => {
   it('should get a list of fixture previews', async () => {
     const fixtures = await getFixtures();
@@ -15,18 +20,13 @@ describe('getFixtures', () => {
         id: expect.any(String),
         date: expect.any(String),
         status: expect.any(String),
+        minute: expectAnyNumberOrNull,
         homeTeamName: expect.any(String),
         homeTeamLogo: expect.any(String),
-        homeTeamGoals: expect.toMatchSome(
-          expect.any(Number),
-          expect.toBeNull()
-        ),
+        homeTeamGoals: expectAnyNumberOrNull,
         awayTeamName: expect.any(String),
         awayTeamLogo: expect.any(String),
-        awayTeamGoals: expect.toMatchSome(
-          expect.any(Number),
-          expect.toBeNull()
-        ),
+        awayTeamGoals: expectAnyNumberOrNull,
       });
     });
   });
@@ -42,6 +42,7 @@ describe('getFixture', () => {
       id: fixtureId,
       date: expect.any(String),
       status: expect.any(String),
+      minute: expectAnyNumberOrNull,
       homeTeamName: expect.any(String),
       homeTeamLogo: expect.any(String),
       homeTeamGoals: expect.any(Number),

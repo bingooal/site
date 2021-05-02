@@ -1,5 +1,5 @@
 import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
-import { dayjs, getMillisecondsUntilTomorrow } from '../../../../services/date';
+import { dayjs } from '../../../../services/date';
 import logger from '../../../../services/logger';
 import makeRequest, { RequestConfig } from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
@@ -205,6 +205,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     id: fixtureId,
     date: fixture.date,
     status: fixture.status.short,
+    minute: fixture.status.elapsed,
     homeTeamName: home.name,
     homeTeamLogo: home.logo,
     homeTeamGoals,
@@ -242,7 +243,7 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
       timezone: 'Europe/London',
     },
     cache: {
-      maxAge: getMillisecondsUntilTomorrow(),
+      maxAge: dayjs.duration(1, 'minute').asMilliseconds(),
       exclude: { query: false },
     },
   });
@@ -265,6 +266,7 @@ export const getFixtures: GetFixtures = async () => {
         id: `${fixture.id}`,
         date: fixture.date,
         status: fixture.status.short,
+        minute: fixture.status.elapsed,
         homeTeamName: teams.home.name,
         homeTeamLogo: teams.home.logo,
         homeTeamGoals,

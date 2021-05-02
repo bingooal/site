@@ -1,4 +1,4 @@
-import { FixtureCard } from '../../../../src/domain/fixture/components/fixtureList';
+import FixtureCard from '../../../../src/domain/fixture/components/fixtureCard';
 import { getTime } from '../../../../src/services/date';
 import { fixturePreview } from '../../../mockData';
 import { render, screen } from '../../../testUtils';

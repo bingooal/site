@@ -23,22 +23,31 @@ const TeamRow: React.VFC<TeamRowProps> = ({
   </div>
 );
 
-type FixtureStatusProps = {
+export enum FixtureStatus {
+  PST = 'PST',
+  FT = 'FT',
+  HT = 'HT',
+}
+
+type FixtureStatusViewProps = {
   status: string;
   date: string;
   minute: number;
 };
 
-const FixtureStatus: React.VFC<FixtureStatusProps> = ({
+const FixtureStatusView: React.VFC<FixtureStatusViewProps> = ({
   status,
   date,
   minute,
-}: FixtureStatusProps) => {
-  if (status === 'FT') {
+}: FixtureStatusViewProps) => {
+  if (status === FixtureStatus.PST) {
+    return <div className="text-sm font-medium text-red-500">Postponed</div>;
+  }
+  if (status === FixtureStatus.FT) {
     return <div className="text-sm font-medium text-gray-600">Full time</div>;
   }
-  if (status === 'HT') {
-    return <div className="text-sm font-medium text-gray-600">Half time</div>;
+  if (status === FixtureStatus.HT) {
+    return <div className="text-sm font-medium text-red-500">Half time</div>;
   }
   if (minute) {
     return (
@@ -81,7 +90,7 @@ const FixtureCard: React.VFC<Props> = ({
         />
       </div>
       <div className="flex flex-col justify-center w-1/4 text-center">
-        <FixtureStatus status={status} date={date} minute={minute} />
+        <FixtureStatusView status={status} date={date} minute={minute} />
       </div>
     </div>
   </Link>

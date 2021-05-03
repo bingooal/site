@@ -1,4 +1,8 @@
-import { FOOTBALL_API_KEY, IS_PROD_ENV } from '../../../../config';
+import {
+  FOOTBALL_API_KEY,
+  FOOTBALL_API_KEY_2,
+  IS_PROD_ENV,
+} from '../../../../config';
 import { dayjs } from '../../../../services/date';
 import logger from '../../../../services/logger';
 import makeRequest, { RequestConfig } from '../../../../services/request';
@@ -16,16 +20,35 @@ import {
   mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
+type ApiFootballResponseBody = {
+  parameters: { [parameter: string]: string };
+  errors: any[];
+  results: number;
+  response: any[];
+};
+
 const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
-  const res = await makeRequest({
+  const config = {
     ...requestConfig,
     baseURL: 'https://v3.football.api-sports.io',
     headers: {
       'x-rapidapi-key': FOOTBALL_API_KEY,
       'x-rapidapi-host': 'v3.football.api-sports.io',
     },
-  });
-  return res.response;
+  };
+  const res1: ApiFootballResponseBody = await makeRequest(config);
+  if (!FOOTBALL_API_KEY_2 || res1.results > 0) {
+    return res1.response;
+  }
+  logger.log(
+    `[api-football.ts] makeRequestToApiFootball() returned [], trying 2nd API key. requestConfig was: ${requestConfig}, errors received: ${res1.errors}`
+  );
+  const configWith2ndApiKey = {
+    ...config,
+    headers: { ...config.headers, 'x-rapidapi-key': FOOTBALL_API_KEY_2 },
+  };
+  const res2: ApiFootballResponseBody = await makeRequest(configWith2ndApiKey);
+  return res2.response;
 };
 
 // https://www.api-football.com/documentation-v3#operation/get-fixtures
@@ -140,13 +163,8 @@ const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
 };
 
 const extractPlayersAndEvents = (
-  fixtureId: string,
   fixtureData: ApiFootballFixture
 ): { footballPlayers: FootballPlayer[]; occuredEventNames: string[] } => {
-  logger.log(
-    `[api-football.ts] extractPlayersAndEvents(${fixtureId}) fixtureData`,
-    fixtureData
-  );
   const { lineups, players } = fixtureData;
   if (!lineups.length) {
     return { footballPlayers: [], occuredEventNames: [] };
@@ -186,12 +204,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     goals: { home: homeTeamGoals, away: awayTeamGoals },
   } = fixtureData;
 
-  logger.log(
-    `[api-football.ts] getFixture(${fixtureId}) fixtureData 2`,
-    fixtureData
-  );
   const { footballPlayers, occuredEventNames } = extractPlayersAndEvents(
-    fixtureId,
     fixtureData
   );
 

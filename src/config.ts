@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-export const { FOOTBALL_API_KEY } = process.env;
+export const { FOOTBALL_API_KEY, FOOTBALL_API_KEY_2 } = process.env;
 
 // `yarn dev` sets NODE_ENV to 'development'
 // `yarn test` sets NODE_ENV to 'test'

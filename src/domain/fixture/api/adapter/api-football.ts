@@ -1,3 +1,4 @@
+import util from 'util';
 import {
   FOOTBALL_API_KEY,
   FOOTBALL_API_KEY_2,
@@ -70,6 +71,7 @@ const getFixtureFromApiFootball = async (
 const extractPlayerNamesFromLineups = (
   lineups: ApiFootballLineups
 ): string[] => {
+  logger.log('[api-football.ts] lineups', lineups, '\n');
   if (!lineups.length) {
     return [];
   }
@@ -190,7 +192,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     : mockPastFixture;
   logger.log(
     `[api-football.ts] getFixture(${fixtureId}) fixtureData`,
-    fixtureData
+    util.inspect(fixtureData, { depth: null })
   );
 
   const {

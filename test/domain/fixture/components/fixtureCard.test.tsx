@@ -1,6 +1,5 @@
-import FixtureCard, {
-  FixtureStatus,
-} from '../../../../src/domain/fixture/components/fixtureCard';
+import FixtureCard from '../../../../src/domain/fixture/components/fixtureCard';
+import { Status } from '../../../../src/domain/fixture/components/fixtureStatus';
 import { getTime } from '../../../../src/services/date';
 import { fixturePreview } from '../../../mockData';
 import { render, screen } from '../../../testUtils';
@@ -57,7 +56,7 @@ describe('FixtureCard', () => {
   it("shows 'Full time' after the fixture", () => {
     const fixture = {
       ...fixturePreview,
-      status: FixtureStatus.FT,
+      status: Status.FT,
     };
 
     render(<FixtureCard fixture={fixture} />);
@@ -68,7 +67,7 @@ describe('FixtureCard', () => {
   it("shows 'Half time' when it's half time", () => {
     const fixture = {
       ...fixturePreview,
-      status: FixtureStatus.HT,
+      status: Status.HT,
     };
 
     render(<FixtureCard fixture={fixture} />);
@@ -79,7 +78,7 @@ describe('FixtureCard', () => {
   it("shows 'Postponed' when the fixture is postponed", () => {
     const fixture = {
       ...fixturePreview,
-      status: FixtureStatus.PST,
+      status: Status.PST,
     };
 
     render(<FixtureCard fixture={fixture} />);

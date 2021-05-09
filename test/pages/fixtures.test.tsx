@@ -4,7 +4,7 @@ import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import Fixtures from '../../src/pages/fixtures';
 import { fixturePreview } from '../mockData';
-import { render, screen, within } from '../testUtils';
+import { render, screen } from '../testUtils';
 
 const mockNextRouter: Partial<nextRouter.NextRouter> = { push: jest.fn() };
 
@@ -29,21 +29,7 @@ describe('Fixtures page', () => {
   });
 
   it('shows a fixture', () => {
-    const fixtureComponent = screen.getByText(fixturePreview.homeTeamName)
-      .parentElement.parentElement.parentElement;
-    expect(fixtureComponent).toBeInTheDocument();
-    expect(
-      within(fixtureComponent).getByText(`${fixturePreview.minute}'`)
-    ).toBeInTheDocument();
-    expect(
-      within(fixtureComponent).getByText(fixturePreview.homeTeamGoals)
-    ).toBeInTheDocument();
-    expect(
-      within(fixtureComponent).getByText(fixturePreview.awayTeamName)
-    ).toBeInTheDocument();
-    expect(
-      within(fixtureComponent).getByText(fixturePreview.awayTeamGoals)
-    ).toBeInTheDocument();
+    expect(screen.getByText(fixturePreview.homeTeamName)).toBeInTheDocument();
   });
 
   it('redirects to the fixture page when clicking a fixture', () => {

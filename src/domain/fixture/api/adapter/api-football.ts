@@ -64,10 +64,6 @@ const getFixtureFromApiFootball = async (
       exclude: { query: false },
     },
   });
-  logger.log(
-    `[api-football.ts] getFixtureFromApiFootball(${fixtureId}) fixtures`,
-    fixtures
-  );
   return fixtures[0];
 };
 
@@ -189,7 +185,6 @@ const extractPlayersAndEvents = (
 };
 
 export const getFixture: GetFixture = async (fixtureId) => {
-  logger.log(`[api-football.ts] getFixture(${fixtureId})`);
   const fixtureData: ApiFootballFixture = IS_PROD_ENV
     ? await getFixtureFromApiFootball(fixtureId)
     : mockPastFixture;
@@ -264,7 +259,6 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
 };
 
 export const getFixtures: GetFixtures = async () => {
-  logger.log('[api-football.ts] getFixtures()', '\n');
   const data = IS_PROD_ENV
     ? await getFixturesFromApiFootball()
     : mockFixturesData;

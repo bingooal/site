@@ -11,4 +11,8 @@ export const fixturePreview: FixturePreview = {
   awayTeamName: 'Chelsea',
   awayTeamLogo: 'https://media.api-sports.io/football/teams/49.png',
   awayTeamGoals: 0,
+  competition: {
+    name: 'Premier League',
+    logo: 'https://media.api-sports.io/football/leagues/39.png',
+  },
 };

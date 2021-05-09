@@ -27,6 +27,10 @@ describe('getFixtures', () => {
         awayTeamName: expect.any(String),
         awayTeamLogo: expect.any(String),
         awayTeamGoals: expectAnyNumberOrNull,
+        competition: {
+          name: expect.any(String),
+          logo: expect.any(String),
+        },
       });
     });
   });
@@ -49,6 +53,10 @@ describe('getFixture', () => {
       awayTeamName: expect.any(String),
       awayTeamLogo: expect.any(String),
       awayTeamGoals: expect.any(Number),
+      competition: {
+        name: expect.any(String),
+        logo: expect.any(String),
+      },
       events: expect.arrayContaining([
         // e.g.:
         // {

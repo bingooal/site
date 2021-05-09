@@ -197,6 +197,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
 
   const {
     fixture,
+    league,
     teams: { home, away },
     goals: { home: homeTeamGoals, away: awayTeamGoals },
   } = fixtureData;
@@ -222,6 +223,10 @@ export const getFixture: GetFixture = async (fixtureId) => {
     awayTeamName: away.name,
     awayTeamLogo: away.logo,
     awayTeamGoals,
+    competition: {
+      name: league.name,
+      logo: league.logo,
+    },
     events: generatedEvents,
   };
 };
@@ -269,6 +274,7 @@ export const getFixtures: GetFixtures = async () => {
     .map(
       ({
         fixture,
+        league,
         teams,
         goals: { home: homeTeamGoals, away: awayTeamGoals },
       }) => ({
@@ -282,6 +288,10 @@ export const getFixtures: GetFixtures = async () => {
         awayTeamName: teams.away.name,
         awayTeamLogo: teams.away.logo,
         awayTeamGoals,
+        competition: {
+          name: league.name,
+          logo: league.logo,
+        },
       })
     );
 };

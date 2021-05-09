@@ -9,6 +9,10 @@ type FixturePreview = {
   awayTeamName: string;
   awayTeamLogo: string;
   awayTeamGoals: number | null;
+  competition: {
+    name: string;
+    logo: string;
+  };
 };
 
 export default FixturePreview;

@@ -12,10 +12,12 @@ import { FootballPlayer } from '../../data/Fixture';
 import { Action, actions } from '../../services/actions';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
-import { mockFixturesData } from './mockApiFootballData/fixtures';
+import {
+  mockFixtures,
+  ApiFootballFixtures,
+} from './mockApiFootballData/fixtures';
 import {
   ApiFootballFixture,
-  ApiFootballFixtures,
   ApiFootballLineups,
   ApiFootballPlayer,
   mockPastFixture,
@@ -60,6 +62,9 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
 const getFixtureFromApiFootball = async (
   fixtureId: string
 ): Promise<ApiFootballFixture> => {
+  if (!IS_PROD_ENV) {
+    return mockPastFixture;
+  }
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
     url: 'fixtures',
@@ -69,6 +74,10 @@ const getFixtureFromApiFootball = async (
       exclude: { query: false },
     },
   });
+  logger.log(
+    `[api-football.ts] getFixtureFromApiFootball(${fixtureId}) fixtures`,
+    inspect(fixtures)
+  );
   return fixtures[0];
 };
 
@@ -164,11 +173,16 @@ const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
   };
 };
 
-const extractPlayersAndEvents = (
+export const extractPlayersAndEvents = (
   fixtureData: ApiFootballFixture
 ): { footballPlayers: FootballPlayer[]; occuredEventNames: string[] } => {
   const { lineups, players } = fixtureData;
   if (!lineups.length) {
+    logger.log(`[api-football.ts] extractPlayersAndEvents() lineups`, lineups);
+    return { footballPlayers: [], occuredEventNames: [] };
+  }
+  if (!players.length) {
+    logger.log(`[api-football.ts] extractPlayersAndEvents() players`, players);
     return { footballPlayers: [], occuredEventNames: [] };
   }
   const namesOfPlayersInLineup = extractPlayerNamesFromLineups(lineups);
@@ -191,14 +205,7 @@ const extractPlayersAndEvents = (
 };
 
 export const getFixture: GetFixture = async (fixtureId) => {
-  const fixtureData: ApiFootballFixture = IS_PROD_ENV
-    ? await getFixtureFromApiFootball(fixtureId)
-    : mockPastFixture;
-  logger.log(
-    `[api-football.ts] getFixture(${fixtureId}) fixtureData`,
-    inspect(fixtureData)
-  );
-
+  const fixtureData = await getFixtureFromApiFootball(fixtureId);
   const {
     fixture,
     league,
@@ -253,6 +260,10 @@ const getLeaguePreviews = async () => {
 
 // https://www.api-football.com/documentation-v3#operation/get-fixtures
 const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
+  if (!IS_PROD_ENV) {
+    return mockFixtures;
+  }
+
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
     url: 'fixtures',
@@ -270,9 +281,7 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
 };
 
 export const getFixtures: GetFixtures = async () => {
-  const data = IS_PROD_ENV
-    ? await getFixturesFromApiFootball()
-    : mockFixturesData;
+  const data = await getFixturesFromApiFootball();
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
     .map(

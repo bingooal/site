@@ -1,7 +1,7 @@
 // date: '2021-03-21', (Leiceister vs Manchester United in the FA Cup)
 // season: 2020,
 // filtered by leaguesWeWatch
-export const mockPastFixturesData = [
+export const mockPastFixtures = [
   {
     fixture: {
       id: 676091,
@@ -134,7 +134,7 @@ export const mockPastFixturesData = [
   },
 ];
 
-export const mockFutureFixturesData = [
+export const mockFutureFixtures = [
   {
     fixture: {
       id: 592821,
@@ -205,7 +205,9 @@ export const mockFutureFixturesData = [
   },
 ];
 
-export const mockFixturesData = [
-  ...mockPastFixturesData,
-  ...mockFutureFixturesData,
+export const mockFixtures = [
+  ...mockPastFixtures,
+  ...mockFutureFixtures,
 ];
+
+export type ApiFootballFixtures = typeof mockFixtures;

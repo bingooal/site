@@ -21,6 +21,8 @@ import {
   mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
+const inspect = (object) => util.inspect(object, { depth: null });
+
 type ApiFootballResponseBody = {
   parameters: { [parameter: string]: string };
   errors: any[];
@@ -42,7 +44,9 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
     return res1.response;
   }
   logger.log(
-    `[api-football.ts] makeRequestToApiFootball() returned [], trying 2nd API key. requestConfig was: ${requestConfig}, errors received: ${res1.errors}`
+    `[api-football.ts] makeRequestToApiFootball() returned [], trying 2nd API key. requestConfig was: ${inspect(
+      requestConfig
+    )}, errors received: ${inspect(res1.errors)}`
   );
   const configWith2ndApiKey = {
     ...config,
@@ -192,7 +196,7 @@ export const getFixture: GetFixture = async (fixtureId) => {
     : mockPastFixture;
   logger.log(
     `[api-football.ts] getFixture(${fixtureId}) fixtureData`,
-    util.inspect(fixtureData, { depth: null })
+    inspect(fixtureData)
   );
 
   const {

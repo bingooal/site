@@ -14,20 +14,18 @@ type Props = {
 
 const FixtureStatus: React.VFC<Props> = ({ status, date, minute }: Props) => {
   if (status === Status.PST) {
-    return <div className="text-sm font-medium text-red-500">Postponed</div>;
+    return <div className="text-red-500">Postponed</div>;
   }
   if (status === Status.FT) {
-    return <div className="text-sm font-medium text-gray-600">Full time</div>;
+    return <div className="text-gray-600 ">Full time</div>;
   }
   if (status === Status.HT) {
-    return <div className="text-sm font-medium text-red-500">Half time</div>;
+    return <div className="text-red-500">Half time</div>;
   }
   if (minute) {
-    return (
-      <div className="text-sm font-medium text-red-500">{`${minute}'`}</div>
-    );
+    return <div className="text-red-500">{`${minute}'`}</div>;
   }
-  return <div className="text-sm font-medium">{getTime(date)}</div>;
+  return <div>{getTime(date)}</div>;
 };
 
 export default FixtureStatus;

@@ -55,7 +55,7 @@ const FixtureCard: React.VFC<Props> = ({
           goals={awayTeamGoals}
         />
       </div>
-      <div className="flex flex-col justify-center w-1/4 text-center">
+      <div className="flex flex-col justify-center w-1/4 text-sm font-medium text-center">
         <FixtureStatus status={status} date={date} minute={minute} />
       </div>
     </div>

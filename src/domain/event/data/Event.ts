@@ -1,7 +1,7 @@
 type Event = {
   name: string;
   points: number;
-  imageUrl: string;
+  imageUrl?: string;
   hasOccured: boolean;
 };
 

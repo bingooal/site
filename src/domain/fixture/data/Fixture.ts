@@ -6,8 +6,9 @@ type Fixture = FixturePreview & {
 };
 
 export type FootballPlayer = {
+  id: number;
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 export default Fixture;

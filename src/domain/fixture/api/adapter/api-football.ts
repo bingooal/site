@@ -81,22 +81,23 @@ const getFixtureFromApiFootball = async (
   return fixtures[0];
 };
 
-const extractPlayerNamesFromLineups = (
+const extractPlayersFromLineups = (
   lineups: ApiFootballLineups
-): string[] => {
+): FootballPlayer[] => {
   logger.log('[api-football.ts] lineups', lineups, '\n');
   if (!lineups.length) {
     return [];
   }
   const [homeLineupData, awayLineupData] = lineups;
-  const homePlayers = homeLineupData.startXI;
-  const awayPlayers = awayLineupData.startXI;
-  const playersData = [...homePlayers, ...awayPlayers];
-  const playerNames = playersData.map(({ player: { name } }) => name);
-  return playerNames;
+  const homePlayers = homeLineupData.startXI.map(({ player }) => player);
+  const awayPlayers = awayLineupData.startXI.map(({ player }) => player);
+  return [...homePlayers, ...awayPlayers].map(({ id, name }) => ({ id, name }));
 };
 
-const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
+const extractPlayerAndEvents = ({
+  player,
+  statistics,
+}: ApiFootballPlayer): { footballPlayer: FootballPlayer; events: string[] } => {
   const statistic = statistics[0];
   const events: string[] = [];
 
@@ -166,6 +167,7 @@ const extractPlayerAndEvents = ({ player, statistics }: ApiFootballPlayer) => {
 
   return {
     footballPlayer: {
+      id: player.id,
       name: player.name,
       imageUrl: player.photo,
     },
@@ -181,19 +183,26 @@ export const extractPlayersAndEvents = (
     logger.log(`[api-football.ts] extractPlayersAndEvents() lineups`, lineups);
     return { footballPlayers: [], occuredEventNames: [] };
   }
+
+  const playersWithoutImageUrls = extractPlayersFromLineups(lineups);
+
   if (!players.length) {
     logger.log(`[api-football.ts] extractPlayersAndEvents() players`, players);
-    return { footballPlayers: [], occuredEventNames: [] };
+    return {
+      footballPlayers: playersWithoutImageUrls,
+      occuredEventNames: [],
+    };
   }
-  const namesOfPlayersInLineup = extractPlayerNamesFromLineups(lineups);
+
   const [{ players: homePlayers }, { players: awayPlayers }] = players;
   const playersData = [
     ...homePlayers.map(extractPlayerAndEvents),
     ...awayPlayers.map(extractPlayerAndEvents),
   ];
 
+  const idsOfPlayersInLineup = playersWithoutImageUrls.map(({ id }) => id);
   const playersAndEvents = playersData.filter(({ footballPlayer }) =>
-    namesOfPlayersInLineup.includes(footballPlayer.name)
+    idsOfPlayersInLineup.includes(footballPlayer.id)
   );
 
   const footballPlayers = playersAndEvents.map(

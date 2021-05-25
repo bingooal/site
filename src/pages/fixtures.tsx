@@ -1,8 +1,13 @@
 import Head from 'next/head';
 import { useQuery } from 'react-query';
 import { getFixtures } from '../domain/fixture/api/indexFrontend';
-import FixturesHeader from '../domain/fixture/components/fixturesHeader';
 import GroupedFixtureList from '../domain/fixture/components/groupedFixtureList';
+
+const Header: React.VFC = () => (
+  <header className="sticky top-0 z-50 px-2 py-2 bg-white border-b">
+    <div className="font-semibold text-center text-m ">Bingooal</div>
+  </header>
+);
 
 const Fixtures: React.VFC = () => {
   const { data: fixtures } = useQuery('getFixtures', getFixtures, {
@@ -14,9 +19,9 @@ const Fixtures: React.VFC = () => {
         <title>Fixtures</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <FixturesHeader />
+      <Header />
       <div className="container px-4 mx-auto divide-y space-y sm:px-8">
-        <h3 className="px-2 py-2 text-xl font-semibold">Today</h3>
+        <h3 className="px-2 py-2 text-center text-l">Today</h3>
         {fixtures && <GroupedFixtureList fixtures={fixtures} />}
       </div>
     </div>

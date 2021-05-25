@@ -4,7 +4,7 @@ import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import Fixtures from '../../src/pages/fixtures';
 import { fixturePreview } from '../mockData';
-import { render, screen } from '../testUtils';
+import { render, screen, within } from '../testUtils';
 
 const mockNextRouter: Partial<nextRouter.NextRouter> = { push: jest.fn() };
 
@@ -18,10 +18,9 @@ describe('Fixtures page', () => {
     render(<Fixtures />);
   });
 
-  it('shows the Fixtures heading', () => {
-    expect(
-      screen.getByRole('heading', { name: 'Fixtures' })
-    ).toBeInTheDocument();
+  it('shows the Bingooal header', () => {
+    const header = screen.getByRole('banner');
+    expect(within(header).getByText('Bingooal')).toBeInTheDocument();
   });
 
   it('shows the Today heading', () => {

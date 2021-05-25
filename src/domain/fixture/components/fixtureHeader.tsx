@@ -34,22 +34,31 @@ const FixtureHeader: React.VFC<Props> = ({
     competition,
   },
 }: Props) => (
-  <header className="sticky top-0 z-50 px-2 py-3 bg-white border-b space-y-2">
-    <div className="text-xs text-center text-gray-600">{competition.name}</div>
-    <div className="flex flex-row text-center ">
-      <div className="w-2/5 ">
-        <TeamInfo name={homeTeamName} logo={homeTeamLogo} />
+  <header className="sticky top-0 z-50 bg-white ">
+    <div className="py-2 font-semibold text-center border-b text-m">
+      Bingooal
+    </div>
+    <div className="px-2 py-3 border-b space-y-2">
+      <div className="text-xs text-center text-gray-600">
+        {competition.name}
       </div>
-      <div className="w-1/5 space-y-1">
-        <div className="text-2xl font-bold">
-          {homeTeamGoals !== null ? `${homeTeamGoals} : ${awayTeamGoals}` : '-'}
+      <div className="flex flex-row text-center ">
+        <div className="w-2/5 ">
+          <TeamInfo name={homeTeamName} logo={homeTeamLogo} />
         </div>
-        <div className="text-xs text-gray-600">
-          <FixtureStatus status={status} date={date} minute={minute} />
+        <div className="w-1/5 space-y-1">
+          <div className="text-2xl font-bold">
+            {homeTeamGoals !== null
+              ? `${homeTeamGoals} : ${awayTeamGoals}`
+              : '-'}
+          </div>
+          <div className="text-xs text-gray-600">
+            <FixtureStatus status={status} date={date} minute={minute} />
+          </div>
         </div>
-      </div>
-      <div className="w-2/5 ">
-        <TeamInfo name={awayTeamName} logo={awayTeamLogo} />
+        <div className="w-2/5 ">
+          <TeamInfo name={awayTeamName} logo={awayTeamLogo} />
+        </div>
       </div>
     </div>
   </header>

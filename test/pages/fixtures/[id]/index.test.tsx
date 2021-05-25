@@ -76,13 +76,10 @@ describe('Fixture page', () => {
   });
 
   it('shows the fixture header', () => {
-    const fixtureHeader = screen.getByRole('banner');
-    expect(
-      within(fixtureHeader).getByText(fixture.homeTeamName)
-    ).toBeInTheDocument();
-    expect(
-      within(fixtureHeader).getByText(fixture.awayTeamName)
-    ).toBeInTheDocument();
+    const header = screen.getByRole('banner');
+    expect(within(header).getByText('Bingooal')).toBeInTheDocument();
+    expect(within(header).getByText(fixture.homeTeamName)).toBeInTheDocument();
+    expect(within(header).getByText(fixture.awayTeamName)).toBeInTheDocument();
   });
 
   it('shows events names, points and images, and other users selecting them', () => {

@@ -3455,22 +3455,23 @@ export type ApiFootballLineups = ApiFootballFixture['lineups'];
 
 export type ApiFootballPlayer = ApiFootballFixture['players'][0]['players'][0];
 
-// type ApiFootballFixtureStatus =
-//   | 'TBD' // Time To Be Defined
-//   | 'NS' // Not Started
-//   | '1H' // First Half, Kick Off
-//   | 'HT' // Halftime
-//   | '2H' // Second Half, 2nd Half Started
-//   | 'ET' // Extra Time
-//   | 'P' // Penalty In Progress
-//   | 'FT' // Match Finished
-//   | 'AET' // Match Finished After Extra Time
-//   | 'PEN' // Match Finished After Penalty
-//   | 'BT' // Break Time (in Extra Time)
-//   | 'SUSP' // Match Suspended
-//   | 'INT' // Match Interrupted
-//   | 'PST' // Match Postponed
-//   | 'CANC' // Match Cancelled
-//   | 'ABD' // Match Abandoned
-//   | 'AWD' // Technical Loss
-//   | 'WO'; // WalkOver
+export enum ApiFootballFixtureStatus {
+  TimeToBeDefined = 'TBD',
+  NotStarted = 'NS',
+  FirstHalfStarted = '1H',
+  HalfTime = 'HT',
+  SecondHalfStarted = '2H',
+  ExtraTime = 'ET',
+  PenaltyInProgress = 'P',
+  MatchFinished = 'FT',
+  MatchFinishedAfterExtraTime = 'AET',
+  MatchFinishedAfterPenalties = 'PEN',
+  ExtraTimeBreak = 'BT',
+  MatchSuspended = 'SUSP',
+  MatchInterrupted = 'INT',
+  MatchPostponed = 'PST',
+  MatchCancelled = 'CANC',
+  MatchAbandoned = 'ABD',
+  TechnicalLoss = 'AWD',
+  WalkOver = 'WO',
+}

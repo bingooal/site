@@ -11,4 +11,13 @@ export type FootballPlayer = {
   imageUrl?: string;
 };
 
+export enum FixtureStatus {
+  Postponed = 'PT',
+  HalfTime = 'HT',
+  FullTime = 'FT',
+  ExtraTimeBreak = 'BT',
+  Penalties = 'P',
+  FinishedAfterPenalties = 'PEN',
+}
+
 export default Fixture;

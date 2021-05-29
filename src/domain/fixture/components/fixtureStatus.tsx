@@ -1,10 +1,5 @@
 import { getTime } from '../../../services/date';
-
-export enum Status {
-  PST = 'PST',
-  FT = 'FT',
-  HT = 'HT',
-}
+import { FixtureStatus as Status } from '../data/Fixture';
 
 type Props = {
   status: string;
@@ -13,14 +8,20 @@ type Props = {
 };
 
 const FixtureStatus: React.VFC<Props> = ({ status, date, minute }: Props) => {
-  if (status === Status.PST) {
+  if (status === Status.Postponed) {
     return <div className="text-red-500">Postponed</div>;
   }
-  if (status === Status.FT) {
-    return <div className="text-gray-600 ">Full time</div>;
-  }
-  if (status === Status.HT) {
+  if (status === Status.HalfTime) {
     return <div className="text-red-500">Half time</div>;
+  }
+  if (status === Status.ExtraTimeBreak) {
+    return <div className="text-red-500 ">Extra time break</div>;
+  }
+  if (status === Status.Penalties) {
+    return <div className="text-red-500 ">Penalties</div>;
+  }
+  if (status === Status.FullTime || status === Status.FinishedAfterPenalties) {
+    return <div className="text-gray-600 ">Full time</div>;
   }
   if (minute) {
     return <div className="text-red-500">{`${minute}'`}</div>;

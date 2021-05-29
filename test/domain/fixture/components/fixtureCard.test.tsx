@@ -1,5 +1,5 @@
 import FixtureCard from '../../../../src/domain/fixture/components/fixtureCard';
-import { Status } from '../../../../src/domain/fixture/components/fixtureStatus';
+import { FixtureStatus as Status } from '../../../../src/domain/fixture/data/Fixture';
 import { getTime } from '../../../../src/services/date';
 import { fixturePreview } from '../../../mockData';
 import { render, screen } from '../../../testUtils';
@@ -19,14 +19,25 @@ describe('FixtureCard', () => {
   it('shows the score when there is a score', () => {
     const fixture = {
       ...fixturePreview,
-      homeTeamGoals: 1,
-      awayTeamGoals: 2,
+      homeTeamGoals: 0,
+      awayTeamGoals: 1,
     };
 
     render(<FixtureCard fixture={fixture} />);
 
+    expect(screen.getByText(0)).toBeInTheDocument();
     expect(screen.getByText(1)).toBeInTheDocument();
-    expect(screen.getByText(2)).toBeInTheDocument();
+  });
+
+  it("shows 'Postponed' when the fixture is postponed", () => {
+    const fixture = {
+      ...fixturePreview,
+      status: Status.Postponed,
+    };
+
+    render(<FixtureCard fixture={fixture} />);
+
+    expect(screen.getByText('Postponed')).toBeInTheDocument();
   });
 
   it('shows the kickoff date and time before kick off', () => {
@@ -45,29 +56,18 @@ describe('FixtureCard', () => {
   it('shows minutes played during the fixture', () => {
     const fixture = {
       ...fixturePreview,
-      minute: 89,
+      minute: 1,
     };
 
     render(<FixtureCard fixture={fixture} />);
 
-    expect(screen.getByText(`${89}'`)).toBeInTheDocument();
-  });
-
-  it("shows 'Full time' after the fixture", () => {
-    const fixture = {
-      ...fixturePreview,
-      status: Status.FT,
-    };
-
-    render(<FixtureCard fixture={fixture} />);
-
-    expect(screen.getByText('Full time')).toBeInTheDocument();
+    expect(screen.getByText(`${1}'`)).toBeInTheDocument();
   });
 
   it("shows 'Half time' when it's half time", () => {
     const fixture = {
       ...fixturePreview,
-      status: Status.HT,
+      status: Status.HalfTime,
     };
 
     render(<FixtureCard fixture={fixture} />);
@@ -75,14 +75,48 @@ describe('FixtureCard', () => {
     expect(screen.getByText('Half time')).toBeInTheDocument();
   });
 
-  it("shows 'Postponed' when the fixture is postponed", () => {
+  it("shows 'Extra time break' when it's in the extra time break", () => {
     const fixture = {
       ...fixturePreview,
-      status: Status.PST,
+      status: Status.ExtraTimeBreak,
     };
 
     render(<FixtureCard fixture={fixture} />);
 
-    expect(screen.getByText('Postponed')).toBeInTheDocument();
+    expect(screen.getByText('Extra time break')).toBeInTheDocument();
+  });
+
+  it("shows 'Penalities' when it's in penalties", () => {
+    const fixture = {
+      ...fixturePreview,
+      status: Status.Penalties,
+    };
+
+    render(<FixtureCard fixture={fixture} />);
+
+    expect(screen.getByText('Penalties')).toBeInTheDocument();
+  });
+
+  it("shows 'Full time' after the fixture finishes (without penalties)", () => {
+    const fixture = {
+      ...fixturePreview,
+      status: Status.FullTime,
+    };
+
+    render(<FixtureCard fixture={fixture} />);
+
+    expect(screen.getByText('Full time')).toBeInTheDocument();
+  });
+
+  it("shows 'Full time' after the fixture finishes (after penalties)", () => {
+    const fixture = {
+      ...fixturePreview,
+      status: Status.FinishedAfterPenalties,
+      minute: 120,
+    };
+
+    render(<FixtureCard fixture={fixture} />);
+
+    expect(screen.getByText('Full time')).toBeInTheDocument();
   });
 });

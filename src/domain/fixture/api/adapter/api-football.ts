@@ -27,7 +27,7 @@ const inspect = (object) => util.inspect(object, { depth: null });
 
 type ApiFootballResponseBody = {
   parameters: { [parameter: string]: string };
-  errors: any[];
+  errors: { [errorType: string]: string }[];
   results: number;
   response: any[];
 };
@@ -268,7 +268,9 @@ const getLeaguePreviews = async () => {
 };
 
 // https://www.api-football.com/documentation-v3#operation/get-fixtures
-const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
+const getFixturesFromApiFootball = async (
+  date: string
+): Promise<ApiFootballFixtures> => {
   if (!IS_PROD_ENV) {
     return mockFixtures;
   }
@@ -277,7 +279,7 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
     method: 'GET',
     url: 'fixtures',
     params: {
-      date: dayjs().format('YYYY-MM-DD'),
+      date: dayjs(date).format('YYYY-MM-DD'),
       season: 2020,
       timezone: 'Europe/London',
     },
@@ -289,8 +291,8 @@ const getFixturesFromApiFootball = async (): Promise<ApiFootballFixtures> => {
   return fixtures;
 };
 
-export const getFixtures: GetFixtures = async () => {
-  const data = await getFixturesFromApiFootball();
+export const getFixtures: GetFixtures = async (date) => {
+  const data = await getFixturesFromApiFootball(date);
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
     .map(

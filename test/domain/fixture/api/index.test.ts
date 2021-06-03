@@ -13,7 +13,8 @@ const expectAnyNumberOrNull = expect.toMatchSome(
 
 describe('getFixtures', () => {
   it('should get a list of fixture previews', async () => {
-    const fixtures = await getFixtures();
+    const anyDate = '2021-04-24T12:30:00+01:00';
+    const fixtures = await getFixtures(anyDate);
     expect(fixtures).toBeArray();
     fixtures.forEach((fixture) => {
       expect(fixture).toMatchObject<FixturePreview>({

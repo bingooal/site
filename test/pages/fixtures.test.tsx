@@ -1,23 +1,31 @@
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
+import * as nextImage from 'next/image';
 import React from 'react';
 import * as fixtureApi from '../../src/domain/fixture/api/indexFrontend';
 import FixturePreview from '../../src/domain/fixture/data/FixturePreview';
 import Fixtures from '../../src/pages/fixtures';
-import { now } from '../../src/services/date';
+import { now, format } from '../../src/services/date';
 import { fixturePreview } from '../mockData';
 import { render, screen, within } from '../testUtils';
 
-const mockNextRouter: Partial<nextRouter.NextRouter> = { push: jest.fn() };
+const mockNextRouter: Partial<nextRouter.NextRouter> = {
+  push: jest.fn(),
+  query: {},
+  pathname: '/fixtures',
+};
+
+const todayDateString = format(now());
+const yesterdayDateString = format(now().subtract(1, 'day'));
 
 export const fixturePreviewsToday: FixturePreview[] = [
-  { ...fixturePreview, date: now().format() },
+  { ...fixturePreview, date: todayDateString },
 ];
 
 export const fixturePreviewsYesterday: FixturePreview[] = [
   {
     ...fixturePreview,
-    date: now().subtract(1, 'day').format(),
+    date: yesterdayDateString,
     homeTeamName: `${fixturePreview.homeTeamName} Yesterday`,
   },
 ];
@@ -25,13 +33,19 @@ export const fixturePreviewsYesterday: FixturePreview[] = [
 describe('Fixtures page', () => {
   beforeEach(() => {
     jest
+      .spyOn(nextImage, 'default')
+      .mockImplementation(({ src }: nextImage.ImageProps) => (
+        <img src={src} alt="" />
+      ));
+
+    jest
       .spyOn(nextRouter, 'useRouter')
       .mockReturnValue(mockNextRouter as nextRouter.NextRouter);
 
     jest
       .spyOn(fixtureApi, 'getFixtures')
       .mockImplementation(async (date: string) =>
-        date === now().format()
+        date === todayDateString
           ? fixturePreviewsToday
           : fixturePreviewsYesterday
       );
@@ -70,8 +84,9 @@ describe('Fixtures page', () => {
 
     userEvent.click(previousDayButton);
 
-    expect(
-      await screen.findByText(fixturePreviewsYesterday[0].homeTeamName)
-    ).toBeInTheDocument();
+    expect(mockNextRouter.push).toBeCalledTimes(1);
+    expect(mockNextRouter.push).toBeCalledWith(
+      `${mockNextRouter.pathname}?date=${yesterdayDateString}`
+    );
   });
 });

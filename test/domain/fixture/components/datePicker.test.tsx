@@ -5,7 +5,9 @@ import { render, screen } from '../../../testUtils';
 
 describe('DatePicker', () => {
   it('shows the current date', () => {
-    render(<DatePicker date={now()} setDate={jest.fn()} />);
+    const date = now();
+    const setDate = jest.fn();
+    render(<DatePicker date={date} setDate={setDate} />);
 
     expect(screen.getByText('Today')).toBeInTheDocument();
   });

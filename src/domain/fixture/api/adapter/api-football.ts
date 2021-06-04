@@ -4,7 +4,7 @@ import {
   FOOTBALL_API_KEY_2,
   IS_PROD_ENV,
 } from '../../../../config';
-import { dayjs } from '../../../../services/date';
+import { dayjs, parse } from '../../../../services/date';
 import logger from '../../../../services/logger';
 import makeRequest, { RequestConfig } from '../../../../services/request';
 import { generateEvents } from '../../../event/services/eventGenerator';
@@ -13,8 +13,8 @@ import { Action, actions } from '../../services/actions';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
 import {
-  mockFixtures,
   ApiFootballFixtures,
+  mockFixtures,
 } from './mockApiFootballData/fixtures';
 import {
   ApiFootballFixture,
@@ -269,7 +269,7 @@ const getLeaguePreviews = async () => {
 
 // https://www.api-football.com/documentation-v3#operation/get-fixtures
 const getFixturesFromApiFootball = async (
-  date: string
+  dateString: string
 ): Promise<ApiFootballFixtures> => {
   if (!IS_PROD_ENV) {
     return mockFixtures;
@@ -279,7 +279,7 @@ const getFixturesFromApiFootball = async (
     method: 'GET',
     url: 'fixtures',
     params: {
-      date: dayjs(date).format('YYYY-MM-DD'),
+      date: parse(dateString).format('YYYY-MM-DD'),
       season: 2020,
       timezone: 'Europe/London',
     },
@@ -291,8 +291,8 @@ const getFixturesFromApiFootball = async (
   return fixtures;
 };
 
-export const getFixtures: GetFixtures = async (date) => {
-  const data = await getFixturesFromApiFootball(date);
+export const getFixtures: GetFixtures = async (dateString) => {
+  const data = await getFixturesFromApiFootball(dateString);
   return data
     .filter(({ league }) => idsOfLeaguesWeWatch.includes(league.id))
     .map(

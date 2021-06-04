@@ -6,7 +6,7 @@ import {
   getFixtures as getFixturesFromApiFootball,
 } from './adapter/api-football';
 
-export type GetFixtures = (date: string) => Promise<FixturePreview[]>;
+export type GetFixtures = (dateString: string) => Promise<FixturePreview[]>;
 export const getFixtures = getFixturesFromApiFootball;
 
 export type GetFixture = (id: string) => Promise<Fixture>;

@@ -5,11 +5,20 @@ import calendar from 'dayjs/plugin/calendar';
 dayjs.extend(duration);
 dayjs.extend(calendar);
 
+export type Date = dayjs.Dayjs;
+
 export { dayjs };
 
-export const getTime = (date) => dayjs(date).format('HH:mm');
+export const now = () => dayjs();
 
-export const getDay = (date) =>
+export const format = (date: Date) => date.format('YYYY-MM-DD');
+
+export const parse = (dateString: string) => dayjs(dateString);
+
+export const getTime = (dateString: string) =>
+  parse(dateString).format('HH:mm');
+
+export const getDay = (date: Date) =>
   date.calendar(null, {
     lastDay: '[Yesterday]',
     sameDay: '[Today]',
@@ -18,7 +27,3 @@ export const getDay = (date) =>
     nextWeek: 'ddd D MMM',
     sameElse: 'ddd D MMM',
   });
-
-export const now = () => dayjs();
-
-export type Date = dayjs.Dayjs;

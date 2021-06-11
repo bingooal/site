@@ -18,8 +18,8 @@ const TeamRow: React.VFC<TeamRowProps> = ({
     <div className="relative flex-shrink-0 w-7 h-7">
       <Image src={logo} alt={name} layout="fill" />
     </div>
-    <div className="w-4/5">{name}</div>
-    <div className="font-semibold">{goals}</div>
+    <div className="w-5/6">{name}</div>
+    <div className="w-1/6 font-semibold text-center">{goals}</div>
   </div>
 );
 
@@ -42,8 +42,8 @@ const FixtureCard: React.VFC<Props> = ({
   },
 }: Props) => (
   <Link href={`fixtures/${id}`}>
-    <div className="flex flex-row py-3 bg-white">
-      <div className="w-3/4 pr-2 border-r">
+    <div className="flex flex-row py-3 bg-white divide-x">
+      <div className="w-3/4">
         <TeamRow
           name={homeTeamName}
           logo={homeTeamLogo}

@@ -22,9 +22,9 @@ describe('groupByCompetition', () => {
   it.each`
     testName                                   | fixtures                                                | expected
     ${'0 fixtures'}                            | ${[]}                                                   | ${[]}
-    ${'1 fixture from 1 competition'}          | ${[fixturePreview]}                                     | ${[{ competitionName: fixturePreview.competition.name, competitionFixtures: [fixturePreview] }]}
-    ${'2 fixtures from 2 unique competitions'} | ${[fixturePreview, fixturePreviewDifferentCompetition]} | ${[{ competitionName: fixturePreview.competition.name, competitionFixtures: [fixturePreview] }, { competitionName: fixturePreviewDifferentCompetition.competition.name, competitionFixtures: [fixturePreviewDifferentCompetition] }]}
-    ${'2 fixtures from 1 unique competition'}  | ${[fixturePreview, fixturePreview]}                     | ${[{ competitionName: fixturePreview.competition.name, competitionFixtures: [fixturePreview, fixturePreview] }]}
+    ${'1 fixture from 1 competition'}          | ${[fixturePreview]}                                     | ${[{ competitionName: fixturePreview.competition.name, competitionLogo: fixturePreview.competition.logo, competitionFixtures: [fixturePreview] }]}
+    ${'2 fixtures from 2 unique competitions'} | ${[fixturePreview, fixturePreviewDifferentCompetition]} | ${[{ competitionName: fixturePreview.competition.name, competitionLogo: fixturePreview.competition.logo, competitionFixtures: [fixturePreview] }, { competitionName: fixturePreviewDifferentCompetition.competition.name, competitionLogo: fixturePreviewDifferentCompetition.competition.logo, competitionFixtures: [fixturePreviewDifferentCompetition] }]}
+    ${'2 fixtures from 1 unique competition'}  | ${[fixturePreview, fixturePreview]}                     | ${[{ competitionName: fixturePreview.competition.name, competitionLogo: fixturePreview.competition.logo, competitionFixtures: [fixturePreview, fixturePreview] }]}
   `('$testName', ({ fixtures, expected }: Table) => {
     expect(groupByCompetition(fixtures)).toEqual(expected);
   });
@@ -38,6 +38,9 @@ describe('GroupedFixtureList', () => {
 
     expect(
       screen.getByRole('heading', { name: fixturePreview.competition.name })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByAltText(fixturePreview.competition.name)
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {

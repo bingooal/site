@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tailwindcss/tailwind.css';
+import '../../mocks'
 
 export const queryClient = new QueryClient({
   defaultOptions: {

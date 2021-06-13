@@ -20,7 +20,6 @@ import {
   ApiFootballFixture,
   ApiFootballLineups,
   ApiFootballPlayer,
-  mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
 const inspect = (object) => util.inspect(object, { depth: null });
@@ -62,9 +61,6 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
 const getFixtureFromApiFootball = async (
   fixtureId: string
 ): Promise<ApiFootballFixture> => {
-  if (!IS_PROD_ENV) {
-    return mockPastFixture;
-  }
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
     url: 'fixtures',

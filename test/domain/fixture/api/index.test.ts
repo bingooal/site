@@ -59,11 +59,6 @@ describe('getFixture', () => {
         logo: expect.any(String),
       },
       events: expect.arrayContaining([
-        // e.g.:
-        // {
-        //   name: '[WATFORD_STRIKER] scores a goal',
-        //   points: 5,
-        // },
         {
           name: expect.any(String),
           points: expect.any(Number),
@@ -79,14 +74,14 @@ describe('getFixture', () => {
 
     expect(events).toContainEqual(
       expect.objectContaining({
-        name: 'Joe Wildsmith makes a save',
+        name: 'Kasper Schmeichel makes a save',
         hasOccured: true,
       })
     );
 
     expect(events).toContainEqual(
       expect.objectContaining({
-        name: 'Bradley Collins makes a save',
+        name: 'Alex Telles assists a goal',
         hasOccured: false,
       })
     );

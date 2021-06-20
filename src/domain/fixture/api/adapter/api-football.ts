@@ -1,9 +1,5 @@
 import util from 'util';
-import {
-  FOOTBALL_API_KEY,
-  FOOTBALL_API_KEY_2,
-  IS_PROD_ENV,
-} from '../../../../config';
+import { FOOTBALL_API_KEY, FOOTBALL_API_KEY_2 } from '../../../../config';
 import { dayjs, parse } from '../../../../services/date';
 import logger from '../../../../services/logger';
 import makeRequest, { RequestConfig } from '../../../../services/request';
@@ -12,10 +8,7 @@ import { FootballPlayer } from '../../data/Fixture';
 import { Action, actions } from '../../services/actions';
 import { GetFixture, GetFixtures } from '../indexBackend';
 import { idsOfLeaguesWeWatch } from './apiFootballLeagues';
-import {
-  ApiFootballFixtures,
-  mockFixtures,
-} from './mockApiFootballData/fixtures';
+import { ApiFootballFixtures } from './mockApiFootballData/fixtures';
 import {
   ApiFootballFixture,
   ApiFootballLineups,
@@ -24,7 +17,7 @@ import {
 
 const inspect = (object) => util.inspect(object, { depth: null });
 
-type ApiFootballResponseBody = {
+export type ApiFootballResponseBody = {
   parameters: { [parameter: string]: string };
   errors: { [errorType: string]: string }[];
   results: number;
@@ -269,10 +262,6 @@ const getLeaguePreviews = async () => {
 const getFixturesFromApiFootball = async (
   dateString: string
 ): Promise<ApiFootballFixtures> => {
-  if (!IS_PROD_ENV) {
-    return mockFixtures;
-  }
-
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
     url: 'fixtures',

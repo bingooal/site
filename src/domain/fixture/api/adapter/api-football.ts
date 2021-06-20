@@ -40,10 +40,11 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
     return res1.response;
   }
   logger.log(
-    `[api-football.ts] makeRequestToApiFootball() returned [], trying 2nd API key. requestConfig was: ${inspect(
+    `[api-football.ts] makeRequestToApiFootball() returned no results. requestConfig was: ${inspect(
       requestConfig
-    )}, errors received: ${inspect(res1.errors)}`
+    )}, response was: ${inspect(res1)}`
   );
+  logger.log('retrying request with 2nd API key');
   const configWith2ndApiKey = {
     ...config,
     headers: { ...config.headers, 'x-rapidapi-key': FOOTBALL_API_KEY_2 },

@@ -20,7 +20,6 @@ import {
   ApiFootballFixture,
   ApiFootballLineups,
   ApiFootballPlayer,
-  mockPastFixture,
 } from './mockApiFootballData/pastFixture';
 
 const inspect = (object) => util.inspect(object, { depth: null });
@@ -32,13 +31,15 @@ type ApiFootballResponseBody = {
   response: any[];
 };
 
+export const apiFootballDomain = 'v3.football.api-sports.io';
+
 const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
   const config = {
     ...requestConfig,
-    baseURL: 'https://v3.football.api-sports.io',
+    baseURL: `https://${apiFootballDomain}`,
     headers: {
       'x-rapidapi-key': FOOTBALL_API_KEY,
-      'x-rapidapi-host': 'v3.football.api-sports.io',
+      'x-rapidapi-host': apiFootballDomain,
     },
   };
   const res1: ApiFootballResponseBody = await makeRequest(config);
@@ -62,9 +63,6 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
 const getFixtureFromApiFootball = async (
   fixtureId: string
 ): Promise<ApiFootballFixture> => {
-  if (!IS_PROD_ENV) {
-    return mockPastFixture;
-  }
   const fixtures = await makeRequestToApiFootball({
     method: 'GET',
     url: 'fixtures',

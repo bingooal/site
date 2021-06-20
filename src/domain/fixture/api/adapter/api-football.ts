@@ -31,13 +31,15 @@ type ApiFootballResponseBody = {
   response: any[];
 };
 
+export const apiFootballDomain = 'v3.football.api-sports.io';
+
 const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
   const config = {
     ...requestConfig,
-    baseURL: 'https://v3.football.api-sports.io',
+    baseURL: `https://${apiFootballDomain}`,
     headers: {
       'x-rapidapi-key': FOOTBALL_API_KEY,
-      'x-rapidapi-host': 'v3.football.api-sports.io',
+      'x-rapidapi-host': apiFootballDomain,
     },
   };
   const res1: ApiFootballResponseBody = await makeRequest(config);

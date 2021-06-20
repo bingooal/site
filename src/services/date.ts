@@ -13,10 +13,10 @@ export const now = () => dayjs();
 
 export const format = (date: Date) => date.format('YYYY-MM-DD');
 
-export const parse = (dateString: string) => dayjs(dateString);
+export const parse = (dateInput: dayjs.ConfigType) => dayjs(dateInput);
 
-export const getTime = (dateString: string) =>
-  parse(dateString).format('HH:mm');
+export const getTime = (dateInput: dayjs.ConfigType) =>
+  parse(dateInput).format('HH:mm');
 
 export const getDay = (date: Date) =>
   date.calendar(null, {

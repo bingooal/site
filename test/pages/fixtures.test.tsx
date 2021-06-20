@@ -79,7 +79,7 @@ describe('Fixtures page', () => {
   });
 
   it("lets the user see yesterday's fixtures", async () => {
-    const previousDayButton = screen.getByLabelText('Previous');
+    const previousDayButton = screen.getByLabelText('Previous Day');
     expect(previousDayButton).toBeInTheDocument();
 
     userEvent.click(previousDayButton);

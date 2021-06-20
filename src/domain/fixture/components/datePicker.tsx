@@ -1,4 +1,6 @@
-import { getDay, Date } from '../../../services/date';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Date as DayjsDate, getDay, parse } from '../../../services/date';
 
 enum SVGDrawPathForArrow {
   Left = 'M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z',
@@ -33,31 +35,50 @@ const ArrowButton: React.VFC<ArrowButtonProps> = ({
   </button>
 );
 
-type Props = {
-  date: Date;
-  setDate: (newDate: Date) => void;
+type CalendarDatePickerProps = {
+  date: DayjsDate;
+  setDate: (newDate: DayjsDate) => void;
 };
 
-const DatePicker: React.VFC<Props> = ({ date, setDate }: Props) => (
-  <div className="flex flex-row items-center px-2 py-4 border-b">
-    <div className="flex justify-center w-1/6">
-      <ArrowButton
-        ariaLabel="Previous"
-        svgDrawPath={SVGDrawPathForArrow.Left}
-        onClick={() => setDate(date.subtract(1, 'day'))}
-      />
-    </div>
-    <div className="flex justify-center w-4/6 ">
+const CalendarDatePicker = ({ date, setDate }: CalendarDatePickerProps) => (
+  <ReactDatePicker
+    selected={date.toDate()}
+    onChange={(newDate: Date) => setDate(parse(newDate))}
+    customInput={
       <button
         type="button"
         className="w-full py-2 text-sm font-semibold bg-transparent border rounded"
       >
         {getDay(date)}
       </button>
+    }
+    wrapperClassName="w-full"
+    popperPlacement="bottom"
+    showPopperArrow={false}
+  />
+);
+
+type Props = {
+  date: DayjsDate;
+  setDate: (newDate: DayjsDate) => void;
+};
+
+const DatePicker: React.VFC<Props> = ({ date, setDate }: Props) => (
+  <div className="flex flex-row items-center px-2 py-4 border-b">
+    <div className="flex justify-center w-1/6">
+      <ArrowButton
+        ariaLabel="Previous Day"
+        svgDrawPath={SVGDrawPathForArrow.Left}
+        onClick={() => setDate(date.subtract(1, 'day'))}
+      />
+    </div>
+
+    <div className="flex justify-center w-4/6 ">
+      <CalendarDatePicker date={date} setDate={setDate} />
     </div>
     <div className="flex justify-center w-1/6">
       <ArrowButton
-        ariaLabel="Next"
+        ariaLabel="Next Day"
         svgDrawPath={SVGDrawPathForArrow.Right}
         onClick={() => setDate(date.add(1, 'day'))}
       />

@@ -13,7 +13,7 @@ import {
   ApiFootballFixture,
   ApiFootballLineups,
   ApiFootballPlayer,
-} from './mockApiFootballData/pastFixture';
+} from './mockApiFootballData/types';
 
 const inspect = (object) => util.inspect(object, { depth: null });
 

@@ -10,9 +10,9 @@ import {
 
 describe('eventGenerator', () => {
   const imageUrl = 'imageUrl';
-  const actor = { name: 'Kaka', imageUrl };
-  const actor2 = { name: 'Zidane', imageUrl };
-  const actor3 = { name: 'Figo', imageUrl };
+  const actor = { id: 1, name: 'Kaka', imageUrl };
+  const actor2 = { id: 2, name: 'Zidane', imageUrl };
+  const actor3 = { id: 3, name: 'Figo', imageUrl };
   const action = Action.ScoresAGoal;
   const action2 = Action.MakesATackle;
 

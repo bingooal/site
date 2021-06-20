@@ -2,29 +2,13 @@ import { extractPlayersAndEvents } from '../../../../src/domain/fixture/api/adap
 import { mockFutureFixture } from '../../../../src/domain/fixture/api/adapter/mockApiFootballData/futureFixture';
 import { mockImminentFixture } from '../../../../src/domain/fixture/api/adapter/mockApiFootballData/imminentFixture';
 import { mockPastFixture } from '../../../../src/domain/fixture/api/adapter/mockApiFootballData/pastFixture';
-import { mockPastFixtureWithShortNamesInLineup } from '../../../../src/domain/fixture/api/adapter/mockApiFootballData/pastFixtureWithShortNamesInLineup';
 import { FootballPlayer } from '../../../../src/domain/fixture/data/Fixture';
 
 const numberOfStartingPlayers = 11 * 2;
 
 describe('extractPlayersAndEvents', () => {
-  it('should extract starting players and events from a past fixture', async () => {
+  it('should extract starting players and events from a past fixture (with short names in lineup)', async () => {
     const playersAndEvents = await extractPlayersAndEvents(mockPastFixture);
-
-    expect(playersAndEvents).toMatchObject({
-      footballPlayers: expect.any(Array),
-      occuredEventNames: expect.any(Array),
-    });
-    expect(playersAndEvents.footballPlayers).toHaveLength(
-      numberOfStartingPlayers
-    );
-    expect(playersAndEvents.occuredEventNames.length).toBeGreaterThan(0);
-  });
-
-  it('should extract starting players and events from a past fixture with short names in lineup', async () => {
-    const playersAndEvents = await extractPlayersAndEvents(
-      mockPastFixtureWithShortNamesInLineup
-    );
 
     expect(playersAndEvents).toMatchObject({
       footballPlayers: expect.any(Array),

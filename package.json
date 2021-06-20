@@ -9,10 +9,10 @@
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
-    "lint": "eslint . --ext ts --ext tsx --ext js",
+    "lint": "yarn type-check && eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test-all": "yarn lint && yarn type-check && yarn test",
+    "test-all": "yarn lint && yarn test",
     "deploy": "yarn sls"
   },
   "lint-staged": {

@@ -8,6 +8,8 @@
 // lineups
 // statistics
 // players
+
+// `lineups` and `events` can have short player names, but `players` has full player names
 export const mockPastFixture = {
   fixture: {
     id: 676090,
@@ -2123,30 +2125,3 @@ export const mockPastFixture = {
     },
   ],
 };
-
-export type ApiFootballFixture = typeof mockPastFixture;
-
-export type ApiFootballLineups = ApiFootballFixture['lineups'];
-
-export type ApiFootballPlayer = ApiFootballFixture['players'][0]['players'][0];
-
-export enum ApiFootballFixtureStatus {
-  TimeToBeDefined = 'TBD',
-  NotStarted = 'NS',
-  FirstHalfStarted = '1H',
-  HalfTime = 'HT',
-  SecondHalfStarted = '2H',
-  ExtraTime = 'ET',
-  PenaltyInProgress = 'P',
-  MatchFinished = 'FT',
-  MatchFinishedAfterExtraTime = 'AET',
-  MatchFinishedAfterPenalties = 'PEN',
-  ExtraTimeBreak = 'BT',
-  MatchSuspended = 'SUSP',
-  MatchInterrupted = 'INT',
-  MatchPostponed = 'PST',
-  MatchCancelled = 'CANC',
-  MatchAbandoned = 'ABD',
-  TechnicalLoss = 'AWD',
-  WalkOver = 'WO',
-}

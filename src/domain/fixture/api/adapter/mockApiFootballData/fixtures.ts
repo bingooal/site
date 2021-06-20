@@ -205,9 +205,6 @@ export const mockFutureFixtures = [
   },
 ];
 
-export const mockFixtures = [
-  ...mockPastFixtures,
-  ...mockFutureFixtures,
-];
+export const mockFixtures = [...mockPastFixtures, ...mockFutureFixtures];
 
 export type ApiFootballFixtures = typeof mockFixtures;

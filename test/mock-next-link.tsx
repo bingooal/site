@@ -1,4 +1,9 @@
-import { cloneElement, PropsWithChildren, ReactElement, SyntheticEvent } from 'react';
+import {
+  cloneElement,
+  PropsWithChildren,
+  ReactElement,
+  SyntheticEvent,
+} from 'react';
 import { useRouter } from 'next/router';
 import { UrlObject } from 'url';
 

@@ -6,7 +6,8 @@ type UserRowProps = {
 };
 
 const UserRow: React.VFC<UserRowProps> = ({
-  username, points
+  username,
+  points,
 }: UserRowProps) => (
   <tr className="bg-white">
     <td className="w-4/5 px-2 py-5 text-sm">
@@ -48,12 +49,8 @@ const LeaderboardTable: React.VFC<TableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {leaderboard.map(({ userId, points}) => (
-              <UserRow
-                key={userId}
-                username={userId}
-                points={points}
-              />
+            {leaderboard.map(({ userId, points }) => (
+              <UserRow key={userId} username={userId} points={points} />
             ))}
           </tbody>
         </table>

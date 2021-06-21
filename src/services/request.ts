@@ -1,12 +1,13 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { AxiosRequestConfig } from 'axios';
-import { setup } from 'axios-cache-adapter';
+import axios, { AxiosRequestConfig } from 'axios';
+import { setupCache } from 'axios-cache-adapter';
 
-const api = setup({
-  cache: {
-    maxAge: 0, // by default, don't cache
-    // debug: true,
-  },
+export const cacheInstance = setupCache({
+  maxAge: 0, // by default, don't cache
+  // debug: true,
+});
+
+const api = axios.create({
+  adapter: cacheInstance.adapter,
 });
 
 export type RequestConfig = Omit<AxiosRequestConfig, 'method'> & {

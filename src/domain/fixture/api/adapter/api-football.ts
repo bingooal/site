@@ -19,14 +19,17 @@ const inspect = (object) => util.inspect(object, { depth: null });
 
 export type ApiFootballResponseBody = {
   parameters: { [parameter: string]: string };
-  errors: { [errorType: string]: string }[];
-  results: number;
   response: any[];
+  results: number;
+  errors: { [errorType: string]: string }[];
+  paging: { current: number; total: number };
 };
 
 export const apiFootballDomain = 'v3.football.api-sports.io';
 
-const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
+export const makeRequestToApiFootball = async (
+  requestConfig: RequestConfig
+) => {
   const config = {
     ...requestConfig,
     baseURL: `https://${apiFootballDomain}`,
@@ -40,16 +43,23 @@ const makeRequestToApiFootball = async (requestConfig: RequestConfig) => {
     return res1.response;
   }
   logger.log(
-    `[api-football.ts] makeRequestToApiFootball() returned no results. requestConfig was: ${inspect(
+    `[api-football.ts] makeRequestToApiFootball() returned no results. requestConfig: ${inspect(
       requestConfig
-    )}, response was: ${inspect(res1)}`
+    )}, res1: ${inspect(res1)}. Retrying with 2nd API key`
   );
-  logger.log('retrying request with 2nd API key');
   const configWith2ndApiKey = {
     ...config,
     headers: { ...config.headers, 'x-rapidapi-key': FOOTBALL_API_KEY_2 },
+    cache: {
+      ignoreCache: true,
+    },
   };
   const res2: ApiFootballResponseBody = await makeRequest(configWith2ndApiKey);
+  logger.log(
+    `[api-football.ts] makeRequestToApiFootball() res2.response: ${inspect(
+      res2.response
+    )}`
+  );
   return res2.response;
 };
 

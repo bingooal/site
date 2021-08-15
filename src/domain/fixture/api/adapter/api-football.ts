@@ -278,7 +278,6 @@ const getFixturesFromApiFootball = async (
     url: 'fixtures',
     params: {
       date: parse(dateString).format('YYYY-MM-DD'),
-      season: 2020,
       timezone: 'Europe/London',
     },
     cache: {

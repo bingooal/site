@@ -18,10 +18,10 @@ import {
 const inspect = (object) => util.inspect(object, { depth: null });
 
 export type ApiFootballResponseBody = {
-  parameters: { [parameter: string]: string };
+  parameters: Record<string, string>;
   response: any[];
   results: number;
-  errors: { [errorType: string]: string }[];
+  errors: Record<string, string>[];
   paging: { current: number; total: number };
 };
 

@@ -1,5 +1,5 @@
 site:
-  component: '@sls-next/serverless-component@1.19.0-alpha.45'
+  component: '@sls-next/serverless-component'
   inputs:
     roleArn: arn:aws:iam::960028696012:role/bingoalApp
 

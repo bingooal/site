@@ -1,4 +1,5 @@
 import Event from '../../event/data/Event';
+import { ApiFootballFixtureStatus } from '../api/adapter/mockApiFootballData/types';
 import FixturePreview from './FixturePreview';
 
 type Fixture = FixturePreview & {
@@ -11,13 +12,13 @@ export type FootballPlayer = {
   imageUrl?: string;
 };
 
-export enum FixtureStatus {
-  Postponed = 'PT',
-  HalfTime = 'HT',
-  FullTime = 'FT',
-  ExtraTimeBreak = 'BT',
-  Penalties = 'P',
-  FinishedAfterPenalties = 'PEN',
-}
+export const FixtureStatus = {
+  Postponed: ApiFootballFixtureStatus.MatchPostponed,
+  HalfTime: ApiFootballFixtureStatus.HalfTime,
+  FullTime: ApiFootballFixtureStatus.MatchFinished,
+  ExtraTimeBreak: ApiFootballFixtureStatus.ExtraTimeBreak,
+  Penalties: ApiFootballFixtureStatus.PenaltyInProgress,
+  FinishedAfterPenalties: ApiFootballFixtureStatus.MatchFinishedAfterPenalties,
+};
 
 export default Fixture;
